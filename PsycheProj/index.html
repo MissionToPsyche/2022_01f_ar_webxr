@@ -105,6 +105,7 @@
 				if(current_object){
 					current_object.visible = false;
 				}
+				setSpaceEnvironment(scene);
 				document.getElementById("intro-header").style.display='none';
 				loadModel(1);
 			});
@@ -269,6 +270,21 @@
 
 			}
 
+			// Creates skybox and sets as background 
+			function setSpaceEnvironment(scene){
+				var path = '/assets/stars/';
+				var format = '.png';
+				var urls = [
+					path + 'xpos' + format, path + 'xneg' + format,
+					path + 'ypos' + format, path + 'yneg' + format,
+					path + 'zpos' + format, path + 'zneg' + format
+				];
+
+				var spaceCube = new THREE.CubeTextureLoader().load(urls);
+				spaceCube.format = THREE.RGBFormat;
+
+				scene.background = spaceCube;
+			}
 
 			function animate() {
 

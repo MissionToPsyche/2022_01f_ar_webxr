@@ -3,6 +3,7 @@ import { ARButton } from 'three/addons/webxr/ARButton.js';
 import {OrbitControls } from '../jsm/controls/OrbitControls.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {RGBELoader} from 'three/addons/loaders/RGBELoader.js';
+import { LinearToneMapping } from 'three';
 
 let container;
 let camera, scene, renderer;

@@ -32,6 +32,7 @@ $("#ARButton").click(function(){
     }
     setSpaceEnvironment(scene);
     document.getElementById("intro-header").style.display='none';
+    loadSatellite();
     loadModel(1);
 });
 
@@ -72,6 +73,10 @@ document.getElementById("menu-icon").onclick = function openNav() {
 
 document.getElementById("close-menu").onclick = function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
+}
+
+function loadSatellite(){
+    document.getElementById("satellite").width = "60";
 }
 
 function loadModel(model){
@@ -141,7 +146,6 @@ function init() {
     options.domOverlay = {root: document.getElementById('content')};
 
     document.body.appendChild(ARButton.createButton(renderer,options));
-
 
     reticle = new THREE.Mesh(
         new THREE.RingGeometry( 0.15, 0.2, 32 ).rotateX( - Math.PI / 2 ),

@@ -67,6 +67,7 @@ body {
 
   #narrative{
     display:none;
+    padding-right: 80px;
   }
 
   #fact-one{

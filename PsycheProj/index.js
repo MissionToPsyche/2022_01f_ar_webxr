@@ -24,7 +24,6 @@ $("#ARButton").click(function(){
         current_object.visible = false;
     }
     setSpaceEnvironment(scene);
-    document.getElementById("intro-header").style.display='none';
     loadSatellite();
     loadModel(1);
     document.getElementById("narrative").style.display="block";

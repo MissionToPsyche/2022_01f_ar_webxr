@@ -32,7 +32,6 @@
 			</div>
 
 			<div id="container" style="position: fixed;"></div>
-			<img src="assets/satellite.png" id="satellite" width="0" height="60" align="right"></img>
 
 			<div class="intro-header" id="intro-header" style="text-align:center">
 				<h1>Welcome to the Psyche-16 AR experience!</h1>
@@ -43,10 +42,15 @@
 			<button id="fact-one">Fact One</button>
 			<button id="fact-two">Fact Two</button>
 			<button id="fact-three">Fact Three</button>
-			<button class="state-change" type="button" id="1">State One</button>
-			<button class="state-change" type="button" id="2">State Two</button>
-			<button class="state-change" type="button" id="3">State Three</button>
-			<button class="state-change" type="button" id="4">State Four</button>
+
+			<!-- I think the 'align' attribute is deprecated.  An updated method for aligning should be used. -->
+			<div align="right">
+				<img src="assets/satellite.png" id="satellite" width="0" height="60"></img>
+				<button class="state-change" type="button" id="1">State 1</button>
+				<button class="state-change" type="button" id="2">State 2</button>
+				<button class="state-change" type="button" id="3">State 3</button>
+				<button class="state-change" type="button" id="4">State 4</button>
+			</div>
 
 			<span id="menu-icon">&#9776;</span>
 

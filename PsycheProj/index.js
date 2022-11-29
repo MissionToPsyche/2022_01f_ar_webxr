@@ -14,12 +14,12 @@ let hitTestSourceRequested = false;
 init();
 animate();
 
-$(".state-change").click(function(){
-    if(current_object!=null){
-        scene.remove(current_object)
-    }
-    loadModel($(this).attr("id"));
-});
+// $(".state-change").click(function(){
+//     if(current_object!=null){
+//         scene.remove(current_object)
+//     }
+//     loadModel($(this).attr("id"));
+// });
 
 $("#music-settings").click(function(){
     let myAudio = document.getElementById("music");
@@ -42,6 +42,7 @@ $("#place-button").click(function(){
     document.getElementById("fact-one").style.display = "block";
     document.getElementById("1").style.display = "block";
     document.getElementById("2").style.display = "block";
+    document.getElementById("narrative").innerHTML = "< Explain State 1 and suggest performing the state change action to move to state 2. >";
     // const buts = document.querySelectorAll('.state-change');
     // buts.forEach(but=>{
     //     but.style.display='inline';
@@ -49,28 +50,30 @@ $("#place-button").click(function(){
 });
 
 $("#fact-one").click(function(){
-    document.getElementById("narrative").innerHTML = "Here's the first Psyche factoid.";
+    document.getElementById("narrative").innerHTML = "< Here's the first Psyche factoid. >";
     document.getElementById("fact-two").style.display = "block";
 })
 
 $("#fact-two").click(function(){
-    document.getElementById("narrative").innerHTML = "Here's the second Psyche factoid.";
+    document.getElementById("narrative").innerHTML = "< Here's the second Psyche factoid. >";
     document.getElementById("fact-three").style.display = "block";
 })
 
 $("#fact-three").click(function(){
-    document.getElementById("narrative").innerHTML = "Here's the third Psyche factoid.";
+    document.getElementById("narrative").innerHTML = "< Here's the third Psyche factoid. >";
 })
 
-$("1").click(function(){
+$("#1").click(function(){
     if(current_object!=null){
         scene.remove(current_object)
     }
 
     loadModel(1);
+
+    document.getElementById("narrative").innerHTML = "< Explain State 1 and suggest performing the state change action to move to state 2. >";
 })
 
-$("2").click(function(){
+$("#2").click(function(){
     if(current_object!=null){
         scene.remove(current_object)
     }
@@ -78,14 +81,16 @@ $("2").click(function(){
     loadModel(2);
 
     document.getElementById("3").style.display = "block";
+    document.getElementById("narrative").innerHTML = "< Explain State 2 and suggest performing the state change action to move to state 3. >";
 })
 
-$("3").click(function(){
+$("#3").click(function(){
     if(current_object!=null){
         scene.remove(current_object)
     }
 
     loadModel(3);
+    document.getElementById("narrative").innerHTML = "< Explain State 3. >";
 })
 
 function arPlace(){

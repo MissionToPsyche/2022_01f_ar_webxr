@@ -14,13 +14,6 @@ let hitTestSourceRequested = false;
 init();
 animate();
 
-// $(".state-change").click(function(){
-//     if(current_object!=null){
-//         scene.remove(current_object)
-//     }
-//     loadModel($(this).attr("id"));
-// });
-
 $("#music-settings").click(function(){
     let myAudio = document.getElementById("music");
     myAudio.muted=!myAudio.muted;
@@ -43,10 +36,6 @@ $("#place-button").click(function(){
     document.getElementById("1").style.display = "block";
     document.getElementById("2").style.display = "block";
     document.getElementById("narrative").innerHTML = "< Explain State 1 and suggest performing the state change action to move to state 2. >";
-    // const buts = document.querySelectorAll('.state-change');
-    // buts.forEach(but=>{
-    //     but.style.display='inline';
-    // })
 });
 
 $("#fact-one").click(function(){

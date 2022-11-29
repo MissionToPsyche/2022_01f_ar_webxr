@@ -38,7 +38,7 @@ $("#ARButton").click(function(){
 
 $("#place-button").click(function(){
     arPlace();
-    document.getElementById("educ-content").style.display="block";
+    document.getElementById("narrative").style.display="block";
     document.getElementById("fact-one").style.display="block";
     document.getElementById("fact-two").style.display="block";
     document.getElementById("fact-three").style.display="block";
@@ -49,15 +49,15 @@ $("#place-button").click(function(){
 });
 
 $("#fact-one").click(function(){
-    document.getElementById("educ-content").innerHTML = "Sagittis purus sit amet volutpat consequat mauris nunc congue nisi. Gravida quis blandit turpis cursus. Egestas fringilla phasellus faucibus scelerisque eleifend. Aliquam ut porttitor leo a diam sollicitudin tempor. Sit amet cursus sit amet dictum sit amet justo."
+    document.getElementById("narrative").innerHTML = "Sagittis purus sit amet volutpat consequat mauris nunc congue nisi. Gravida quis blandit turpis cursus. Egestas fringilla phasellus faucibus scelerisque eleifend. Aliquam ut porttitor leo a diam sollicitudin tempor. Sit amet cursus sit amet dictum sit amet justo."
 })
 
 $("#fact-two").click(function(){
-    document.getElementById("educ-content").innerHTML = "Luctus accumsan tortor posuere ac ut. Sit amet aliquam id diam. Ultrices tincidunt arcu non sodales neque sodales ut etiam. Sit amet nisl suscipit adipiscing. Vel pharetra vel turpis nunc eget lorem dolor sed viverra. Iaculis urna id volutpat lacus."
+    document.getElementById("narrative").innerHTML = "Luctus accumsan tortor posuere ac ut. Sit amet aliquam id diam. Ultrices tincidunt arcu non sodales neque sodales ut etiam. Sit amet nisl suscipit adipiscing. Vel pharetra vel turpis nunc eget lorem dolor sed viverra. Iaculis urna id volutpat lacus."
 })
 
 $("#fact-three").click(function(){
-    document.getElementById("educ-content").innerHTML = "Mauris cursus mattis molestie a iaculis at. Nulla facilisi nullam vehicula ipsum a arcu. Posuere morbi leo urna molestie at elementum eu. Egestas diam in arcu cursus euismod quis viverra nibh. Viverra nam libero justo laoreet sit amet cursus."
+    document.getElementById("narrative").innerHTML = "Mauris cursus mattis molestie a iaculis at. Nulla facilisi nullam vehicula ipsum a arcu. Posuere morbi leo urna molestie at elementum eu. Egestas diam in arcu cursus euismod quis viverra nibh. Viverra nam libero justo laoreet sit amet cursus."
 })
 
 function arPlace(){

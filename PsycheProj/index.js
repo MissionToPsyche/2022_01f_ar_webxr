@@ -34,30 +34,58 @@ $("#ARButton").click(function(){
     document.getElementById("intro-header").style.display='none';
     loadSatellite();
     loadModel(1);
+    document.getElementById("narrative").style.display="block";
 });
 
 $("#place-button").click(function(){
     arPlace();
-    document.getElementById("narrative").style.display="block";
-    document.getElementById("fact-one").style.display="block";
-    document.getElementById("fact-two").style.display="block";
-    document.getElementById("fact-three").style.display="block";
-    const buts = document.querySelectorAll('.state-change');
-    buts.forEach(but=>{
-        but.style.display='inline';
-    })
+    document.getElementById("fact-one").style.display = "block";
+    document.getElementById("1").style.display = "block";
+    document.getElementById("2").style.display = "block";
+    // const buts = document.querySelectorAll('.state-change');
+    // buts.forEach(but=>{
+    //     but.style.display='inline';
+    // })
 });
 
 $("#fact-one").click(function(){
-    document.getElementById("narrative").innerHTML = "Sagittis purus sit amet volutpat consequat mauris nunc congue nisi. Gravida quis blandit turpis cursus. Egestas fringilla phasellus faucibus scelerisque eleifend. Aliquam ut porttitor leo a diam sollicitudin tempor. Sit amet cursus sit amet dictum sit amet justo."
+    document.getElementById("narrative").innerHTML = "Here's the first Psyche factoid.";
+    document.getElementById("fact-two").style.display = "block";
 })
 
 $("#fact-two").click(function(){
-    document.getElementById("narrative").innerHTML = "Luctus accumsan tortor posuere ac ut. Sit amet aliquam id diam. Ultrices tincidunt arcu non sodales neque sodales ut etiam. Sit amet nisl suscipit adipiscing. Vel pharetra vel turpis nunc eget lorem dolor sed viverra. Iaculis urna id volutpat lacus."
+    document.getElementById("narrative").innerHTML = "Here's the second Psyche factoid.";
+    document.getElementById("fact-three").style.display = "block";
 })
 
 $("#fact-three").click(function(){
-    document.getElementById("narrative").innerHTML = "Mauris cursus mattis molestie a iaculis at. Nulla facilisi nullam vehicula ipsum a arcu. Posuere morbi leo urna molestie at elementum eu. Egestas diam in arcu cursus euismod quis viverra nibh. Viverra nam libero justo laoreet sit amet cursus."
+    document.getElementById("narrative").innerHTML = "Here's the third Psyche factoid.";
+})
+
+$("1").click(function(){
+    if(current_object!=null){
+        scene.remove(current_object)
+    }
+
+    loadModel(1);
+})
+
+$("2").click(function(){
+    if(current_object!=null){
+        scene.remove(current_object)
+    }
+
+    loadModel(2);
+
+    document.getElementById("3").style.display = "block";
+})
+
+$("3").click(function(){
+    if(current_object!=null){
+        scene.remove(current_object)
+    }
+
+    loadModel(3);
 })
 
 function arPlace(){

@@ -32,6 +32,8 @@ $("#ARButton").click(function(){
 $("#place-button").click(function(){
     arPlace();
     document.getElementById("fact-one").style.display = "block";
+    document.getElementById("fact-two").style.display = "block";
+    document.getElementById("fact-three").style.display = "block";
     document.getElementById("1").style.display = "block";
     document.getElementById("2").style.display = "block";
     document.getElementById("narrative").innerHTML = "< Explain State 1 and suggest performing the state change action to move to state 2. >";

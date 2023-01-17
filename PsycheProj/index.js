@@ -5,20 +5,26 @@ import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {RGBELoader} from 'three/addons/loaders/RGBELoader.js';
 import { LinearToneMapping } from 'three';
 
+
+//variables
 let container;
 let camera, scene, renderer;
 let reticle,pmremGenerator, current_object,controls;
 let hitTestSource = null;
 let hitTestSourceRequested = false;
 
+
 init();
 animate();
 
+
+//mutes and unmutes music 
 $("#music-settings").click(function(){
     let myAudio = document.getElementById("music");
     myAudio.muted=!myAudio.muted;
 })
 
+//initilizes the AR experience, enter AR
 $("#ARButton").click(function(){
     if(current_object){
         current_object.visible = false;
@@ -29,6 +35,7 @@ $("#ARButton").click(function(){
     document.getElementById("narrative").style.display="block";
 });
 
+//places model and associated content 
 $("#place-button").click(function(){
     arPlace();
     document.getElementById("fact-one").style.display = "block";
@@ -39,6 +46,7 @@ $("#place-button").click(function(){
     document.getElementById("narrative").innerHTML = "< Explain State 1 and suggest performing the state change action to move to state 2. >";
 });
 
+//three fact buttons 
 $("#fact-one").click(function(){
     document.getElementById("narrative").innerHTML = "< Here's the first Psyche factoid. >";
     document.getElementById("fact-two").style.display = "block";
@@ -53,13 +61,12 @@ $("#fact-three").click(function(){
     document.getElementById("narrative").innerHTML = "< Here's the third Psyche factoid. >";
 })
 
+//buttons that change the states
 $("#1").click(function(){
     if(current_object!=null){
         scene.remove(current_object)
     }
-
     loadModel(1);
-
     document.getElementById("narrative").innerHTML = "< Explain State 1 and suggest performing the state change action to move to state 2. >";
 })
 
@@ -67,9 +74,7 @@ $("#2").click(function(){
     if(current_object!=null){
         scene.remove(current_object)
     }
-
     loadModel(2);
-
     document.getElementById("3").style.display = "block";
     document.getElementById("narrative").innerHTML = "< Explain State 2 and suggest performing the state change action to move to state 3. >";
 })
@@ -78,11 +83,11 @@ $("#3").click(function(){
     if(current_object!=null){
         scene.remove(current_object)
     }
-
     loadModel(3);
     document.getElementById("narrative").innerHTML = "< Explain State 3. >";
 })
 
+//places model where reticle is 
 function arPlace(){
     if(reticle.visible){
         current_object.position.setFromMatrixPosition(reticle.matrix);
@@ -90,40 +95,43 @@ function arPlace(){
     }
 };
 
+//opens menu
 document.getElementById("menu-icon").onclick = function openNav() {
     document.getElementById("mySidenav").style.width = "250px";
 }
 
+//closes menu
 document.getElementById("close-menu").onclick = function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
 }
 
+//loads satellite character
 function loadSatellite(){
     document.getElementById("satellite").width = "60";
 }
+
 
 function loadModel(model){
     new RGBELoader()
     .setDataType(THREE.UnsignedByteType)
     .setPath('assets/')
     .load('photo_studio_01_1k.hdr',function(texture){
-        var envmap = pmremGenerator.fromEquirectangular(texture).texture;
 
+        //create environment property of scene, involves lighting of object. 
+        //https://threejs.org/docs/#api/en/scenes/Scene
+        var envmap = pmremGenerator.fromEquirectangular(texture).texture;
         scene.enviroment = envmap;
         texture.dispose();
         pmremGenerator.dispose();
         render();
 
+        //load glb file and add it to scene
         var loader = new GLTFLoader().setPath('assets/');
         loader.load(model+".glb",function(glb){
             current_object = glb.scene;
             scene.add(current_object);
 
             arPlace();
-
-            var box = new THREE.Box3();
-            box.setFromObject(current_object);
-            box.center(controls.target);
 
             controls.update();
             render();

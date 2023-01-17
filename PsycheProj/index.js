@@ -14,13 +14,6 @@ let hitTestSourceRequested = false;
 init();
 animate();
 
-$(".state-change").click(function(){
-    if(current_object!=null){
-        scene.remove(current_object)
-    }
-    loadModel($(this).attr("id"));
-});
-
 $("#music-settings").click(function(){
     let myAudio = document.getElementById("music");
     myAudio.muted=!myAudio.muted;
@@ -31,32 +24,63 @@ $("#ARButton").click(function(){
         current_object.visible = false;
     }
     setSpaceEnvironment(scene);
-    document.getElementById("intro-header").style.display='none';
+    loadSatellite();
     loadModel(1);
+    document.getElementById("narrative").style.display="block";
 });
 
 $("#place-button").click(function(){
     arPlace();
-    document.getElementById("educ-content").style.display="block";
-    document.getElementById("fact-one").style.display="block";
-    document.getElementById("fact-two").style.display="block";
-    document.getElementById("fact-three").style.display="block";
-    const buts = document.querySelectorAll('.state-change');
-    buts.forEach(but=>{
-        but.style.display='inline';
-    })
+    document.getElementById("fact-one").style.display = "block";
+    document.getElementById("fact-two").style.display = "block";
+    document.getElementById("fact-three").style.display = "block";
+    document.getElementById("1").style.display = "block";
+    document.getElementById("2").style.display = "block";
+    document.getElementById("narrative").innerHTML = "< Explain State 1 and suggest performing the state change action to move to state 2. >";
 });
 
 $("#fact-one").click(function(){
-    document.getElementById("educ-content").innerHTML = "Sagittis purus sit amet volutpat consequat mauris nunc congue nisi. Gravida quis blandit turpis cursus. Egestas fringilla phasellus faucibus scelerisque eleifend. Aliquam ut porttitor leo a diam sollicitudin tempor. Sit amet cursus sit amet dictum sit amet justo."
+    document.getElementById("narrative").innerHTML = "< Here's the first Psyche factoid. >";
+    document.getElementById("fact-two").style.display = "block";
 })
 
 $("#fact-two").click(function(){
-    document.getElementById("educ-content").innerHTML = "Luctus accumsan tortor posuere ac ut. Sit amet aliquam id diam. Ultrices tincidunt arcu non sodales neque sodales ut etiam. Sit amet nisl suscipit adipiscing. Vel pharetra vel turpis nunc eget lorem dolor sed viverra. Iaculis urna id volutpat lacus."
+    document.getElementById("narrative").innerHTML = "< Here's the second Psyche factoid. >";
+    document.getElementById("fact-three").style.display = "block";
 })
 
 $("#fact-three").click(function(){
-    document.getElementById("educ-content").innerHTML = "Mauris cursus mattis molestie a iaculis at. Nulla facilisi nullam vehicula ipsum a arcu. Posuere morbi leo urna molestie at elementum eu. Egestas diam in arcu cursus euismod quis viverra nibh. Viverra nam libero justo laoreet sit amet cursus."
+    document.getElementById("narrative").innerHTML = "< Here's the third Psyche factoid. >";
+})
+
+$("#1").click(function(){
+    if(current_object!=null){
+        scene.remove(current_object)
+    }
+
+    loadModel(1);
+
+    document.getElementById("narrative").innerHTML = "< Explain State 1 and suggest performing the state change action to move to state 2. >";
+})
+
+$("#2").click(function(){
+    if(current_object!=null){
+        scene.remove(current_object)
+    }
+
+    loadModel(2);
+
+    document.getElementById("3").style.display = "block";
+    document.getElementById("narrative").innerHTML = "< Explain State 2 and suggest performing the state change action to move to state 3. >";
+})
+
+$("#3").click(function(){
+    if(current_object!=null){
+        scene.remove(current_object)
+    }
+
+    loadModel(3);
+    document.getElementById("narrative").innerHTML = "< Explain State 3. >";
 })
 
 function arPlace(){
@@ -72,6 +96,10 @@ document.getElementById("menu-icon").onclick = function openNav() {
 
 document.getElementById("close-menu").onclick = function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
+}
+
+function loadSatellite(){
+    document.getElementById("satellite").width = "60";
 }
 
 function loadModel(model){
@@ -141,7 +169,6 @@ function init() {
     options.domOverlay = {root: document.getElementById('content')};
 
     document.body.appendChild(ARButton.createButton(renderer,options));
-
 
     reticle = new THREE.Mesh(
         new THREE.RingGeometry( 0.15, 0.2, 32 ).rotateX( - Math.PI / 2 ),

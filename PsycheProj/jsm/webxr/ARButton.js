@@ -17,7 +17,7 @@ class ARButton {
 				button.textContent = 'STOP AR';
 
 				currentSession = session;
-
+				
 			}
 
 			function onSessionEnded( /*event*/ ) {

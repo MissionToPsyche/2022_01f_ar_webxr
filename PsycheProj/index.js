@@ -9,22 +9,32 @@ import { LinearToneMapping } from 'three';
 //variables
 let container;
 let camera, scene, renderer;
-let reticle,pmremGenerator, current_object,controls;
+let reticle,pmremGenerator, current_object, controls;
 let hitTestSource = null;
 let hitTestSourceRequested = false;
-
+let currentModelState = null;
+let model1Text = "<Explain State 1 - It's appearance 10,000,000 years ago?>"
+let model2Text = "<Explain State 2 - It's appearance 5,000,000 years ago?>"
+let model3Text = "<Explain State 3 - It's appearance today?>"
 
 init();
 animate();
 
-
-//mutes and unmutes music 
+/**
+ * Music settings button click.
+ * 
+ * Mutes/Unmutes the ambient music.
+ */
 $("#music-settings").click(function(){
     let myAudio = document.getElementById("music");
     myAudio.muted=!myAudio.muted;
 })
 
-//initilizes the AR experience, enter AR
+/**
+ * Start AR button click.
+ * 
+ * Initializes the AR experience.
+ */
 $("#ARButton").click(function(){
     if(current_object){
         current_object.visible = false;
@@ -35,59 +45,93 @@ $("#ARButton").click(function(){
     document.getElementById("narrative").style.display="block";
 });
 
-//places model and associated content 
+/**
+ * Place button click.
+ * 
+ * Displays the Fact buttons, State Change button, and changes narrative text.
+ */
 $("#place-button").click(function(){
     arPlace();
     document.getElementById("fact-one").style.display = "block";
     document.getElementById("fact-two").style.display = "block";
     document.getElementById("fact-three").style.display = "block";
-    document.getElementById("1").style.display = "block";
-    document.getElementById("2").style.display = "block";
-    document.getElementById("narrative").innerHTML = "< Explain State 1 and suggest performing the state change action to move to state 2. >";
+    document.getElementById("state-change").style.display = "block";
+    document.getElementById("narrative").style.display = "block";
+    document.getElementById("narrative").innerHTML = model1Text;
+    currentModelState = 1;
 });
 
-//three fact buttons 
+/**
+ * Fact 1 button click.
+ */
 $("#fact-one").click(function(){
-    document.getElementById("narrative").innerHTML = "< Here's the first Psyche factoid. >";
-    document.getElementById("fact-two").style.display = "block";
+    // Narrative text will be determined by currentModel variable
+    document.getElementById("narrative").innerHTML = "<Here's the first Psyche factoid.>";
 })
 
+/**
+ * Fact 2 button click.
+ */
 $("#fact-two").click(function(){
-    document.getElementById("narrative").innerHTML = "< Here's the second Psyche factoid. >";
+    // Narrative text will be determined by currentModel variable
+    document.getElementById("narrative").innerHTML = "<Here's the second Psyche factoid.>";
+})
+
+/**
+ * Fact 3 button click.
+ */
+$("#fact-three").click(function(){
+    // Narrative text will be determined by currentModel variable
+    document.getElementById("narrative").innerHTML = "<Here's the third Psyche factoid.>";
+})
+
+/**
+ * State Change button click.
+ */
+$("#state-change").click(function(){
+    if(currentModelState == 3){
+        currentModelState = 1;
+    }
+    else{
+        currentModelState++;
+    }
+
+    // Remove fact buttons during state-change animation.
+    document.getElementById("fact-one").style.display = "none"
+    document.getElementById("fact-two").style.display = "none";
+    document.getElementById("fact-three").style.display = "none";
+
+    // We need to add the state-change animation here.
+    scene.remove(current_object);
+    loadModel(currentModelState);
+
+    document.getElementById("narrative").style.display = "block";
+    // Display proper narrative based on currentModelState variable
+    switch(currentModelState) {
+        case 1:
+            document.getElementById("narrative").innerHTML = model1Text;
+            break;
+        case 2:
+            document.getElementById("narrative").innerHTML = model2Text;
+            break;
+        case 3:
+            document.getElementById("narrative").innerHTML = model3Text;
+            break;
+        default:
+            // Something went wrong with value of currentModelState variable
+    }
+
+    // Display fact buttons after state-change animation completes.
+    document.getElementById("fact-one").style.display = "block";
+    document.getElementById("fact-two").style.display = "block";
     document.getElementById("fact-three").style.display = "block";
 })
 
-$("#fact-three").click(function(){
-    document.getElementById("narrative").innerHTML = "< Here's the third Psyche factoid. >";
-})
-
-//buttons that change the states
-$("#1").click(function(){
-    if(current_object!=null){
-        scene.remove(current_object)
-    }
-    loadModel(1);
-    document.getElementById("narrative").innerHTML = "< Explain State 1 and suggest performing the state change action to move to state 2. >";
-})
-
-$("#2").click(function(){
-    if(current_object!=null){
-        scene.remove(current_object)
-    }
-    loadModel(2);
-    document.getElementById("3").style.display = "block";
-    document.getElementById("narrative").innerHTML = "< Explain State 2 and suggest performing the state change action to move to state 3. >";
-})
-
-$("#3").click(function(){
-    if(current_object!=null){
-        scene.remove(current_object)
-    }
-    loadModel(3);
-    document.getElementById("narrative").innerHTML = "< Explain State 3. >";
-})
-
-//places model where reticle is 
+/**
+ * arPlace Function
+ * 
+ * Places the Psyche asteroid model on the screen at the reticle location.
+ */
 function arPlace(){
     if(reticle.visible){
         current_object.position.setFromMatrixPosition(reticle.matrix);
@@ -95,22 +139,46 @@ function arPlace(){
     }
 };
 
-//opens menu
+/**
+ * Open menu click.
+ */
 document.getElementById("menu-icon").onclick = function openNav() {
     document.getElementById("mySidenav").style.width = "250px";
 }
 
-//closes menu
+/**
+ * Close menu click.
+ */
 document.getElementById("close-menu").onclick = function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
 }
 
-//loads satellite character
+/**
+ * loadSatellite Function
+ * 
+ * Loads the satellite guide onto the screen.
+ */
 function loadSatellite(){
     document.getElementById("satellite").width = "60";
 }
 
+/**
+ * sleep Function
+ * 
+ * Pauses program execution.
+ * @param {number} ms - Amount of time to pause in milliseconds.
+ * @returns - Promise object.
+ */
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
+/**
+ * loadModel Function
+ * 
+ * Loads the proper Psyche asteroid model onto the screen.
+ * @param {number} model - Number (1-3) representing which model to load.
+ */
 function loadModel(model){
     new RGBELoader()
     .setDataType(THREE.UnsignedByteType)
@@ -139,8 +207,12 @@ function loadModel(model){
     })
 }
 
+/**
+ * init Function
+ * 
+ * Initializes three.js objects necessary for rendering AR scene.
+ */
 function init() {
-
     container = document.createElement( 'div' );
     document.getElementById("container").appendChild( container );
 
@@ -221,22 +293,31 @@ function init() {
 
 let touchDown, touchX, touchY, deltaX, deltaY;
 
+/**
+ * rotateObject Function
+ */
 function rotateObject(){
     if(current_object && reticle.visible){
         current_object.rotation.y+= deltaX/100;
     }
 }
 
+/**
+ * onWindowResize Function
+ */
 function onWindowResize() {
-
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
 
     renderer.setSize( window.innerWidth, window.innerHeight );
-
 }
 
-// Creates skybox and sets as background 
+/**
+ * setSpaceEnvironment Function
+ * 
+ * Creates skybox and sets as the space environment scene background.
+ * @param {*} scene - three.js Scene object.  Defined in loadModel Function.
+ */
 function setSpaceEnvironment(scene){
     let path = '/assets/stars/';
     let format = '.png';
@@ -252,23 +333,26 @@ function setSpaceEnvironment(scene){
     scene.background = spaceCube;
 }
 
+/**
+ * animate Function
+ */
 function animate() {
-
     renderer.setAnimationLoop( render );
     requestAnimationFrame(animate);
     controls.update();
-
 }
 
+/**
+ * render Function
+ * @param {*} timestamp 
+ * @param {*} frame 
+ */
 function render( timestamp, frame ) {
-
     if ( frame ) {
-
         const referenceSpace = renderer.xr.getReferenceSpace();
         const session = renderer.xr.getSession();
 
         if ( hitTestSourceRequested === false ) {
-
             session.requestReferenceSpace( 'viewer' ).then( function ( referenceSpace ) {
 
                 session.requestHitTestSource( { space: referenceSpace } ).then( function ( source ) {
@@ -280,7 +364,6 @@ function render( timestamp, frame ) {
             } );
 
             session.addEventListener( 'end', function () {
-
                 hitTestSourceRequested = false;
                 hitTestSource = null;
 
@@ -291,37 +374,27 @@ function render( timestamp, frame ) {
                 box.center(controls.target);
 
                 document.getElementById("place-button").style.display="none";
-
             } );
 
             hitTestSourceRequested = true;
-
         }
 
         if ( hitTestSource ) {
-
             const hitTestResults = frame.getHitTestResults( hitTestSource );
 
             if ( hitTestResults.length ) {
-
                 const hit = hitTestResults[ 0 ];
 
                 document.getElementById("place-button").style.display="block";
 
                 reticle.visible = true;
                 reticle.matrix.fromArray( hit.getPose( referenceSpace ).transform.matrix );
-
             } else {
-
                 reticle.visible = false;
                 document.getElementById("place-button").style.display="none";
-
             }
-
         }
-
     }
 
     renderer.render( scene, camera );
-
 }

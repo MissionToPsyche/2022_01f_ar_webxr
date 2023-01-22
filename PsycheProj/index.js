@@ -149,10 +149,13 @@ $("#state-change").click(async function(){
         currentModelState++;
     }
 
-    // Remove fact buttons during state-change animation.
+    // Remove buttons during state-change animation.
+    document.getElementById("state-change").style.display = "none"
     document.getElementById("fact-one").style.display = "none"
     document.getElementById("fact-two").style.display = "none";
     document.getElementById("fact-three").style.display = "none";
+    document.getElementById("place-button").style.display = "none"; // This currently does not remove the place button from the screen
+    document.getElementById("menu-icon").style.display = "none";
 
     // We will invoke the state change animation here
     document.getElementById("narrative").textContent = "3 second place holder for state change animation.";
@@ -178,9 +181,12 @@ $("#state-change").click(async function(){
     }
 
     // Display fact buttons after state-change animation completes.
+    document.getElementById("state-change").style.display = "block"
     document.getElementById("fact-one").style.display = "block";
     document.getElementById("fact-two").style.display = "block";
     document.getElementById("fact-three").style.display = "block";
+    document.getElementById("place-button").style.display = "block";
+    document.getElementById("menu-icon").style.display = "block";
 })
 
 /**

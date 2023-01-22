@@ -15,9 +15,9 @@ let hitTestSourceRequested = false;
 let currentModelState = null;
 
 // Narrative text variables.
-let model1Text = "<Explain State 1 - It's (assumed) appearance 10 million years ago>";
-let model2Text = "<Explain State 2 - It's (assumed) appearance 5 million years ago>";
-let model3Text = "<Explain State 3 - It's (assumed) appearance today>";
+let model1Text = "<Explain State 1 - It's (assumed) appearance 10 million years ago.>";
+let model2Text = "<Explain State 2 - It's (assumed) appearance 5 million years ago.>";
+let model3Text = "<Explain State 3 - It's (assumed) appearance today.>";
 let model1_Fact1 = "<Model 1 - Fact 1>";
 let model1_Fact2 = "<Model 1 - Fact 2>";
 let model1_Fact3 = "<Model 1 - Fact 3>";
@@ -138,8 +138,10 @@ $("#fact-three").click(function(){
 
 /**
  * State Change button click.
+ * 
+ * Async function needed for use of sleep timer - this may not be needed once real animations are implemented.
  */
-$("#state-change").click(function(){
+$("#state-change").click(async function(){
     if(currentModelState == 3){
         currentModelState = 1;
     }
@@ -152,8 +154,10 @@ $("#state-change").click(function(){
     document.getElementById("fact-two").style.display = "none";
     document.getElementById("fact-three").style.display = "none";
 
-    // We need to add the state-change animation here.
+    // We will invoke the state change animation here
+    document.getElementById("narrative").textContent = "3 second place holder for state change animation.";
     scene.remove(current_object);
+    await sleep(3000);
     loadModel(currentModelState);
 
     document.getElementById("narrative").style.display = "block";

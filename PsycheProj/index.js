@@ -6,16 +6,27 @@ import {RGBELoader} from 'three/addons/loaders/RGBELoader.js';
 import { LinearToneMapping } from 'three';
 
 
-//variables
+// General variables.
 let container;
 let camera, scene, renderer;
 let reticle,pmremGenerator, current_object, controls;
 let hitTestSource = null;
 let hitTestSourceRequested = false;
 let currentModelState = null;
-let model1Text = "<Explain State 1 - It's appearance 10,000,000 years ago?>"
-let model2Text = "<Explain State 2 - It's appearance 5,000,000 years ago?>"
-let model3Text = "<Explain State 3 - It's appearance today?>"
+
+// Narrative text variables.
+let model1Text = "<Explain State 1 - It's (assumed) appearance 10 million years ago>";
+let model2Text = "<Explain State 2 - It's (assumed) appearance 5 million years ago>";
+let model3Text = "<Explain State 3 - It's (assumed) appearance today>";
+let model1_Fact1 = "<Model 1 - Fact 1>";
+let model1_Fact2 = "<Model 1 - Fact 2>";
+let model1_Fact3 = "<Model 1 - Fact 3>";
+let model2_Fact1 = "<Model 2 - Fact 1>";
+let model2_Fact2 = "<Model 2 - Fact 2>";
+let model2_Fact3 = "<Model 2 - Fact 3>";
+let model3_Fact1 = "<Model 3 - Fact 1>";
+let model3_Fact2 = "<Model 3 - Fact 2>";
+let model3_Fact3 = "<Model 3 - Fact 3>";
 
 init();
 animate();
@@ -56,8 +67,9 @@ $("#place-button").click(function(){
     document.getElementById("fact-two").style.display = "block";
     document.getElementById("fact-three").style.display = "block";
     document.getElementById("state-change").style.display = "block";
-    document.getElementById("narrative").style.display = "block";
-    document.getElementById("narrative").innerHTML = model1Text;
+
+    // Initiate with model 1
+    document.getElementById("narrative").textContent = model1Text;
     currentModelState = 1;
 });
 
@@ -65,24 +77,63 @@ $("#place-button").click(function(){
  * Fact 1 button click.
  */
 $("#fact-one").click(function(){
-    // Narrative text will be determined by currentModel variable
-    document.getElementById("narrative").innerHTML = "<Here's the first Psyche factoid.>";
+    // Display proper narrative based on currentModelState variable
+    switch(currentModelState) {
+        case 1:
+            document.getElementById("narrative").textContent = model1_Fact1;
+            break;
+        case 2:
+            document.getElementById("narrative").textContent = model2_Fact1;
+            break;
+        case 3:
+            document.getElementById("narrative").textContent = model3_Fact1;
+            break;
+        default:
+            // Something went wrong with value of currentModelState variable
+            break;
+    }
 })
 
 /**
  * Fact 2 button click.
  */
 $("#fact-two").click(function(){
-    // Narrative text will be determined by currentModel variable
-    document.getElementById("narrative").innerHTML = "<Here's the second Psyche factoid.>";
+    // Display proper narrative based on currentModelState variable
+    switch(currentModelState) {
+        case 1:
+            document.getElementById("narrative").textContent = model1_Fact2;
+            break;
+        case 2:
+            document.getElementById("narrative").textContent = model2_Fact2;
+            break;
+        case 3:
+            document.getElementById("narrative").textContent = model3_Fact2;
+            break;
+        default:
+            // Something went wrong with value of currentModelState variable
+            break;
+    }
 })
 
 /**
  * Fact 3 button click.
  */
 $("#fact-three").click(function(){
-    // Narrative text will be determined by currentModel variable
-    document.getElementById("narrative").innerHTML = "<Here's the third Psyche factoid.>";
+    // Display proper narrative based on currentModelState variable
+    switch(currentModelState) {
+        case 1:
+            document.getElementById("narrative").textContent = model1_Fact3;
+            break;
+        case 2:
+            document.getElementById("narrative").textContent = model2_Fact3;
+            break;
+        case 3:
+            document.getElementById("narrative").textContent = model3_Fact3;
+            break;
+        default:
+            // Something went wrong with value of currentModelState variable
+            break;
+    }
 })
 
 /**
@@ -109,16 +160,17 @@ $("#state-change").click(function(){
     // Display proper narrative based on currentModelState variable
     switch(currentModelState) {
         case 1:
-            document.getElementById("narrative").innerHTML = model1Text;
+            document.getElementById("narrative").textContent = model1Text;
             break;
         case 2:
-            document.getElementById("narrative").innerHTML = model2Text;
+            document.getElementById("narrative").textContent = model2Text;
             break;
         case 3:
-            document.getElementById("narrative").innerHTML = model3Text;
+            document.getElementById("narrative").textContent = model3Text;
             break;
         default:
             // Something went wrong with value of currentModelState variable
+            break;
     }
 
     // Display fact buttons after state-change animation completes.

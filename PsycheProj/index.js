@@ -4,15 +4,20 @@ import {OrbitControls } from '../jsm/controls/OrbitControls.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {RGBELoader} from 'three/addons/loaders/RGBELoader.js';
 import { LinearToneMapping } from 'three';
+import { Clock } from './build/three.module.js';
 
 
 // General variables.
 let container;
 let camera, scene, renderer;
-let reticle,pmremGenerator, current_object, controls;
+let reticle,pmremGenerator, currentObject, controls;
 let hitTestSource = null;
 let hitTestSourceRequested = false;
 let currentModelState = null;
+let touchDown, touchX, touchY, deltaX, deltaY;
+let mixer;
+const clock = new THREE.Clock();
+
 
 // Narrative text variables.
 let model1Text = "<Explain State 1 - It's (assumed) appearance 10 million years ago.>";
@@ -47,8 +52,8 @@ $("#music-settings").click(function(){
  * Initializes the AR experience.
  */
 $("#ARButton").click(function(){
-    if(current_object){
-        current_object.visible = false;
+    if(currentObject){
+        currentObject.visible = false;
     }
     setSpaceEnvironment(scene);
     loadSatellite();
@@ -62,6 +67,7 @@ $("#ARButton").click(function(){
  * Displays the Fact buttons, State Change button, and changes narrative text.
  */
 $("#place-button").click(function(){
+    //loadModel(1);
     arPlace();
     document.getElementById("fact-one").style.display = "block";
     document.getElementById("fact-two").style.display = "block";
@@ -159,8 +165,7 @@ $("#state-change").click(async function(){
 
     // We will invoke the state change animation here
     document.getElementById("narrative").textContent = "3 second place holder for state change animation.";
-    scene.remove(current_object);
-    await sleep(3000);
+    scene.remove(currentObject);
     loadModel(currentModelState);
 
     document.getElementById("narrative").style.display = "block";
@@ -171,6 +176,10 @@ $("#state-change").click(async function(){
             break;
         case 2:
             document.getElementById("narrative").textContent = model2Text;
+            await sleep(3000);
+            currentModelState++;
+            scene.remove(currentObject);
+            loadModel(currentModelState);
             break;
         case 3:
             document.getElementById("narrative").textContent = model3Text;
@@ -195,10 +204,12 @@ $("#state-change").click(async function(){
  * Places the Psyche asteroid model on the screen at the reticle location.
  */
 function arPlace(){
+    
     if(reticle.visible){
-        current_object.position.setFromMatrixPosition(reticle.matrix);
-        current_object.visible = true;
+        currentObject.position.setFromMatrixPosition(reticle.matrix);
+        currentObject.visible = true;
     }
+    
 };
 
 /**
@@ -239,9 +250,9 @@ function sleep(ms) {
  * loadModel Function
  * 
  * Loads the proper Psyche asteroid model onto the screen.
- * @param {number} model - Number (1-3) representing which model to load.
+ * @param {number} currentModelState - Number (1-3) representing which model to load.
  */
-function loadModel(model){
+function loadModel(currentModelState){
     new RGBELoader()
     .setDataType(THREE.UnsignedByteType)
     .setPath('assets/')
@@ -253,14 +264,29 @@ function loadModel(model){
         scene.enviroment = envmap;
         texture.dispose();
         pmremGenerator.dispose();
-        render();
+        //render();
 
         //load glb file and add it to scene
         var loader = new GLTFLoader().setPath('assets/');
-        loader.load(model+".glb",function(glb){
-            current_object = glb.scene;
-            scene.add(current_object);
+      
+        loader.load(currentModelState+".glb",function(glb){
+            currentObject = glb.scene;
 
+            //gets animation from glb and plays it
+            mixer = new THREE.AnimationMixer(currentObject);
+
+            glb.animations.forEach(animation =>{
+                mixer.clipAction(animation).play()
+            })
+
+            if(currentModelState == 2 || currentModelState == 4){ 
+                document.getElementById("state-change").disabled = true;
+            }
+            else{
+                document.getElementById("state-change").disabled = false;
+            }
+
+            scene.add(currentObject);
             arPlace();
 
             controls.update();
@@ -275,26 +301,31 @@ function loadModel(model){
  * Initializes three.js objects necessary for rendering AR scene.
  */
 function init() {
+    //create html element and add to container
     container = document.createElement( 'div' );
     document.getElementById("container").appendChild( container );
 
+    //initialize scene and camera
     scene = new THREE.Scene();
-
     camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.001, 200 );
 
+    //add light to the scene
     const light = new THREE.HemisphereLight( 0xffffff, 0xbbbbff, 1 );
     light.position.set( 0.5, 1, 0.25 );
     scene.add( light );
 
+    //initialize renderer
     renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
     renderer.xr.enabled = true;
     container.appendChild( renderer.domElement );
 
+    //initializes object for environment map 
     pmremGenerator = new THREE.PMREMGenerator(renderer);
     pmremGenerator.compileEquirectangularShader()
 
+    //allows the camera to orbit around an object
     controls = new OrbitControls(camera,renderer.domElement);
     controls.addEventListener('change',render);
     controls.minDistance=2;
@@ -309,9 +340,9 @@ function init() {
     }
 
     options.domOverlay = {root: document.getElementById('content')};
-
     document.body.appendChild(ARButton.createButton(renderer,options));
 
+    //handles the creation of reticle, white circle
     reticle = new THREE.Mesh(
         new THREE.RingGeometry( 0.15, 0.2, 32 ).rotateX( - Math.PI / 2 ),
         new THREE.MeshBasicMaterial()
@@ -320,9 +351,10 @@ function init() {
     reticle.visible = false;
     scene.add( reticle );
 
-
     window.addEventListener( 'resize', onWindowResize );
 
+    //this code allows the user to spin the model by sliding across it with their finger
+    /*
     renderer.domElement.addEventListener('touchstart',function(e){
         e.preventDefault();
         touchDown=true;
@@ -347,20 +379,19 @@ function init() {
         touchY = e.touches[0].pageY;
 
         rotateObject();
-
-    },false)
+        
+    },false)*/
 
     
 }
 
-let touchDown, touchX, touchY, deltaX, deltaY;
 
 /**
  * rotateObject Function
  */
 function rotateObject(){
-    if(current_object && reticle.visible){
-        current_object.rotation.y+= deltaX/100;
+    if(currentObject && reticle.visible){
+        currentObject.rotation.y+= deltaX/100;
     }
 }
 
@@ -414,6 +445,11 @@ function render( timestamp, frame ) {
         const referenceSpace = renderer.xr.getReferenceSpace();
         const session = renderer.xr.getSession();
 
+        //gets change in position for model and updates, allowing for animations
+        const delta = clock.getDelta();
+        mixer.update(delta)
+
+
         if ( hitTestSourceRequested === false ) {
             session.requestReferenceSpace( 'viewer' ).then( function ( referenceSpace ) {
 
@@ -432,7 +468,7 @@ function render( timestamp, frame ) {
                 reticle.visible = false;
 
                 var box = new THREE.Box3();
-                box.setFromObject(current_object);
+                box.setFromObject(currentObject);
                 box.center(controls.target);
 
                 document.getElementById("place-button").style.display="none";

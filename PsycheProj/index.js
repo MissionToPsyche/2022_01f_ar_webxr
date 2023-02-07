@@ -381,8 +381,6 @@ function init() {
         rotateObject();
         
     },false)*/
-
-    
 }
 
 

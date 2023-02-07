@@ -409,7 +409,7 @@ function onWindowResize() {
  * setSpaceEnvironment Function
  * 
  * Creates skybox and sets as the space environment scene background.
- * @param {*} scene - three.js Scene object.  Defined in loadModel Function.
+ * @param {*} scene - three.js Scene object.  Defined in init() Function.
  */
 function setSpaceEnvironment(scene){
     let path = '/assets/stars/';

@@ -1,8 +1,14 @@
 body {
+    margin: 0;
     background-image: url(./assets/psyche-title-screen.png);
     background-size: cover;
     background-repeat: no-repeat;
     color:white;
+  }
+
+  .sidepadding {
+    padding-left: 10px;
+    padding-right: 10px;
   }
   
   .sidenav {

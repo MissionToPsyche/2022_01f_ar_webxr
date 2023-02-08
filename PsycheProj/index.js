@@ -33,6 +33,8 @@ let model3_Fact1 = "<Model 3 - Fact 1>";
 let model3_Fact2 = "<Model 3 - Fact 2>";
 let model3_Fact3 = "<Model 3 - Fact 3>";
 
+let debugging_text = "This is my debugger.";
+
 init();
 animate();
 
@@ -55,10 +57,14 @@ $("#ARButton").click(function(){
     if(currentObject){
         currentObject.visible = false;
     }
+    
     setSpaceEnvironment(scene);
     loadSatellite();
-    loadModel(1);
     document.getElementById("narrative").style.display="block";
+
+    // Initiate with model 1
+    currentModelState = 1;
+    loadModel(1);
 });
 
 /**
@@ -67,16 +73,12 @@ $("#ARButton").click(function(){
  * Displays the Fact buttons, State Change button, and changes narrative text.
  */
 $("#place-button").click(function(){
-    //loadModel(1);
+    scene.add(currentObject);
     arPlace();
     document.getElementById("fact-one").style.display = "block";
     document.getElementById("fact-two").style.display = "block";
     document.getElementById("fact-three").style.display = "block";
     document.getElementById("state-change").style.display = "block";
-
-    // Initiate with model 1
-    document.getElementById("narrative").textContent = model1Text;
-    currentModelState = 1;
 });
 
 /**
@@ -165,8 +167,9 @@ $("#state-change").click(async function(){
 
     // We will invoke the state change animation here
     document.getElementById("narrative").textContent = "3 second place holder for state change animation.";
+    await sleep(3000);
     scene.remove(currentObject);
-    loadModel(currentModelState);
+    loadModel(currentModelState, false);
 
     document.getElementById("narrative").style.display = "block";
     // Display proper narrative based on currentModelState variable
@@ -176,10 +179,6 @@ $("#state-change").click(async function(){
             break;
         case 2:
             document.getElementById("narrative").textContent = model2Text;
-            await sleep(3000);
-            currentModelState++;
-            scene.remove(currentObject);
-            loadModel(currentModelState);
             break;
         case 3:
             document.getElementById("narrative").textContent = model3Text;
@@ -250,44 +249,45 @@ function sleep(ms) {
  * loadModel Function
  * 
  * Loads the proper Psyche asteroid model onto the screen.
- * @param {number} currentModelState - Number (1-3) representing which model to load.
+ * @param {*} currentModelState - Number (1-3) representing which model to load.
+ * @param {*} appStart - Boolean
+ * True (or no argument passed) means this is the first model being loaded upon app start.  Model will load not be
+ * placed on screen.
+ * 
+ * False means the Place or State Change button is pressed (this is not the first model being loaded upon app start).
+ * Model will load at reticle location.
  */
-function loadModel(currentModelState){
+function loadModel(currentModelState, appStart = true){
     new RGBELoader()
     .setDataType(THREE.UnsignedByteType)
     .setPath('assets/')
     .load('photo_studio_01_1k.hdr',function(texture){
 
-        //create environment property of scene, involves lighting of object. 
-        //https://threejs.org/docs/#api/en/scenes/Scene
+        // Create environment property of scene, involves lighting of object. 
+        // https://threejs.org/docs/#api/en/scenes/Scene
         var envmap = pmremGenerator.fromEquirectangular(texture).texture;
         scene.enviroment = envmap;
         texture.dispose();
         pmremGenerator.dispose();
-        //render();
 
-        //load glb file and add it to scene
+        // Load glb file and add it to scene.
         var loader = new GLTFLoader().setPath('assets/');
       
         loader.load(currentModelState+".glb",function(glb){
             currentObject = glb.scene;
 
-            //gets animation from glb and plays it
+            // Gets animation from glb and plays it.
             mixer = new THREE.AnimationMixer(currentObject);
 
             glb.animations.forEach(animation =>{
                 mixer.clipAction(animation).play()
             })
 
-            if(currentModelState == 2 || currentModelState == 4){ 
-                document.getElementById("state-change").disabled = true;
+            // Only place model if we are not in the initial app start.
+            if (appStart == false) {
+                scene.add(currentObject);
+                arPlace();
             }
-            else{
-                document.getElementById("state-change").disabled = false;
-            }
-
-            scene.add(currentObject);
-            arPlace();
 
             controls.update();
             render();

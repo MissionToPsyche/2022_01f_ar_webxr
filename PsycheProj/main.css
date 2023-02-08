@@ -1,5 +1,6 @@
 body {
     margin: 0;
+    background-color: black;
     background-image: url(./assets/psyche-title-screen.png);
     background-size: cover;
     background-repeat: no-repeat;

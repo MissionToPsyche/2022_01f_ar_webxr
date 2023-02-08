@@ -40,16 +40,20 @@ animate();
  * 
  * Initializes the AR experience.
  */
-$("#ARButton").click(function() {
+$("#ARButton").click(async function() {
     if(currentObject){
         currentObject.visible = false;
     }
+
+    // Remove title screen background.
+    document.getElementById("body").setAttribute("background-image", "none");
 
     // Set up preliminary objects and elements.
     setSpaceEnvironment(scene);
     loadSatellite();
     document.getElementById("narrative").style.display = "block";
     document.getElementById("narrative").textContent = greeting;
+    
     // Initiate with model 1.
     currentModelState = 1;
     loadModel(1);
@@ -61,6 +65,7 @@ $("#ARButton").click(function() {
  * Displays the Fact buttons, State Change button, and changes narrative text.
  */
 $("#place-button").click(function() {
+    scene.remove(currentObject);
     loadModel(currentModelState, false);
     displayNarrativeText();
     unHideButtons();

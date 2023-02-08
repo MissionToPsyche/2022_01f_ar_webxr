@@ -18,6 +18,7 @@ let mixer;
 const clock = new THREE.Clock();
 
 // Narrative text variables.
+let greeting = "Hi explorer!  I'm the Psyche satellite, here to guide you.  Look around and click the Place button when the reticle is in the center of your screen."
 let model1Text = "<Explain State 1 - It's (assumed) appearance 10 million years ago.>";
 let model2Text = "<Explain State 2 - It's (assumed) appearance 5 million years ago.>";
 let model3Text = "<Explain State 3 - It's (assumed) appearance today.>";
@@ -47,8 +48,8 @@ $("#ARButton").click(function() {
     // Set up preliminary objects and elements.
     setSpaceEnvironment(scene);
     loadSatellite();
-    document.getElementById("narrative").style.display="block";
-
+    document.getElementById("narrative").style.display = "block";
+    document.getElementById("narrative").textContent = greeting;
     // Initiate with model 1.
     currentModelState = 1;
     loadModel(1);
@@ -60,25 +61,25 @@ $("#ARButton").click(function() {
  * Displays the Fact buttons, State Change button, and changes narrative text.
  */
 $("#place-button").click(function() {
-    scene.add(currentObject);
-    arPlace();
-    hideButtons();
+    loadModel(currentModelState, false);
+    displayNarrativeText();
+    unHideButtons();
 });
 
 /**
  * Fact 1 button click.
  */
-$("#fact-one").click(displayFact(1));
+$("#fact-one").click(function () {displayFact(1)});
 
 /**
  * Fact 2 button click.
  */
-$("#fact-two").click(displayFact(2));
+$("#fact-two").click(function () {displayFact(2)});
 
 /**
  * Fact 3 button click.
  */
-$("#fact-three").click(displayFact(3));
+$("#fact-three").click(function () {displayFact(3)});
 
 /**
  * displayFact Function
@@ -192,6 +193,20 @@ $("#state-change").click(async function() {
     loadModel(currentModelState, false);
 
     // Display proper narrative based on currentModelState variable.
+    displayNarrativeText();
+
+    document.getElementById("narrative").style.display = "block";
+
+    // Display fact buttons after state-change animation completes.
+    unHideButtons();
+})
+
+/**
+ * displayNarrativeText Function
+ * 
+ * Displays the proper narrative text (not facts) about the current model that is loaded on the screen.
+ */
+function displayNarrativeText() {
     switch(currentModelState) {
         case 1:
             document.getElementById("narrative").textContent = model1Text;
@@ -205,12 +220,7 @@ $("#state-change").click(async function() {
         default:
             break;
     }
-
-    document.getElementById("narrative").style.display = "block";
-
-    // Display fact buttons after state-change animation completes.
-    unHideButtons();
-})
+}
 
 /**
  * arPlace Function

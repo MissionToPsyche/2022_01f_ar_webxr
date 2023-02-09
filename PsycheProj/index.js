@@ -18,19 +18,28 @@ let mixer;
 const clock = new THREE.Clock();
 
 // Narrative text variables.
-let greeting = "Hi explorer!  I'm the Psyche satellite, here to guide you.  Look around and click the Place button when the reticle is in the center of your screen."
-let model1Text = "<Explain State 1 - It's (assumed) appearance 10 million years ago.>";
-let model2Text = "<Explain State 2 - It's (assumed) appearance 5 million years ago.>";
-let model3Text = "<Explain State 3 - It's (assumed) appearance today.>";
-let model1_Fact1 = "<Model 1 - Fact 1>";
-let model1_Fact2 = "<Model 1 - Fact 2>";
-let model1_Fact3 = "<Model 1 - Fact 3>";
-let model2_Fact1 = "<Model 2 - Fact 1>";
-let model2_Fact2 = "<Model 2 - Fact 2>";
-let model2_Fact3 = "<Model 2 - Fact 3>";
-let model3_Fact1 = "<Model 3 - Fact 1>";
-let model3_Fact2 = "<Model 3 - Fact 2>";
-let model3_Fact3 = "<Model 3 - Fact 3>";
+const greeting = "Hi explorer!  I'm the Psyche satellite, here to guide you.  Look around and click the Place button when the reticle is in the center of your screen."
+const model1Text = "<Explain State 1 - It's (assumed) appearance 10 million years ago.>";
+const model2Text = "<Explain State 2 - It's (assumed) appearance 5 million years ago.>";
+const model3Text = "<Explain State 3 - It's (assumed) appearance today.>";
+
+const facts = [
+    [
+        "<Model 1 - Fact 1>",
+        "<Model 1 - Fact 2>",
+        "<Model 1 - Fact 3>"
+    ],
+    [
+        "<Model 2 - Fact 1>",
+        "<Model 2 - Fact 2>",
+        "<Model 2 - Fact 3>"
+    ],
+    [
+        "<Model 3 - Fact 1>",
+        "<Model 3 - Fact 2>",
+        "<Model 3 - Fact 3>"
+    ]
+];
 
 init();
 animate();
@@ -53,7 +62,7 @@ $("#ARButton").click(async function() {
     loadSatellite();
     document.getElementById("narrative").style.display = "block";
     document.getElementById("narrative").textContent = greeting;
-    
+
     // Initiate with model 1.
     currentModelState = 1;
     loadModel(1);
@@ -93,59 +102,7 @@ $("#fact-three").click(function () {displayFact(3)});
  * @param {*} factNumber - Number (1-3) representing which fact to display.
  */
 function displayFact(factNumber) {
-    let text;
-
-    switch (currentModelState) {
-        case 1:
-            switch (factNumber) {
-                case 1:
-                    text = model1_Fact1;
-                    break;
-                case 2:
-                    text = model1_Fact2;
-                    break;
-                case 3:
-                    text = model1_Fact3;
-                    break;
-                default:
-                    break;
-            }
-            break;
-        case 2:
-            switch (factNumber) {
-                case 1:
-                    text = model2_Fact1;
-                    break;
-                case 2:
-                    text = model2_Fact2;
-                    break;
-                case 3:
-                    text = model2_Fact3;
-                    break;
-                default:
-                    break;
-            }
-            break;
-        case 3:
-            switch (factNumber) {
-                case 1:
-                    text = model3_Fact1;
-                    break;
-                case 2:
-                    text = model3_Fact2;
-                    break;
-                case 3:
-                    text = model3_Fact3;
-                    break;
-                default:
-                    break;
-            }
-            break;
-        default:
-            break;
-    }
-
-    document.getElementById("narrative").textContent = text;
+    document.getElementById("narrative").textContent = facts[currentModelState - 1][factNumber - 1];
 }
 
 /**

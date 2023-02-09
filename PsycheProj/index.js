@@ -148,11 +148,16 @@ $("#state-change").click(async function() {
     // Remove buttons during state-change animation.
     hideButtons();
 
-    // We will invoke the state change animation here
+    // We will invoke the state change animation here.
     document.getElementById("narrative").textContent = "3 second place holder for state change animation.";
     await sleep(3000);
+
+    // Get current model position, remove model from scene.
+    let position = currentObject.position;
     scene.remove(currentObject);
-    loadModel(currentModelState, false);
+
+    // Load next model - 'false' is needed for model to place on screen, 'position' is needed to retain same position.
+    loadModel(currentModelState, false, position);
 
     // Display proper narrative based on currentModelState variable.
     displayNarrativeText();
@@ -244,15 +249,21 @@ function sleep(ms) {
  * loadModel Function
  * 
  * Loads the proper Psyche asteroid model onto the screen.
+ * 
  * @param {*} currentModelState - Number (1-3) representing which model to load.
- * @param {*} appStart - Boolean
+ * 
+ * @param {*} appStart - Boolean (optional)
  * True (or no argument passed) means this is the first model being loaded upon app start.  Model will load not be
  * placed on screen.
  * 
  * False means the Place or State Change button is pressed (this is not the first model being loaded upon app start).
  * Model will load at reticle location.
+ * 
+ * @param {*} position - three.js object position representing specific position to place the model.
+ * Used to change state of model while remaining in same position on scree.  If left blank, model will be placed at
+ * reticle location
  */
-function loadModel(currentModelState, appStart = true) {
+function loadModel(currentModelState, appStart = true, position = null) {
     new RGBELoader()
     .setDataType(THREE.UnsignedByteType)
     .setPath('assets/')
@@ -281,7 +292,13 @@ function loadModel(currentModelState, appStart = true) {
             // Only place model if we are not in the initial app start.
             if (appStart == false) {
                 scene.add(currentObject);
-                arPlace();
+
+                // If a position parameter was passed, place at specified position.
+                if (position != null) {
+                    currentObject.position.set(position.x, position.y, position.z);
+                } else {
+                    arPlace();
+                }
             }
 
             controls.update();

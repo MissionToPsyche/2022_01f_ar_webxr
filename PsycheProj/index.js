@@ -18,10 +18,13 @@ let mixer;
 const clock = new THREE.Clock();
 
 // Narrative text variables.
-const greeting = "Hi explorer!  I'm the Psyche satellite, here to guide you.  Look around and click the Place button when the reticle is in the center of your screen."
-const model1Text = "<Explain State 1 - It's (assumed) appearance 10 million years ago.>";
-const model2Text = "<Explain State 2 - It's (assumed) appearance 5 million years ago.>";
-const model3Text = "<Explain State 3 - It's (assumed) appearance today.>";
+const greeting = "Hi explorer!  I'm the Psyche satellite, here to guide you.  Look around and click the Place button when the reticle is in the center of your screen.";
+
+const modelDescriptions = [
+    "<Explain State 1 - It's (assumed) appearance 10 million years ago.>",
+    "<Explain State 2 - It's (assumed) appearance 5 million years ago.>",
+    "<Explain State 3 - It's (assumed) appearance today.>"
+];
 
 const facts = [
     [
@@ -174,19 +177,7 @@ $("#state-change").click(async function() {
  * Displays the proper narrative text (not facts) about the current model that is loaded on the screen.
  */
 function displayNarrativeText() {
-    switch(currentModelState) {
-        case 1:
-            document.getElementById("narrative").textContent = model1Text;
-            break;
-        case 2:
-            document.getElementById("narrative").textContent = model2Text;
-            break;
-        case 3:
-            document.getElementById("narrative").textContent = model3Text;
-            break;
-        default:
-            break;
-    }
+    document.getElementById("narrative").textContent = modelDescriptions[currentModelState - 1];
 }
 
 /**

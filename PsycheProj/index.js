@@ -243,16 +243,16 @@ function sleep(ms) {
  * 
  * @param {*} currentModelState - Number (1-3) representing which model to load.
  * 
- * @param {*} appStart - Boolean (optional)
+ * @param {*} appStart - (optional) Boolean
  * True (or no argument passed) means this is the first model being loaded upon app start.  Model will load not be
  * placed on screen.
  * 
  * False means the Place or State Change button is pressed (this is not the first model being loaded upon app start).
  * Model will load at reticle location.
  * 
- * @param {*} position - three.js object position representing specific position to place the model.
- * Used to change state of model while remaining in same position on scree.  If left blank, model will be placed at
- * reticle location
+ * @param {*} position - (optional) three.js object position (comprised of x, y, z values) representing specific
+ * position to place the model.  Used to change state of model while remaining in same position on screen.  If
+ * left blank, model will be placed at reticle location.
  */
 function loadModel(currentModelState, appStart = true, position = null) {
     new RGBELoader()

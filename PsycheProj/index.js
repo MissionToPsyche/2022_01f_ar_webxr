@@ -65,6 +65,7 @@ $("#ARButton").click(async function() {
     loadSatellite();
     document.getElementById("narrative").style.display = "block";
     document.getElementById("narrative").textContent = greeting;
+    document.getElementById("next-button").style.display = "block";
 
     // Initiate with model 1.
     currentModelState = 1;
@@ -86,17 +87,17 @@ $("#place-button").click(function() {
 /**
  * Fact 1 button click.
  */
-$("#fact-one").click(function () {displayFact(1)});
+$("#fact-one").click(function() {displayFact(1)});
 
 /**
  * Fact 2 button click.
  */
-$("#fact-two").click(function () {displayFact(2)});
+$("#fact-two").click(function() {displayFact(2)});
 
 /**
  * Fact 3 button click.
  */
-$("#fact-three").click(function () {displayFact(3)});
+$("#fact-three").click(function() {displayFact(3)});
 
 /**
  * displayFact Function
@@ -137,15 +138,43 @@ function unHideButtons() {
 }
 
 /**
- * State Change button click.
- * 
- * Async function needed for use of sleep timer - this may not be needed once real animations are implemented.
+ * Next button click.
  */
-$("#state-change").click(async function() {
-    if (currentModelState == 3) {
-        currentModelState = 1;
+$("#next-button").click(function() {changeState(1)});
+
+/**
+ * Previous button click.
+ */
+$("#previous-button").click(function() {changeState(-1)});
+
+/**
+ * nextState Function
+ * 
+ * Changes the model to either the next or the previous state.
+ * @param {*} next_or_previous - Number (1 or -1)
+ * Passing 1 as parameter changes the model to the next state
+ * 
+ * Passing -1 as parameter changes the model to the previous state
+ */ 
+async function changeState(next_or_previous) {
+
+    if (next_or_previous == 1)
+    {
+        // Changing to next sequential state.
+        if (currentModelState == 3) {
+            currentModelState = 1;
+        } else {
+            currentModelState++;
+        }
+    } else if (next_or_previous == -1) {
+        // Changing to previous sequential state.
+        if (currentModelState == 1) {
+            currentModelState = 3;
+        } else {
+            currentModelState--;
+        }
     } else {
-        currentModelState++;
+        // Invalid value was passed.
     }
 
     // Remove buttons during state-change animation.
@@ -169,7 +198,7 @@ $("#state-change").click(async function() {
 
     // Display fact buttons after state-change animation completes.
     unHideButtons();
-})
+}
 
 /**
  * displayNarrativeText Function

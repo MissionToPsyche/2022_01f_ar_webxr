@@ -17,7 +17,7 @@
 		<script type="module" src="/index.js"></script>
 		<script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
 	</head>
-	<body style="background-image: url(./assets/psyche-title-screen.png); background-repeat: no-repeat; background-size: cover;">
+	<body id="body">
 		<audio autoplay loop id="music">
 			<source src="./assets/space.mp3">
 		</audio>
@@ -32,19 +32,16 @@
 			</div>
 
 			<div id="container" style="position: fixed;"></div>
+			<!-- We might want 3 different symbols on these buttons (such as a '?') instead of text. -->
 			<button id="fact-one">Fact One</button>
 			<button id="fact-two">Fact Two</button>
 			<button id="fact-three">Fact Three</button>
+			<button id="state-change">Change State</button>
 
 			<!-- I think the 'align' attribute is deprecated.  An updated method for aligning should be used. -->
-			<div>
+			<div class="sidepadding">
 				<img align="right" src="assets/satellite.png" id="satellite" width="0" height="60"></img>
-				<p align="left" id="narrative">Hi explorer!  I'm the Psyche satellite, here to guide you.  Look around and click the Place button when the reticle is in the center of your screen.</p>
-				<!-- State buttons are currently not aligned correctly. -->
-				<button align="right" class="state-change" type="button" id="1">State 1</button>
-				<button align="right" class="state-change" type="button" id="2">State 2</button>
-				<button align="right" class="state-change" type="button" id="3">State 3</button>
-				<button align="right" class="state-change" type="button" id="4">State 4</button>
+				<p align="left" id="narrative"></p>
 			</div>
 
 			<span id="menu-icon">&#9776;</span>

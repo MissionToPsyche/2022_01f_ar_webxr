@@ -45,9 +45,9 @@ const modelDescriptions = [
 const facts = [
     [
         [
-            "<Model 1 - Fact 1> - This fact is gonna be really long to show the speech box behavior when there are long instances of text we wnat to display.  So, I'm gonna keep ",
-            "typing and showing that this can be really long.  Words words words.  These are a bunch of words.  Psyche is an asteroid.  It's really far away.  It's pretty cool.  ",
-            "It's so cool, that NASA loves it.  This should be in the third speech box."
+            "<Model 1 - Fact 1> - This fact is gonna be really long to show the speech box behavior when there are long instances of text we wnat to display.  So, I'm gonna keep typing...",
+            "and showing that this can be really long.  Words words words.  These are a bunch of words.  Psyche is an asteroid.  It's really far away.  It's pretty cool.  It's so cool that NASA...",
+            "loves it.  This should be in the third speech box."
         ],
         "<Model 1 - Fact 2>",
         "<Model 1 - Fact 3>"

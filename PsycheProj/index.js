@@ -65,7 +65,16 @@ $("#ARButton").click(async function() {
     loadSatellite();
     document.getElementById("narrative").style.display = "block";
     document.getElementById("narrative").textContent = greeting;
-    document.getElementById("next-button").style.display = "block";
+
+    // ***********
+    let x = $("narrative").prop('scrollHeight');
+    let y = $("narrative").css('lineHeight');
+    //y = parseInt(y);
+    //y = 
+    // ***********
+
+    await sleep(3000);
+    document.getElementById("narrative").textContent = x;
 
     // Initiate with model 1.
     currentModelState = 1;
@@ -82,6 +91,7 @@ $("#place-button").click(function() {
     loadModel(currentModelState, false);
     displayNarrativeText();
     unHideButtons();
+    document.getElementById("next-button").style.display = "block";
 });
 
 /**
@@ -115,7 +125,7 @@ function displayFact(factNumber) {
  * Hides all the buttons on the screen.
  */
 function hideButtons() {
-    document.getElementById("state-change").style.display = "none"
+    // document.getElementById("state-change").style.display = "none"
     document.getElementById("fact-one").style.display = "none"
     document.getElementById("fact-two").style.display = "none";
     document.getElementById("fact-three").style.display = "none";
@@ -129,7 +139,7 @@ function hideButtons() {
  * Displays all the buttons on the screen.
  */
 function unHideButtons() {
-    document.getElementById("state-change").style.display = "block"
+    // document.getElementById("state-change").style.display = "block"
     document.getElementById("fact-one").style.display = "block";
     document.getElementById("fact-two").style.display = "block";
     document.getElementById("fact-three").style.display = "block";
@@ -176,6 +186,8 @@ async function changeState(next_or_previous) {
     } else {
         // Invalid value was passed.
     }
+
+    document.getElementById("previous-button").style.display = "block";
 
     // Remove buttons during state-change animation.
     hideButtons();

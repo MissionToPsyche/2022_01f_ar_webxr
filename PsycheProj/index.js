@@ -138,8 +138,8 @@ function hideButtons() {
     document.getElementById("fact-one").style.display = "none"
     document.getElementById("fact-two").style.display = "none";
     document.getElementById("fact-three").style.display = "none";
-    document.getElementById("place-button").style.display = "none"; // This currently does not remove the place button from the screen
     document.getElementById("menu-icon").style.display = "none";
+    document.getElementById("place-button").setAttribute("disabled", "true"); // This button stays visible because of render() function exectution.
 }
 
 /**
@@ -152,8 +152,8 @@ function unHideButtons() {
     document.getElementById("fact-one").style.display = "block";
     document.getElementById("fact-two").style.display = "block";
     document.getElementById("fact-three").style.display = "block";
-    document.getElementById("place-button").style.display = "block";
     document.getElementById("menu-icon").style.display = "block";
+    document.getElementById("place-button").removeAttribute("disabled"); // This button stays visible because of render() function exectution.
 }
 
 /**
@@ -317,6 +317,7 @@ function loadTextToNarrative(text) {
 
         // Hide all buttons.
         hideButtons();
+        document.getElementById("place-button").style.display = "none";
 
     } else if (currentNarrativeTextArrayFlag == 1) {
         // We are currently iterating through 'currentNarrativeTextArray'.  We won't use 'text' parameter here.

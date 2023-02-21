@@ -33,7 +33,7 @@ let currentNarrativeTextIterator = 0;
 let currentNarrativeTextSize = 0;
 
 // Narrative (const) text variables.
-const greeting = "Hi explorer!  I'm the Psyche satellite, here to guide you.  Look around and click the Place button " +
+const greeting = "Hello explorer!  I'm the Psyche satellite, here to guide you.  Look around and click the Place button " +
     "when the reticle is in the center of your screen."
 
 const modelDescriptions = [
@@ -89,7 +89,20 @@ $("#ARButton").click(async function() {
     // Initiate with model 1.
     currentModelState = 1;
     loadModel(1);
+
+    // Load the Place button.
+    loadPlaceButton();
 });
+
+/**
+ * loadPlaceButton function
+ * 
+ * Delays the system execution, then loads the Place button.
+ */
+async function loadPlaceButton() {
+    await sleep(1500);
+    document.getElementById("place-button").style.display = "block";
+}
 
 /**
  * Place button click.
@@ -139,7 +152,7 @@ function hideButtons() {
     document.getElementById("fact-two").style.display = "none";
     document.getElementById("fact-three").style.display = "none";
     document.getElementById("menu-icon").style.display = "none";
-    document.getElementById("place-button").setAttribute("disabled", "true"); // This button stays visible because of render() function exectution.
+    document.getElementById("place-button").style.display = "none";
 }
 
 /**
@@ -153,7 +166,7 @@ function unHideButtons() {
     document.getElementById("fact-two").style.display = "block";
     document.getElementById("fact-three").style.display = "block";
     document.getElementById("menu-icon").style.display = "block";
-    document.getElementById("place-button").removeAttribute("disabled"); // This button stays visible because of render() function exectution.
+    document.getElementById("place-button").style.display = "block";
 }
 
 /**
@@ -591,7 +604,7 @@ function render(timestamp, frame) {
                 box.setFromObject(currentObject);
                 box.center(controls.target);
 
-                document.getElementById("place-button").style.display = "none";
+                document.getElementById("place-button").setAttribute("disabled", "true");
             } );
 
             hitTestSourceRequested = true;
@@ -603,13 +616,13 @@ function render(timestamp, frame) {
             if (hitTestResults.length) {
                 const hit = hitTestResults[0];
 
-                document.getElementById("place-button").style.display = "block";
+                document.getElementById("place-button").removeAttribute("disabled");
 
                 reticle.visible = true;
                 reticle.matrix.fromArray(hit.getPose(referenceSpace).transform.matrix);
             } else {
                 reticle.visible = false;
-                document.getElementById("place-button").style.display = "none";
+                document.getElementById("place-button").setAttribute("disabled", "true");
             }
         }
     }

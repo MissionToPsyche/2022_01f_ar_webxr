@@ -17,13 +17,24 @@ let touchDown, touchX, touchY, deltaX, deltaY;
 let mixer;
 const clock = new THREE.Clock();
 
-// Narrative text variables.
-const greeting = [
-    "Hi explorer!  I'm the Psyche satellite, here to guide you.  Look around and click the Place button when the " +
-    "reticle is in the center of your screen.",
-    "This will show up in a second speech box.",
-    "And this will show up in a third speech box."
-]
+// Hold the current string that is displayed in the speech box.
+let currentNarrativeText;
+
+// Flag to indicate when we are using a string array for the narrative text.
+let currentNarrativeTextArrayFlag = 0;
+
+// Hold the array of strings that are iterated through the speech box with the "..." button.
+let currentNarrativeTextArray;
+
+// Hold the iterator to keep track of which string within a string array is currently displayed in the speech box.
+let currentNarrativeTextIterator = 0;
+
+// Hold the max number of iterations (speech boxes) needed to iterate through the current narrative text diplayed in the speech box.
+let currentNarrativeTextSize = 0;
+
+// Narrative (const) text variables.
+const greeting = "Hi explorer!  I'm the Psyche satellite, here to guide you.  Look around and click the Place button " +
+    "when the reticle is in the center of your screen."
 
 const modelDescriptions = [
     "<Explain State 1 - It's (assumed) appearance 10 million years ago.>",
@@ -33,7 +44,11 @@ const modelDescriptions = [
 
 const facts = [
     [
-        "<Model 1 - Fact 1>",
+        [
+            "<Model 1 - Fact 1> - This fact is gonna be really long to show the speech box behavior when there are long instances of text we wnat to display.  So, I'm gonna keep ",
+            "typing and showing that this can be really long.  Words words words.  These are a bunch of words.  Psyche is an asteroid.  It's really far away.  It's pretty cool.  ",
+            "It's so cool, that NASA loves it.  This should be in the third speech box."
+        ],
         "<Model 1 - Fact 2>",
         "<Model 1 - Fact 3>"
     ],
@@ -69,7 +84,7 @@ $("#ARButton").click(async function() {
     setSpaceEnvironment(scene);
     loadSatellite();
     showNarrative();
-    document.getElementById("narrative").textContent = greeting;
+    loadTextToNarrative(greeting);
 
     // Initiate with model 1.
     currentModelState = 1;
@@ -86,7 +101,6 @@ $("#place-button").click(function() {
     loadModel(currentModelState, false);
     loadModelInfoToNarrative();
     unHideButtons();
-    document.getElementById("next-button").style.display = "block";
 });
 
 /**
@@ -111,7 +125,7 @@ $("#fact-three").click(function() {displayFact(3)});
  * @param {*} factNumber - Number (1-3) representing which fact to display.
  */
 function displayFact(factNumber) {
-    document.getElementById("narrative").textContent = facts[currentModelState - 1][factNumber - 1];
+    loadTextToNarrative(facts[currentModelState - 1][factNumber - 1]);
 }
 
 /**
@@ -143,9 +157,11 @@ function unHideButtons() {
 }
 
 /**
- * Next button click.
+ * Speech Box button click.
+ * 
+ * The loadTextToNarrative() function does not use the argument in this case.  So it can be anything (or empty string).
  */
-//$("#next-button").click(function() {changeState(1)});
+$("#speech-box-button").click(function() {loadTextToNarrative("This argument can be anything.")});
 
 /**
  * Change State button click.
@@ -186,7 +202,7 @@ async function changeState(next_or_previous) {
     hideButtons();
 
     // We will invoke the state change animation here.
-    document.getElementById("narrative").textContent = "3 second place holder for state change animation.";
+    loadTextToNarrative("3 second place holder for state change animation.");
     await sleep(3000);
 
     // Get current model position, remove model from scene.
@@ -266,7 +282,7 @@ function showNarrative() {
  * Loads the proper narrative text (not facts) about the current model to the speech box.
  */
 function loadModelInfoToNarrative() {
-    document.getElementById("narrative").textContent = modelDescriptions[currentModelState - 1];
+    loadTextToNarrative(modelDescriptions[currentModelState - 1]);
 }
 
 /**
@@ -276,7 +292,59 @@ function loadModelInfoToNarrative() {
  * @param {*} text - Text to load into the speech box.
  */
 function loadTextToNarrative(text) {
-    document.getElementById("narrative").textContent = text;
+
+    // Check if 'text' is a single string or an array of multiple strings.
+    if (Array.isArray(text)) {
+        // 'text' is an array of multiple strings - we need multiple speech boxes with the '...' button.
+
+        // Set the size.
+        currentNarrativeTextSize = text.length;
+
+        // Set the flag.
+        currentNarrativeTextArrayFlag = 1;
+
+        // Show the speech box button.
+        document.getElementById("speech-box-button").style.display = "block";
+
+        // Set the narrative text array.
+        currentNarrativeTextArray = text;
+
+        // Set the narrative text (to be currently displayed).
+        currentNarrativeText = currentNarrativeTextArray[currentNarrativeTextIterator];
+
+        // Increment the iterator.
+        currentNarrativeTextIterator++;
+
+        // Hide all buttons.
+        hideButtons();
+
+    } else if (currentNarrativeTextArrayFlag == 1) {
+        // We are currently iterating through 'currentNarrativeTextArray'.  We won't use 'text' parameter here.
+
+        // Set the narrative text (to be currently displayed).
+        currentNarrativeText = currentNarrativeTextArray[currentNarrativeTextIterator];
+
+        // If we've displayed the last string in the array, reset our variables and hide the speech box button.
+        if (currentNarrativeTextIterator == (currentNarrativeTextSize - 1)) {
+            currentNarrativeTextArrayFlag = 0;
+            currentNarrativeTextIterator = 0;
+            currentNarrativeTextSize = 0;
+            document.getElementById("speech-box-button").style.display = "none";
+            unHideButtons();
+        } else {
+            // Increment the iterator.
+            currentNarrativeTextIterator++;
+        }
+
+    } else {
+        // 'text' is a single string.
+        currentNarrativeText = text;
+        currentNarrativeTextIterator = 0;
+        currentNarrativeTextSize = 0;
+        document.getElementById("speech-box-button").style.display = "none";
+    }
+
+    document.getElementById("narrative").textContent = currentNarrativeText;
 }
 
 /**

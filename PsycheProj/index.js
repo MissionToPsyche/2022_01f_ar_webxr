@@ -18,7 +18,12 @@ let mixer;
 const clock = new THREE.Clock();
 
 // Narrative text variables.
-const greeting = "Hi explorer!  I'm the Psyche satellite, here to guide you.  Look around and click the Place button when the reticle is in the center of your screen.";
+const greeting = [
+    "Hi explorer!  I'm the Psyche satellite, here to guide you.  Look around and click the Place button when the " +
+    "reticle is in the center of your screen.",
+    "This will show up in a second speech box.",
+    "And this will show up in a third speech box."
+]
 
 const modelDescriptions = [
     "<Explain State 1 - It's (assumed) appearance 10 million years ago.>",
@@ -63,18 +68,8 @@ $("#ARButton").click(async function() {
     // Set up preliminary objects and elements.
     setSpaceEnvironment(scene);
     loadSatellite();
-    document.getElementById("narrative").style.display = "block";
+    showNarrative();
     document.getElementById("narrative").textContent = greeting;
-
-    // ***********
-    let x = $("narrative").prop('scrollHeight');
-    let y = $("narrative").css('lineHeight');
-    //y = parseInt(y);
-    //y = 
-    // ***********
-
-    await sleep(3000);
-    document.getElementById("narrative").textContent = x;
 
     // Initiate with model 1.
     currentModelState = 1;
@@ -89,7 +84,7 @@ $("#ARButton").click(async function() {
 $("#place-button").click(function() {
     scene.remove(currentObject);
     loadModel(currentModelState, false);
-    displayNarrativeText();
+    loadModelInfoToNarrative();
     unHideButtons();
     document.getElementById("next-button").style.display = "block";
 });
@@ -125,7 +120,7 @@ function displayFact(factNumber) {
  * Hides all the buttons on the screen.
  */
 function hideButtons() {
-    // document.getElementById("state-change").style.display = "none"
+    document.getElementById("state-change").style.display = "none"
     document.getElementById("fact-one").style.display = "none"
     document.getElementById("fact-two").style.display = "none";
     document.getElementById("fact-three").style.display = "none";
@@ -139,7 +134,7 @@ function hideButtons() {
  * Displays all the buttons on the screen.
  */
 function unHideButtons() {
-    // document.getElementById("state-change").style.display = "block"
+    document.getElementById("state-change").style.display = "block"
     document.getElementById("fact-one").style.display = "block";
     document.getElementById("fact-two").style.display = "block";
     document.getElementById("fact-three").style.display = "block";
@@ -150,12 +145,12 @@ function unHideButtons() {
 /**
  * Next button click.
  */
-$("#next-button").click(function() {changeState(1)});
+//$("#next-button").click(function() {changeState(1)});
 
 /**
- * Previous button click.
+ * Change State button click.
  */
-$("#previous-button").click(function() {changeState(-1)});
+$("#state-change").click(function() {changeState(1)});
 
 /**
  * nextState Function
@@ -187,8 +182,6 @@ async function changeState(next_or_previous) {
         // Invalid value was passed.
     }
 
-    document.getElementById("previous-button").style.display = "block";
-
     // Remove buttons during state-change animation.
     hideButtons();
 
@@ -204,21 +197,13 @@ async function changeState(next_or_previous) {
     loadModel(currentModelState, false, position);
 
     // Display proper narrative based on currentModelState variable.
-    displayNarrativeText();
+    loadModelInfoToNarrative();
 
-    document.getElementById("narrative").style.display = "block";
+    // Display the speech box.
+    showNarrative();
 
     // Display fact buttons after state-change animation completes.
     unHideButtons();
-}
-
-/**
- * displayNarrativeText Function
- * 
- * Displays the proper narrative text (not facts) about the current model that is loaded on the screen.
- */
-function displayNarrativeText() {
-    document.getElementById("narrative").textContent = modelDescriptions[currentModelState - 1];
 }
 
 /**
@@ -264,6 +249,34 @@ $("#music-settings").click(function() {
  */
 function loadSatellite() {
     document.getElementById("satellite").width = "60";
+}
+
+/**
+ * showNarrative Function
+ * 
+ * Displays the speech box (narrative text).
+ */
+function showNarrative() {
+    document.getElementById("narrative").style.display = "block";
+}
+
+/**
+ * loadModelInfoToNarrative Function
+ * 
+ * Loads the proper narrative text (not facts) about the current model to the speech box.
+ */
+function loadModelInfoToNarrative() {
+    document.getElementById("narrative").textContent = modelDescriptions[currentModelState - 1];
+}
+
+/**
+ * loadTextToNarrative Function
+ * 
+ * Loads specific text to the speech box (narrative text).
+ * @param {*} text - Text to load into the speech box.
+ */
+function loadTextToNarrative(text) {
+    document.getElementById("narrative").textContent = text;
 }
 
 /**

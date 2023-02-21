@@ -77,13 +77,6 @@ body {
     margin-bottom: 10px;
   }
 
-  #previous-button {
-    display: none;
-    float: left;
-    margin-bottom: 10px;
-    margin-left: 0;
-  }
-
   #place-button {
     position:absolute;
     bottom:20px;

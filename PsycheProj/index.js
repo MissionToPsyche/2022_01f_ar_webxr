@@ -99,10 +99,10 @@ $("#ARButton").click(async function() {
 /**
  * loadPlaceButton function
  * 
- * Delays the system execution, then loads the Place button.
+ * Delays the system execution (in order fro app screen to load), then loads the Place and Menu buttons.
  */
 async function loadPlaceMenuButtons() {
-    await sleep(1500);
+    await sleep(1000);
     document.getElementById("place-button").style.display = "block";
     document.getElementById("menu-icon").style.display = "block";
 }

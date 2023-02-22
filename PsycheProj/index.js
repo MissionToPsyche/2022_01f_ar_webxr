@@ -114,6 +114,7 @@ $("#place-button").click(function() {
     loadModel(currentModelState, false);
     loadModelInfoToNarrative();
     unHideButtons();
+    document.getElementById("place-button").textContent = "Re-Place";
 });
 
 /**

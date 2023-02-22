@@ -38,7 +38,9 @@ const greeting = "Hello explorer!  I'm the Psyche satellite, here to guide you. 
 
 const modelDescriptions = [
     "<Explain State 1 - It's (assumed) appearance 10 million years ago.>",
+    "<Explain transition from State 1 to State 2 - It accumulated particles over time.>",
     "<Explain State 2 - It's (assumed) appearance 5 million years ago.>",
+    "<Explain transition from State 2 to State 1 - It was broken down over time.>",
     "<Explain State 3 - It's (assumed) appearance today.>"
 ];
 
@@ -90,8 +92,8 @@ $("#ARButton").click(async function() {
     currentModelState = 1;
     loadModel(1);
 
-    // Load the Place button.
-    loadPlaceButton();
+    // Load the Place and Menu button.
+    loadPlaceMenuButtons();
 });
 
 /**
@@ -99,9 +101,10 @@ $("#ARButton").click(async function() {
  * 
  * Delays the system execution, then loads the Place button.
  */
-async function loadPlaceButton() {
+async function loadPlaceMenuButtons() {
     await sleep(1500);
     document.getElementById("place-button").style.display = "block";
+    document.getElementById("menu-icon").style.display = "block";
 }
 
 /**
@@ -148,8 +151,8 @@ function displayFact(factNumber) {
  * Hides all the buttons on the screen.
  */
 function hideButtons() {
-    document.getElementById("state-change").style.display = "none"
-    document.getElementById("fact-one").style.display = "none"
+    document.getElementById("state-change").style.display = "none";
+    document.getElementById("fact-one").style.display = "none";
     document.getElementById("fact-two").style.display = "none";
     document.getElementById("fact-three").style.display = "none";
     document.getElementById("menu-icon").style.display = "none";
@@ -162,7 +165,7 @@ function hideButtons() {
  * Displays all the buttons on the screen.
  */
 function unHideButtons() {
-    document.getElementById("state-change").style.display = "block"
+    document.getElementById("state-change").style.display = "block";
     document.getElementById("fact-one").style.display = "block";
     document.getElementById("fact-two").style.display = "block";
     document.getElementById("fact-three").style.display = "block";
@@ -183,6 +186,11 @@ $("#speech-box-button").click(function() {loadTextToNarrative("This argument can
 $("#state-change").click(function() {changeState(1)});
 
 /**
+ * Next button click.
+ */
+$("#next-button").click(function() {changeState(1)});
+
+/**
  * nextState Function
  * 
  * Changes the model to either the next or the previous state.
@@ -196,7 +204,7 @@ async function changeState(next_or_previous) {
     if (next_or_previous == 1)
     {
         // Changing to next sequential state.
-        if (currentModelState == 3) {
+        if (currentModelState == 5) {
             currentModelState = 1;
         } else {
             currentModelState++;
@@ -204,7 +212,7 @@ async function changeState(next_or_previous) {
     } else if (next_or_previous == -1) {
         // Changing to previous sequential state.
         if (currentModelState == 1) {
-            currentModelState = 3;
+            currentModelState = 5;
         } else {
             currentModelState--;
         }
@@ -212,12 +220,14 @@ async function changeState(next_or_previous) {
         // Invalid value was passed.
     }
 
-    // Remove buttons during state-change animation.
-    hideButtons();
-
-    // We will invoke the state change animation here.
-    loadTextToNarrative("3 second place holder for state change animation.");
-    await sleep(3000);
+    // If 'currentModelState' is an even number, we're in a transition state.  Hide buttons, display Next button.
+    if ((currentModelState % 2) == 0) {
+        hideButtons();
+        document.getElementById("next-button").style.display = "block";
+    } else {
+        unHideButtons();
+        document.getElementById("next-button").style.display = "none";
+    }
 
     // Get current model position, remove model from scene.
     let position = currentObject.position;
@@ -231,9 +241,6 @@ async function changeState(next_or_previous) {
 
     // Display the speech box.
     showNarrative();
-
-    // Display fact buttons after state-change animation completes.
-    unHideButtons();
 }
 
 /**

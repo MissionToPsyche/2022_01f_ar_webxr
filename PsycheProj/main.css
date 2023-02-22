@@ -86,6 +86,15 @@ body {
     display: none;
   }
 
+  #next-button {
+    position: absolute;
+    bottom: 140px;
+    width: 100px;
+    height: 35px;
+    left: calc(50% - 50px);
+    display: none;
+  }
+
   #menu-icon {
     font-size: 70px;
     cursor: pointer;
@@ -93,6 +102,7 @@ body {
     left: calc(50% - 30px);
     width: 100px;
     bottom: 55px;
+    display: none;
   }
 
   #state-change {

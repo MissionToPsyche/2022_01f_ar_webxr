@@ -118,7 +118,7 @@ animate();
  * 
  * Initializes the AR experience.
  */
-$("#ARButton").click(/*async*/ function() {
+$("#ARButton").click(async function() {
     if(currentObject){
         currentObject.visible = false;
     }
@@ -490,6 +490,14 @@ function loadModel(currentModelState, appStart = true, position = null) {
             mixer = new THREE.AnimationMixer(currentObject);
 
             glb.animations.forEach(animation =>{
+
+                /*
+                // This if statement will ensure that state change animations only play once
+                if((currentModelState % 2) == 0){
+                    mixer.clipAction(animation).setLoop(THREE.LoopOnce);
+                }
+                */
+
                 mixer.clipAction(animation).play()
             })
 
@@ -528,10 +536,16 @@ function init() {
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(70, (window.innerWidth / window.innerHeight), 0.001, 200);
 
-    // Add light to the scene.
-    const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
-    light.position.set(0.5, 1, 0.25);
-    scene.add(light);
+    // Add lights to the scene
+    const directionalLight = new THREE.DirectionalLight(0x404040, 1);
+    scene.add(directionalLight);
+
+    const hemisphereLight = new THREE.HemisphereLight(0xf6e86d, 0x404040, 1);
+    scene.add(hemisphereLight);
+
+    const spotLight = new THREE.SpotLight(0xf6e86d, 1, 10, Math.PI/2);
+    scene.add(spotLight);
+    
 
     // Initialize renderer.
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });

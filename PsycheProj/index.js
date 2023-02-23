@@ -84,7 +84,6 @@ const facts = [
             "How will it be determined if Psyche is core material of a planetesimal?"
         ],
         
-
         // Model 2 - Spacecraft Button
         [
             "All of the instruments on the spacecraft will provide clues but, in particular, the magnetometer will look for evidence of an ancient magnetic field: if Psyche has a significant magnetic field still recorded in its solid body, it was once a core that produced its own dynamo."

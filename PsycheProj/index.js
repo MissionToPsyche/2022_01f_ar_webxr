@@ -33,49 +33,78 @@ let currentNarrativeTextIterator = 0;
 let currentNarrativeTextSize = 0;
 
 // Narrative (const) text variables.
-const greeting = "Hello explorer!  I'm the Psyche satellite, here to guide you.  Look around and click the Place button " +
+const greeting = "Hello explorer!  I'm the Psyche spacecraft, here to guide you.  Look around and click the Place button " +
     "when the reticle is in the center of your screen."
 
 const modelDescriptions = [
-    "<Explain State 1 - It's (assumed) appearance 10 million years ago.>",
+    // Model 1 Description
+    "Stage 1: Formation of planetesimal",
+
+    // State Change 1 Description
     "<Explain transition from State 1 to State 2 - It accumulated particles over time.>",
-    "<Explain State 2 - It's (assumed) appearance 5 million years ago.>",
+
+    // Model 2 Description
+    "Stage 2: Planetesimal",
+
+    // State Change 2 Description
     "<Explain transition from State 2 to State 1 - It was broken down over time.>",
-    "<Explain State 3 - It's (assumed) appearance today.>"
+
+    // Model 3 Description
+    "Stage 3: Core/Current asteroid"
 ];
 
 const facts = [
+    // Model 1 Educational Information
     [
+        // Model 1 - Asteroid Button
         [
-            "Planetesimals are one of the building blocks of planets.  The hypothesis that Psyche could potentially be leftover core material from a planetesimal could lead scientists to be...",
-            "able to investigate questions about Earth's core, including how it was formed."
+            "Planetesimals are one of the building blocks of planets. The hypothesis that Psyche could potentially be leftover core material from a planetesimal could lead scientists to be able to investigate questions about Earth's core, including how it was formed."
         ],
-        "How might Psyche have formed?",
+
+        // Model 1 - Question Button
         [
-            "The spacecraft is equipped with two Multispectral Imagers.  These high resolution cameras will capture images of the asteroid's surface at different wavelengths of light...",
-            "This, along with pictures of the topography of Psyche will allow scientists to study features that provide clues to Psyche's history."
+            "How might Psyche have formed?"
+        ],
+
+        // Model 1 - Spacecraft Button
+        [
+            "The spacecraft will is equipped with two Multispectral Imagers. These high resolution cameras will capture images of the asteroid's surface at different wavelengths of light. This, along with pictures of the topography of Psyche, will allow scientists to study features that provide clues to Psyche's history."
         ]
     ],
+
+    // Model 2 Educational Information
     [
+        // Model 2 - Asteroid Button
         [
-            "Scientists think Psyche may consist largely of metal from the core of a planetesimal, one of the building blocks of the rocky planets in our solar system (Mercury, Venus, Earth and...",
-            "Mars).  Psyche is most likely a survivor of multiple violent hit-and-run collisions with other material, common when the solar system was forming."
+            "Scientists think Psyche may consist largely of metal from the core of a planetesimal, one of the building blocks of the rocky planets in our solar system (Mercury, Venus, Earth and Mars). Psyche is most likely a survivor of multiple violent hit-and-run collisions with other material, common when the solar system was forming."
         ],
-        "How will it be determined if Psyche is core material of a planetesimal?",
+
+        // Model 2 - Question Button
         [
-            "All of the instruments on the spacecraft will provide clues but, in particular, the magnetometer will look for evidence of an ancient magnetic field: if Psyche has a...",
-            "significant magnetic field still recorded in its solid body, it was once a core that produced its own dynamo."
+            "How will it be determined if Psyche is core material of a planetesimal?"
+        ],
+        
+        // Model 2 - Spacecraft Button
+        [
+            "All of the instruments on the spacecraft will provide clues but, in particular, the magnetometer will look for evidence of an ancient magnetic field: if Psyche has a significant magnetic field still recorded in its solid body, it was once a core that produced its own dynamo."
         ]
     ],
+
+    // Model 3 Educational Information
     [
+        // Model 3 - Asteroid Button
         [
-            "After numerous collisions, it is hypothesized that the potential planetesimal would have its rocky mantly stripped away and leave behind the core material.  This core material...",
-            "could potentially be what makes up the current asteroid Psyche."
+            "After numerous collisions, it is hypothesized that the potential planetesimal would have its rocky mantle stripped away and leave behind the core material. This core material could potentially be what makes up the current asteroid Psyche." 
         ],
-        "What is it that planetary cores are made of?",
+
+        // Model 3 - Question Button
         [
-            "The spacecraft contains a Gamma Ray and Neutron Spectrometer that will detect, measure, and map Psyche's elemental composition.  These measurements will be...",
-            "able to give scientists a better idea of what exactly it is that potentially makes up the inner cores of planets."
+            "What is it that planetary cores are made of?"
+        ],
+
+        // Model 3 - Spacecraft Button
+        [
+            "The spacecraft contains a Gamma Ray and Neutron Spectrometer that will detect, measure, and map Psyche's elemental composition. These measurements will be able to give scientists a better idea of what exactly it is that potentially makes up the inner cores of planets."
         ]
     ]
 ];
@@ -207,7 +236,9 @@ function unHideButtons() {
  * 
  * The loadTextToNarrative() function does not use the argument in this case.  So it can be anything (or empty string).
  */
+/*
 $("#speech-box-button").click(function() {loadTextToNarrative("This argument can be anything.")});
+*/
 
 /**
  * Change State button click.
@@ -323,7 +354,13 @@ function loadSatellite() {
  * Displays the speech box (narrative text).
  */
 function showNarrative() {
+    document.getElementById("textBox").style.display = "block";
     document.getElementById("narrative").style.display = "block";
+}
+
+function hideNarrative(){
+    document.getElementById("textBox").style.display = "none";
+    //document.getElementById("narrative").style.display = "none";
 }
 
 /**
@@ -343,6 +380,7 @@ function loadModelInfoToNarrative() {
  */
 function loadTextToNarrative(text) {
 
+    /*
     // Check if 'text' is a single string or an array of multiple strings.
     if (Array.isArray(text)) {
         // 'text' is an array of multiple strings - we need multiple speech boxes with the '...' button.
@@ -366,7 +404,7 @@ function loadTextToNarrative(text) {
         currentNarrativeTextIterator++;
 
         // Hide all buttons.
-        hideButtons();
+        //hideButtons();
         document.getElementById("place-button").style.display = "none";
 
     } else if (currentNarrativeTextArrayFlag == 1) {
@@ -381,7 +419,7 @@ function loadTextToNarrative(text) {
             currentNarrativeTextIterator = 0;
             currentNarrativeTextSize = 0;
             document.getElementById("speech-box-button").style.display = "none";
-            unHideButtons();
+            //unHideButtons();
         } else {
             // Increment the iterator.
             currentNarrativeTextIterator++;
@@ -394,8 +432,9 @@ function loadTextToNarrative(text) {
         currentNarrativeTextSize = 0;
         document.getElementById("speech-box-button").style.display = "none";
     }
+    */
 
-    document.getElementById("narrative").textContent = currentNarrativeText;
+    document.getElementById("narrative").textContent = text;
 }
 
 /**
@@ -450,6 +489,14 @@ function loadModel(currentModelState, appStart = true, position = null) {
             mixer = new THREE.AnimationMixer(currentObject);
 
             glb.animations.forEach(animation =>{
+
+                /*
+                // This if statement will ensure that state change animations only play once
+                if((currentModelState % 2) == 0){
+                    mixer.clipAction(animation).setLoop(THREE.LoopOnce);
+                }
+                */
+
                 mixer.clipAction(animation).play()
             })
 
@@ -481,14 +528,23 @@ function init() {
     container = document.createElement('div');
     document.getElementById("container").appendChild(container);
 
+    // Hide speech bubble
+    hideNarrative();
+
     // Initialize scene and camera.
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(70, (window.innerWidth / window.innerHeight), 0.001, 200);
 
-    // Add light to the scene.
-    const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
-    light.position.set(0.5, 1, 0.25);
-    scene.add(light);
+    // Add lights to the scene
+    const directionalLight = new THREE.DirectionalLight(0x404040, 1);
+    scene.add(directionalLight);
+
+    const hemisphereLight = new THREE.HemisphereLight(0xf6e86d, 0x404040, 1);
+    scene.add(hemisphereLight);
+
+    const spotLight = new THREE.SpotLight(0xf6e86d, 1, 10, Math.PI/2);
+    scene.add(spotLight);
+    
 
     // Initialize renderer.
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });

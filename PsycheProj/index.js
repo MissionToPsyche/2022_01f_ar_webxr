@@ -17,30 +17,95 @@ let touchDown, touchX, touchY, deltaX, deltaY;
 let mixer;
 const clock = new THREE.Clock();
 
-// Narrative text variables.
-const greeting = "Hi explorer!  I'm the Psyche satellite, here to guide you.  Look around and click the Place button when the reticle is in the center of your screen.";
+// Hold the current string that is displayed in the speech box.
+let currentNarrativeText;
+
+// Flag to indicate when we are using a string array for the narrative text.
+let currentNarrativeTextArrayFlag = 0;
+
+// Hold the array of strings that are iterated through the speech box with the "..." button.
+let currentNarrativeTextArray;
+
+// Hold the iterator to keep track of which string within a string array is currently displayed in the speech box.
+let currentNarrativeTextIterator = 0;
+
+// Hold the max number of iterations (speech boxes) needed to iterate through the current narrative text diplayed in the speech box.
+let currentNarrativeTextSize = 0;
+
+// Narrative (const) text variables.
+const greeting = "Hello explorer!  I'm the Psyche spacecraft, here to guide you.  Look around and click the Place button " +
+    "when the reticle is in the center of your screen."
 
 const modelDescriptions = [
-    "<Explain State 1 - It's (assumed) appearance 10 million years ago.>",
-    "<Explain State 2 - It's (assumed) appearance 5 million years ago.>",
-    "<Explain State 3 - It's (assumed) appearance today.>"
+    // Model 1 Description
+    "Stage 1: Formation of planetesimal",
+
+    // State Change 1 Description
+    "<Explain transition from State 1 to State 2 - It accumulated particles over time.>",
+
+    // Model 2 Description
+    "Stage 2: Planetesimal",
+
+    // State Change 2 Description
+    "<Explain transition from State 2 to State 1 - It was broken down over time.>",
+
+    // Model 3 Description
+    "Stage 3: Core/Current asteroid"
 ];
 
 const facts = [
+    // Model 1 Educational Information
     [
-        "<Model 1 - Fact 1>",
-        "<Model 1 - Fact 2>",
-        "<Model 1 - Fact 3>"
+        // Model 1 - Asteroid Button
+        [
+            "Planetesimals are one of the building blocks of planets. The hypothesis that Psyche could potentially be leftover core material from a planetesimal could lead scientists to be able to investigate questions about Earth's core, including how it was formed."
+        ],
+
+        // Model 1 - Question Button
+        [
+            "How might Psyche have formed?"
+        ],
+
+        // Model 1 - Spacecraft Button
+        [
+            "The spacecraft will is equipped with two Multispectral Imagers. These high resolution cameras will capture images of the asteroid's surface at different wavelengths of light. This, along with pictures of the topography of Psyche, will allow scientists to study features that provide clues to Psyche's history."
+        ]
     ],
+
+    // Model 2 Educational Information
     [
-        "<Model 2 - Fact 1>",
-        "<Model 2 - Fact 2>",
-        "<Model 2 - Fact 3>"
+        // Model 2 - Asteroid Button
+        [
+            "Scientists think Psyche may consist largely of metal from the core of a planetesimal, one of the building blocks of the rocky planets in our solar system (Mercury, Venus, Earth and Mars). Psyche is most likely a survivor of multiple violent hit-and-run collisions with other material, common when the solar system was forming."
+        ],
+
+        // Model 2 - Question Button
+        [
+            "How will it be determined if Psyche is core material of a planetesimal?"
+        ],
+        
+        // Model 2 - Spacecraft Button
+        [
+            "All of the instruments on the spacecraft will provide clues but, in particular, the magnetometer will look for evidence of an ancient magnetic field: if Psyche has a significant magnetic field still recorded in its solid body, it was once a core that produced its own dynamo."
+        ]
     ],
+
+    // Model 3 Educational Information
     [
-        "<Model 3 - Fact 1>",
-        "<Model 3 - Fact 2>",
-        "<Model 3 - Fact 3>"
+        // Model 3 - Asteroid Button
+        [
+            "After numerous collisions, it is hypothesized that the potential planetesimal would have its rocky mantle stripped away and leave behind the core material. This core material could potentially be what makes up the current asteroid Psyche." 
+        ],
+
+        // Model 3 - Question Button
+        [
+            "What is it that planetary cores are made of?"
+        ],
+
+        // Model 3 - Spacecraft Button
+        [
+            "The spacecraft contains a Gamma Ray and Neutron Spectrometer that will detect, measure, and map Psyche's elemental composition. These measurements will be able to give scientists a better idea of what exactly it is that potentially makes up the inner cores of planets."
+        ]
     ]
 ];
 
@@ -63,13 +128,27 @@ $("#ARButton").click(async function() {
     // Set up preliminary objects and elements.
     setSpaceEnvironment(scene);
     loadSatellite();
-    document.getElementById("narrative").style.display = "block";
-    document.getElementById("narrative").textContent = greeting;
+    showNarrative();
+    loadTextToNarrative(greeting);
 
     // Initiate with model 1.
     currentModelState = 1;
     loadModel(1);
+
+    // Load the Place and Menu button.
+    loadPlaceMenuButtons();
 });
+
+/**
+ * loadPlaceButton function
+ * 
+ * Delays the system execution (in order fro app screen to load), then loads the Place and Menu buttons.
+ */
+async function loadPlaceMenuButtons() {
+    await sleep(1000);
+    document.getElementById("place-button").style.display = "block";
+    document.getElementById("menu-icon").style.display = "block";
+}
 
 /**
  * Place button click.
@@ -79,24 +158,25 @@ $("#ARButton").click(async function() {
 $("#place-button").click(function() {
     scene.remove(currentObject);
     loadModel(currentModelState, false);
-    displayNarrativeText();
+    loadModelInfoToNarrative();
     unHideButtons();
+    document.getElementById("place-button").textContent = "Re-Place";
 });
 
 /**
  * Fact 1 button click.
  */
-$("#fact-one").click(function () {displayFact(1)});
+$("#fact-one").click(function() {displayFact(1)});
 
 /**
  * Fact 2 button click.
  */
-$("#fact-two").click(function () {displayFact(2)});
+$("#fact-two").click(function() {displayFact(2)});
 
 /**
  * Fact 3 button click.
  */
-$("#fact-three").click(function () {displayFact(3)});
+$("#fact-three").click(function() {displayFact(3)});
 
 /**
  * displayFact Function
@@ -105,7 +185,22 @@ $("#fact-three").click(function () {displayFact(3)});
  * @param {*} factNumber - Number (1-3) representing which fact to display.
  */
 function displayFact(factNumber) {
-    document.getElementById("narrative").textContent = facts[currentModelState - 1][factNumber - 1];
+    // Use switch to load correct string from 'facts' string array.
+    switch (currentModelState) {
+        case 1:
+            loadTextToNarrative(facts[0][factNumber - 1])
+            break;
+        case 2:
+            break;
+        case 3:
+            loadTextToNarrative(facts[1][factNumber - 1])
+            break;
+        case 4:
+            break;
+        case 5:
+            loadTextToNarrative(facts[2][factNumber - 1])
+            break;
+    }
 }
 
 /**
@@ -114,12 +209,12 @@ function displayFact(factNumber) {
  * Hides all the buttons on the screen.
  */
 function hideButtons() {
-    document.getElementById("state-change").style.display = "none"
-    document.getElementById("fact-one").style.display = "none"
+    document.getElementById("state-change").style.display = "none";
+    document.getElementById("fact-one").style.display = "none";
     document.getElementById("fact-two").style.display = "none";
     document.getElementById("fact-three").style.display = "none";
-    document.getElementById("place-button").style.display = "none"; // This currently does not remove the place button from the screen
     document.getElementById("menu-icon").style.display = "none";
+    document.getElementById("place-button").style.display = "none";
 }
 
 /**
@@ -128,32 +223,71 @@ function hideButtons() {
  * Displays all the buttons on the screen.
  */
 function unHideButtons() {
-    document.getElementById("state-change").style.display = "block"
+    document.getElementById("state-change").style.display = "block";
     document.getElementById("fact-one").style.display = "block";
     document.getElementById("fact-two").style.display = "block";
     document.getElementById("fact-three").style.display = "block";
-    document.getElementById("place-button").style.display = "block";
     document.getElementById("menu-icon").style.display = "block";
+    document.getElementById("place-button").style.display = "block";
 }
 
 /**
- * State Change button click.
+ * Speech Box button click.
  * 
- * Async function needed for use of sleep timer - this may not be needed once real animations are implemented.
+ * The loadTextToNarrative() function does not use the argument in this case.  So it can be anything (or empty string).
  */
-$("#state-change").click(async function() {
-    if (currentModelState == 3) {
-        currentModelState = 1;
+/*
+$("#speech-box-button").click(function() {loadTextToNarrative("This argument can be anything.")});
+*/
+
+/**
+ * Change State button click.
+ */
+$("#state-change").click(function() {changeState(1)});
+
+/**
+ * Next button click.
+ */
+$("#next-button").click(function() {changeState(1)});
+
+/**
+ * nextState Function
+ * 
+ * Changes the model to either the next or the previous state.
+ * @param {*} next_or_previous - Number (1 or -1)
+ * Passing 1 as parameter changes the model to the next state
+ * 
+ * Passing -1 as parameter changes the model to the previous state
+ */ 
+async function changeState(next_or_previous) {
+
+    if (next_or_previous == 1)
+    {
+        // Changing to next sequential state.
+        if (currentModelState == 5) {
+            currentModelState = 1;
+        } else {
+            currentModelState++;
+        }
+    } else if (next_or_previous == -1) {
+        // Changing to previous sequential state.
+        if (currentModelState == 1) {
+            currentModelState = 5;
+        } else {
+            currentModelState--;
+        }
     } else {
-        currentModelState++;
+        // Invalid value was passed.
     }
 
-    // Remove buttons during state-change animation.
-    hideButtons();
-
-    // We will invoke the state change animation here.
-    document.getElementById("narrative").textContent = "3 second place holder for state change animation.";
-    await sleep(3000);
+    // If 'currentModelState' is an even number, we're in a transition state.  Hide buttons, display Next button.
+    if ((currentModelState % 2) == 0) {
+        hideButtons();
+        document.getElementById("next-button").style.display = "block";
+    } else {
+        unHideButtons();
+        document.getElementById("next-button").style.display = "none";
+    }
 
     // Get current model position, remove model from scene.
     let position = currentObject.position;
@@ -163,21 +297,10 @@ $("#state-change").click(async function() {
     loadModel(currentModelState, false, position);
 
     // Display proper narrative based on currentModelState variable.
-    displayNarrativeText();
+    loadModelInfoToNarrative();
 
-    document.getElementById("narrative").style.display = "block";
-
-    // Display fact buttons after state-change animation completes.
-    unHideButtons();
-})
-
-/**
- * displayNarrativeText Function
- * 
- * Displays the proper narrative text (not facts) about the current model that is loaded on the screen.
- */
-function displayNarrativeText() {
-    document.getElementById("narrative").textContent = modelDescriptions[currentModelState - 1];
+    // Display the speech box.
+    showNarrative();
 }
 
 /**
@@ -223,6 +346,95 @@ $("#music-settings").click(function() {
  */
 function loadSatellite() {
     document.getElementById("satellite").width = "60";
+}
+
+/**
+ * showNarrative Function
+ * 
+ * Displays the speech box (narrative text).
+ */
+function showNarrative() {
+    document.getElementById("textBox").style.display = "block";
+    document.getElementById("narrative").style.display = "block";
+}
+
+function hideNarrative(){
+    document.getElementById("textBox").style.display = "none";
+    //document.getElementById("narrative").style.display = "none";
+}
+
+/**
+ * loadModelInfoToNarrative Function
+ * 
+ * Loads the proper narrative text (not facts) about the current model to the speech box.
+ */
+function loadModelInfoToNarrative() {
+    loadTextToNarrative(modelDescriptions[currentModelState - 1]);
+}
+
+/**
+ * loadTextToNarrative Function
+ * 
+ * Loads specific text to the speech box (narrative text).
+ * @param {*} text - Text to load into the speech box.
+ */
+function loadTextToNarrative(text) {
+
+    /*
+    // Check if 'text' is a single string or an array of multiple strings.
+    if (Array.isArray(text)) {
+        // 'text' is an array of multiple strings - we need multiple speech boxes with the '...' button.
+
+        // Set the size.
+        currentNarrativeTextSize = text.length;
+
+        // Set the flag.
+        currentNarrativeTextArrayFlag = 1;
+
+        // Show the speech box button.
+        document.getElementById("speech-box-button").style.display = "block";
+
+        // Set the narrative text array.
+        currentNarrativeTextArray = text;
+
+        // Set the narrative text (to be currently displayed).
+        currentNarrativeText = currentNarrativeTextArray[currentNarrativeTextIterator];
+
+        // Increment the iterator.
+        currentNarrativeTextIterator++;
+
+        // Hide all buttons.
+        //hideButtons();
+        document.getElementById("place-button").style.display = "none";
+
+    } else if (currentNarrativeTextArrayFlag == 1) {
+        // We are currently iterating through 'currentNarrativeTextArray'.  We won't use 'text' parameter here.
+
+        // Set the narrative text (to be currently displayed).
+        currentNarrativeText = currentNarrativeTextArray[currentNarrativeTextIterator];
+
+        // If we've displayed the last string in the array, reset our variables and hide the speech box button.
+        if (currentNarrativeTextIterator == (currentNarrativeTextSize - 1)) {
+            currentNarrativeTextArrayFlag = 0;
+            currentNarrativeTextIterator = 0;
+            currentNarrativeTextSize = 0;
+            document.getElementById("speech-box-button").style.display = "none";
+            //unHideButtons();
+        } else {
+            // Increment the iterator.
+            currentNarrativeTextIterator++;
+        }
+
+    } else {
+        // 'text' is a single string.
+        currentNarrativeText = text;
+        currentNarrativeTextIterator = 0;
+        currentNarrativeTextSize = 0;
+        document.getElementById("speech-box-button").style.display = "none";
+    }
+    */
+
+    document.getElementById("narrative").textContent = text;
 }
 
 /**
@@ -277,6 +489,14 @@ function loadModel(currentModelState, appStart = true, position = null) {
             mixer = new THREE.AnimationMixer(currentObject);
 
             glb.animations.forEach(animation =>{
+
+                /*
+                // This if statement will ensure that state change animations only play once
+                if((currentModelState % 2) == 0){
+                    mixer.clipAction(animation).setLoop(THREE.LoopOnce);
+                }
+                */
+
                 mixer.clipAction(animation).play()
             })
 
@@ -308,14 +528,23 @@ function init() {
     container = document.createElement('div');
     document.getElementById("container").appendChild(container);
 
+    // Hide speech bubble
+    hideNarrative();
+
     // Initialize scene and camera.
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(70, (window.innerWidth / window.innerHeight), 0.001, 200);
 
-    // Add light to the scene.
-    const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
-    light.position.set(0.5, 1, 0.25);
-    scene.add(light);
+    // Add lights to the scene
+    const directionalLight = new THREE.DirectionalLight(0x404040, 1);
+    scene.add(directionalLight);
+
+    const hemisphereLight = new THREE.HemisphereLight(0xf6e86d, 0x404040, 1);
+    scene.add(hemisphereLight);
+
+    const spotLight = new THREE.SpotLight(0xf6e86d, 1, 10, Math.PI/2);
+    scene.add(spotLight);
+    
 
     // Initialize renderer.
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -468,7 +697,7 @@ function render(timestamp, frame) {
                 box.setFromObject(currentObject);
                 box.center(controls.target);
 
-                document.getElementById("place-button").style.display = "none";
+                document.getElementById("place-button").setAttribute("disabled", "true");
             } );
 
             hitTestSourceRequested = true;
@@ -480,13 +709,13 @@ function render(timestamp, frame) {
             if (hitTestResults.length) {
                 const hit = hitTestResults[0];
 
-                document.getElementById("place-button").style.display = "block";
+                document.getElementById("place-button").removeAttribute("disabled");
 
                 reticle.visible = true;
                 reticle.matrix.fromArray(hit.getPose(referenceSpace).transform.matrix);
             } else {
                 reticle.visible = false;
-                document.getElementById("place-button").style.display = "none";
+                document.getElementById("place-button").setAttribute("disabled", "true");
             }
         }
     }

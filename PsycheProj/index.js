@@ -17,20 +17,9 @@ let touchDown, touchX, touchY, deltaX, deltaY;
 let mixer;
 const clock = new THREE.Clock();
 
-// Hold the current string that is displayed in the speech box.
-let currentNarrativeText;
-
-// Flag to indicate when we are using a string array for the narrative text.
-let currentNarrativeTextArrayFlag = 0;
-
-// Hold the array of strings that are iterated through the speech box with the "..." button.
-let currentNarrativeTextArray;
-
-// Hold the iterator to keep track of which string within a string array is currently displayed in the speech box.
-let currentNarrativeTextIterator = 0;
-
-// Hold the max number of iterations (speech boxes) needed to iterate through the current narrative text diplayed in the speech box.
-let currentNarrativeTextSize = 0;
+// File name variables.
+const globalMeshTexture = "pixel-rocks.png";
+const assets = "assets/";
 
 // Narrative (const) text variables.
 const greeting = "Hello explorer!  I'm the Psyche spacecraft, here to guide you.  Look around and click the Place button " +
@@ -379,61 +368,6 @@ function loadModelInfoToNarrative() {
  * @param {*} text - Text to load into the speech box.
  */
 function loadTextToNarrative(text) {
-
-    /*
-    // Check if 'text' is a single string or an array of multiple strings.
-    if (Array.isArray(text)) {
-        // 'text' is an array of multiple strings - we need multiple speech boxes with the '...' button.
-
-        // Set the size.
-        currentNarrativeTextSize = text.length;
-
-        // Set the flag.
-        currentNarrativeTextArrayFlag = 1;
-
-        // Show the speech box button.
-        document.getElementById("speech-box-button").style.display = "block";
-
-        // Set the narrative text array.
-        currentNarrativeTextArray = text;
-
-        // Set the narrative text (to be currently displayed).
-        currentNarrativeText = currentNarrativeTextArray[currentNarrativeTextIterator];
-
-        // Increment the iterator.
-        currentNarrativeTextIterator++;
-
-        // Hide all buttons.
-        //hideButtons();
-        document.getElementById("place-button").style.display = "none";
-
-    } else if (currentNarrativeTextArrayFlag == 1) {
-        // We are currently iterating through 'currentNarrativeTextArray'.  We won't use 'text' parameter here.
-
-        // Set the narrative text (to be currently displayed).
-        currentNarrativeText = currentNarrativeTextArray[currentNarrativeTextIterator];
-
-        // If we've displayed the last string in the array, reset our variables and hide the speech box button.
-        if (currentNarrativeTextIterator == (currentNarrativeTextSize - 1)) {
-            currentNarrativeTextArrayFlag = 0;
-            currentNarrativeTextIterator = 0;
-            currentNarrativeTextSize = 0;
-            document.getElementById("speech-box-button").style.display = "none";
-            //unHideButtons();
-        } else {
-            // Increment the iterator.
-            currentNarrativeTextIterator++;
-        }
-
-    } else {
-        // 'text' is a single string.
-        currentNarrativeText = text;
-        currentNarrativeTextIterator = 0;
-        currentNarrativeTextSize = 0;
-        document.getElementById("speech-box-button").style.display = "none";
-    }
-    */
-
     document.getElementById("narrative").textContent = text;
 }
 
@@ -481,9 +415,21 @@ function loadModel(currentModelState, appStart = true, position = null) {
 
         // Load glb file and add it to scene.
         var loader = new GLTFLoader().setPath('assets/');
+
+        // Load texture file for mesh's
+        var textureLoader = new THREE.TextureLoader().setPath('assets/');
+        var texture = textureLoader.load(globalMeshTexture);
+        texture.flipY = false;
       
         loader.load(currentModelState + ".glb", function(glb) {
             currentObject = glb.scene;
+
+            // This block of code applies the texture to all Mesh's in the .glb file
+            currentObject.traverse ( ( o ) => {
+                if ( o.isMesh ) {
+                    o.material.map = texture;
+                }
+            } );
 
             // Gets animation from glb and plays it.
             mixer = new THREE.AnimationMixer(currentObject);
@@ -524,6 +470,10 @@ function loadModel(currentModelState, appStart = true, position = null) {
  * Initializes three.js objects necessary for rendering AR scene.
  */
 function init() {
+
+    // Mute music by default.
+    document.getElementById("music").muted = true;
+
     // Create html element and add to container.
     container = document.createElement('div');
     document.getElementById("container").appendChild(container);

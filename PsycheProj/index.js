@@ -428,6 +428,7 @@ function loadModel(currentModelState, appStart = true, position = null) {
             currentObject.traverse ( ( o ) => {
                 if ( o.isMesh ) {
                     o.material.map = texture;
+                    o.material.bumpMap = texture;
                 }
             } );
 

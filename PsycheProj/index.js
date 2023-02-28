@@ -429,6 +429,10 @@ function loadModel(currentModelState, appStart = true, position = null) {
                 if ( o.isMesh ) {
                     o.material.map = texture;
                     o.material.bumpMap = texture;
+                    o.material.roughnessMap = texture;
+
+                    // Affects how intense the shading is based on the texture
+                    o.material.bumpScale = 0.1;
                 }
             } );
 

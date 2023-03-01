@@ -349,7 +349,7 @@ function showNarrative() {
 
 function hideNarrative(){
     document.getElementById("textBox").style.display = "none";
-    //document.getElementById("narrative").style.display = "none";
+    document.getElementById("narrative").style.display = "none";
 }
 
 /**

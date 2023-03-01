@@ -5,28 +5,59 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
   color: white;
+
+  font-family: 'VT323', monospace;
+  font-size: 25px;
+  font-weight: 700;
+  /*All caps, but capital letters are bigger*/
+  font-variant: small-caps;
+  /* Makes all text same size caps */
+  /*text-transform: uppercase;*/
 }
 
+/* Represents the top of the screen */
+.screen-top {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+/* Represents the speech bubble */
 .speech-bubble {
   display: none;
   float: right;
-  padding: 10px 10px 0px 10px;
-  margin-right: 10px;
-  width: 300px;
-  height: 100px;
-  background-color: rgb(58, 139, 231, 0.3);
+  width: 330px;
+  height: 150px;
   color: white;
   position: relative;
-  border-radius: 10px;
-  overflow-y: scroll;
+
+  background-image: url("/assets/text-box.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  opacity: 0.75;
+
+  align-items: center;
+  justify-content: center;
 }
 
-  .screen-top {
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-  }
+/* Represents the text inside of the speech bubble */
+#narrative {
+  display: none;
+  position: absolute;
+  top: 15%;
+  bottom: 15%;
+  left: 10%;
+  right: 10%;
+  opacity: 1;
+
+  overflow-y: scroll;
+
+  margin: auto;
+
+  align-items: center;
+  justify-content: center;
+}
   
   .sidenav {
     height: 100%;
@@ -71,9 +102,7 @@ body {
     .sidenav a {font-size: 18px;}
   }
 
-  #narrative {
-    display: none;
-  }
+
 
   #speech-box-button {
     display: none;

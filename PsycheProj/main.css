@@ -30,12 +30,27 @@ body {
   /*text-transform: uppercase;*/
 }
 
+#content{
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+.h-20{
+  height: 20%;
+}
+
+.h-80{
+  height: 80%;
+}
+
+#model-view-area{
+  position: absolute;
+}
+
 /* Represents the top of the screen */
-.screen-top {
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 10px;
-  padding-bottom: 10px;
+#screen-top {
+  
 }
 
 /* Represents the image of the speech bubble */
@@ -117,6 +132,23 @@ body {
   .sidenav a {font-size: 18px;}
 }
 
+/* This type of element should be visible in the main view 
+   The main view is when the model and fact buttons are displayed */
+.main-view-element{
+  visibility: hidden;
+}
+
+/* This type of element should be visible in the state change view 
+   The state change view is when the state change  */
+.state-change-element{
+  visibility: hidden;
+}
+
+/* This type of element should be visible when the 3D model can be placed */
+.place-view-element{
+  visibility: hidden;
+}
+
 #speech-box-button {
   display: none;
   float: right;
@@ -124,79 +156,63 @@ body {
 }
 
 #place-button {
-  position: absolute;
-  bottom: 77px;
-  right: 15px;
-  width: 100px;
-  height: 35px;
-  display: none;
+
 }
 
 #next-button {
-  position: absolute;
-  bottom: 140px;
-  width: 100px;
-  height: 35px;
-  left: calc(50% - 50px);
-  display: none;
+
 }
 
-#menu-icon {
+#menu-button {
   font-size: 70px;
   cursor: pointer;
-  position: absolute;
-  left: calc(50% - 30px);
-  width: 100px;
-  bottom: 55px;
-  display: none;
 }
 
 #state-change {
-  position: absolute;
-  bottom: 77px;
-  width: 100px;
-  height: 35px;
-  left: 15px;
-  display: none;
+
 }
 
-.fact-button{
-  display: none;
-  position: absolute;
-  height: 60px;
-  width: 60px;
+/* Contains fact buttons */
+#fact-button-area{
+  visibility: hidden;
+}
 
+/* Class for shared attributes of fact buttons */
+.fact-button{
   border-radius: 50%;
   border: 0px;
 
-  background-color: var(--psyche-light-pink);
+  opacity: 0.9;
+
+  background-color: var(--psyche-dark-pink);
   background-repeat: no-repeat;
   background-size: 100% 100%;
 
   box-shadow:
-    0 0 0 5px var(--psyche-dark-pink),
-    0 0 0 10px var(--psyche-light-purple),
-    0 0 0 15px var(--psyche-dark-purple);
+    0 0 0 5px var(--psyche-light-purple),
+    0 0 0 10px var(--psyche-dark-purple),
+    0 0 0 15px black;
 }
 
 /* Represents the asteroid button */
 #fact-one {  
-  bottom: 170px;
-  left: 15px;
-
   background-image: url("/assets/asteroid-art-32px-noCircle.png");
 }
 
 /* Represents the question button */
 #fact-two {
-  bottom: 140px;
-  left: calc(50% - 37px);
+  background-color: #F57C33;
+  background-image: url("/assets/asteroid-art-32px-noCircle.png");
 }
 
 /* Represents the spacecraft button */
 #fact-three {
-  bottom: 170px;
-  right: 15px;
+  background-color: #F57C33;
+  background-image: url("/assets/asteroid-art-32px-noCircle.png");
+}
+
+#screen-bottom{
+
 }
 
 #intro-header {

@@ -2,9 +2,16 @@
 <html lang="en">
 	<head>
 		<title>Psyche Mission</title>
+
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
 		<link type="text/css" rel="stylesheet" href="main.css">
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 		<script type="importmap">
 			{
@@ -16,40 +23,103 @@
 		</script>
 		<script type="module" src="/index.js"></script>
 		<script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
+
 	</head>
+
 	<body id="body">
 		<audio autoplay loop id="music">
-			<source src="./assets/space.mp3">
+			<source src="./assets/ivoryhaus-perseids.mp3" type="audio/mpeg">
 		</audio>
 
-		<div id="content">
-			<div id="mySidenav" class="sidenav">
-				<a href="javascript:void(0)" class="closebtn" id="close-menu">&times;</a>
-				<a>Text-Only Mode</a>
-				<a id ="music-settings">Mute/Unmute</a>
-				<a href="https://psyche.asu.edu/">Visit Psyche Website</a>
-				<a>Exit Application</a>
+		<!-- This container is divided into 5 rows -->
+		<div id="content" class="container-fluid p-0">
+
+			<!-- This is where the models get placed in JS. It spans the size of the screen -->
+			<div id="model-view-area"></div>
+
+			<!-- 1/5 -->
+			<!-- SPEECH BUBBLE, SPACECRAFT -->
+			<div id="screen-top" class="row h-20 w-100 m-0">
+
+				<div class="col-2 d-flex align-items-center justify-content-center">
+					<img align="right" src="assets/satellite.png" id="satellite" width="0" height="60"></img>
+				</div>
+
+				<div class="col-10 d-flex align-items-center justify-content-center">
+					<div id ="textBox" class="speech-bubble">
+						<p id="narrative"></p>
+						<!--<button id="speech-box-button">Continue</button>-->
+					</div>
+				</div>
+
 			</div>
 
-			<div id="container" style="position: fixed;"></div>
-			<!-- We might want 3 different symbols on these buttons (such as a '?') instead of text. -->
-			<button id="fact-one">Fact One</button>
-			<button id="fact-two">Fact Two</button>
-			<button id="fact-three">Fact Three</button>
-			<button id="state-change">Change State</button>
-			<button id="place-button">Place</button>
-			<button id="next-button">Next</button>
+			<!-- 2/5 -->
+			<div class="row h-20 w-100 m-0"></div>
 
-			<!-- I think the 'align' attribute is deprecated.  An updated method for aligning should be used. -->
-			<div class="screen-top">
-				<img align="right" src="assets/satellite.png" id="satellite" width="0" height="60"></img>
-				<div id ="textBox" class="speech-bubble">
-					<p id="narrative"></p>
-					<!--<button id="speech-box-button">Continue</button>-->
+			<!-- 3/5 -->
+			<div class="row h-20 w-100 m-0"></div>
+
+			<!-- 4/5 -->
+			<!-- FACT BUTTONS -->
+			<div id="fact-button-area" class="row h-20 w-100 m-0 align-content-end main-view-element">
+
+				<div class="col h-25 d-flex align-items-center justify-content-center">
+					<button id="fact-one" class="btn fact-button"></button>
+				</div>
+				
+				<div class="col h-25 d-flex align-items-center justify-content-center">
+					<button id="fact-two" class="btn fact-button"></button>
+				</div>
+
+				<div class="col h-25 d-flex align-items-center justify-content-center">
+					<button id="fact-three" class="btn fact-button"></button>
+				</div>
+
+			</div>
+
+			<!-- 5/5 -->
+			<!-- STATE CHANGE, OPTIONS / NEXT, PLACE -->
+			<div id="screen-bottom" class="row h-20 w-100 m-0 align-content-center">
+
+				<!-- LEFT: State change button -->
+				<div class="col d-flex align-items-center justify-content-center">
+					
+					<button type="button" id="state-change" class="btn btn-outline-primary main-view-element">Change State</button>
+
+				</div>
+
+				<!-- MIDDLE: Next button and Menu button -->
+				<div class="col d-flex align-items-center justify-content-center">
+
+					<button type="button" id="next-button" class="btn btn-outline-primary position-absolute state-change-element">Next</button>
+
+					<span id="menu-button" class="main-view-element position-absolute place-view-element">&#9776;</span>
+
+				</div>
+	
+				<!-- RIGHT: Place button -->
+				<div class="col d-flex align-items-center justify-content-center">
+
+					<button type="button" id="place-button" class="btn btn-outline-primary main-view-element place-view-element">Place</button>
+				
 				</div>
 			</div>
 
-			<span id="menu-icon">&#9776;</span>
+			<!-- This is the options menu -->
+			<!-- !!!! This is currently broken and needs to be fixed !!!! -->
+			<div id="sidenav" class="sidenav">
+
+				<!-- Close menu button-->
+				<a href="javascript:void(0)" class="closebtn" id="close-menu">&times;</a>
+				
+				<a href="text-version.html">Text-Only Mode</a>
+				
+				<a id ="music-settings">Mute/Unmute</a>
+				
+				<a href="https://psyche.asu.edu/">Visit Psyche Website</a>
+
+			</div>
 		</div>
 
 	</body>

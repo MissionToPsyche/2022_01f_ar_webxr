@@ -7,7 +7,7 @@ import {LinearToneMapping} from 'three';
 import {Clock} from './build/three.module.js';
 
 // General variables.
-let container;
+let modelViewArea;
 let camera, scene, renderer;
 let reticle,pmremGenerator, currentObject, controls;
 let hitTestSource = null;
@@ -17,20 +17,9 @@ let touchDown, touchX, touchY, deltaX, deltaY;
 let mixer;
 const clock = new THREE.Clock();
 
-// Hold the current string that is displayed in the speech box.
-let currentNarrativeText;
-
-// Flag to indicate when we are using a string array for the narrative text.
-let currentNarrativeTextArrayFlag = 0;
-
-// Hold the array of strings that are iterated through the speech box with the "..." button.
-let currentNarrativeTextArray;
-
-// Hold the iterator to keep track of which string within a string array is currently displayed in the speech box.
-let currentNarrativeTextIterator = 0;
-
-// Hold the max number of iterations (speech boxes) needed to iterate through the current narrative text diplayed in the speech box.
-let currentNarrativeTextSize = 0;
+// File name variables.
+const globalMeshTexture = "pixel-rocks.png";
+const assets = "assets/";
 
 // Narrative (const) text variables.
 const greeting = "Hello explorer!  I'm the Psyche spacecraft, here to guide you.  Look around and click the Place button " +
@@ -136,7 +125,8 @@ $("#ARButton").click(async function() {
     loadModel(1);
 
     // Load the Place and Menu button.
-    loadPlaceMenuButtons();
+    // loadPlaceMenuButtons();
+    showViewElements("place-view-element");
 });
 
 /**
@@ -147,7 +137,7 @@ $("#ARButton").click(async function() {
 async function loadPlaceMenuButtons() {
     await sleep(1000);
     document.getElementById("place-button").style.display = "block";
-    document.getElementById("menu-icon").style.display = "block";
+    document.getElementById("menu-button").style.display = "block";
 }
 
 /**
@@ -160,6 +150,7 @@ $("#place-button").click(function() {
     loadModel(currentModelState, false);
     loadModelInfoToNarrative();
     unHideButtons();
+    showViewElements("main-view-element");
     document.getElementById("place-button").textContent = "Re-Place";
 });
 
@@ -204,16 +195,47 @@ function displayFact(factNumber) {
 }
 
 /**
+ * showViewElements Function
+ * 
+ * @param view - The class name for which view elements to show.
+ * 
+ * "main-view-element" - shows elements with class "main-view-element"
+ * "state-change-element" - shows elements with class "state-change-element"
+ */
+function showViewElements(view){
+
+    const elements = document.getElementsByClassName(view);
+
+    Array.from(elements).forEach(element => {
+        element.style.visibility = "visible";
+    });
+}
+
+/**
+ * hideViewElements Function
+ * 
+ * @param view - The class name for which view elements to hide.
+ * 
+ * "main-view-element" - hides elements with class "main-view-element"
+ * "state-change-element" - hides elements with class "state-change-element"
+ */
+function hideViewElements(view){
+    const elements = document.getElementsByClassName(view);
+
+    Array.from(elements).forEach(element => {
+        element.style.visibility = "hidden";
+    });
+}
+
+/**
  * hideButtons Function
  * 
  * Hides all the buttons on the screen.
  */
 function hideButtons() {
     document.getElementById("state-change").style.display = "none";
-    document.getElementById("fact-one").style.display = "none";
-    document.getElementById("fact-two").style.display = "none";
-    document.getElementById("fact-three").style.display = "none";
-    document.getElementById("menu-icon").style.display = "none";
+    document.getElementById("fact-button-area").style.visibility = "hidden";
+    document.getElementById("menu-button").style.display = "none";
     document.getElementById("place-button").style.display = "none";
 }
 
@@ -224,10 +246,8 @@ function hideButtons() {
  */
 function unHideButtons() {
     document.getElementById("state-change").style.display = "block";
-    document.getElementById("fact-one").style.display = "block";
-    document.getElementById("fact-two").style.display = "block";
-    document.getElementById("fact-three").style.display = "block";
-    document.getElementById("menu-icon").style.display = "block";
+    document.getElementById("fact-button-area").style.visibility = "visible";
+    document.getElementById("menu-button").style.display = "block";
     document.getElementById("place-button").style.display = "block";
 }
 
@@ -282,11 +302,21 @@ async function changeState(next_or_previous) {
 
     // If 'currentModelState' is an even number, we're in a transition state.  Hide buttons, display Next button.
     if ((currentModelState % 2) == 0) {
+        /*
         hideButtons();
         document.getElementById("next-button").style.display = "block";
+        */
+
+        hideViewElements("main-view-element");
+        showViewElements("state-change-element")
     } else {
+        /*
         unHideButtons();
         document.getElementById("next-button").style.display = "none";
+        */
+
+        hideViewElements("state-change-element");
+        showViewElements("main-view-element");
     }
 
     // Get current model position, remove model from scene.
@@ -318,15 +348,15 @@ function arPlace() {
 /**
  * Open menu click.
  */
-document.getElementById("menu-icon").onclick = function openNav() {
-    document.getElementById("mySidenav").style.width = "250px";
+document.getElementById("menu-button").onclick = function openNav() {
+    document.getElementById("sidenav").style.width = "250px";
 }
 
 /**
  * Close menu click.
  */
 document.getElementById("close-menu").onclick = function closeNav() {
-    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("sidenav").style.width = "0";
 }
 
 /**
@@ -360,7 +390,7 @@ function showNarrative() {
 
 function hideNarrative(){
     document.getElementById("textBox").style.display = "none";
-    //document.getElementById("narrative").style.display = "none";
+    document.getElementById("narrative").style.display = "none";
 }
 
 /**
@@ -379,61 +409,6 @@ function loadModelInfoToNarrative() {
  * @param {*} text - Text to load into the speech box.
  */
 function loadTextToNarrative(text) {
-
-    /*
-    // Check if 'text' is a single string or an array of multiple strings.
-    if (Array.isArray(text)) {
-        // 'text' is an array of multiple strings - we need multiple speech boxes with the '...' button.
-
-        // Set the size.
-        currentNarrativeTextSize = text.length;
-
-        // Set the flag.
-        currentNarrativeTextArrayFlag = 1;
-
-        // Show the speech box button.
-        document.getElementById("speech-box-button").style.display = "block";
-
-        // Set the narrative text array.
-        currentNarrativeTextArray = text;
-
-        // Set the narrative text (to be currently displayed).
-        currentNarrativeText = currentNarrativeTextArray[currentNarrativeTextIterator];
-
-        // Increment the iterator.
-        currentNarrativeTextIterator++;
-
-        // Hide all buttons.
-        //hideButtons();
-        document.getElementById("place-button").style.display = "none";
-
-    } else if (currentNarrativeTextArrayFlag == 1) {
-        // We are currently iterating through 'currentNarrativeTextArray'.  We won't use 'text' parameter here.
-
-        // Set the narrative text (to be currently displayed).
-        currentNarrativeText = currentNarrativeTextArray[currentNarrativeTextIterator];
-
-        // If we've displayed the last string in the array, reset our variables and hide the speech box button.
-        if (currentNarrativeTextIterator == (currentNarrativeTextSize - 1)) {
-            currentNarrativeTextArrayFlag = 0;
-            currentNarrativeTextIterator = 0;
-            currentNarrativeTextSize = 0;
-            document.getElementById("speech-box-button").style.display = "none";
-            //unHideButtons();
-        } else {
-            // Increment the iterator.
-            currentNarrativeTextIterator++;
-        }
-
-    } else {
-        // 'text' is a single string.
-        currentNarrativeText = text;
-        currentNarrativeTextIterator = 0;
-        currentNarrativeTextSize = 0;
-        document.getElementById("speech-box-button").style.display = "none";
-    }
-    */
-
     document.getElementById("narrative").textContent = text;
 }
 
@@ -481,9 +456,26 @@ function loadModel(currentModelState, appStart = true, position = null) {
 
         // Load glb file and add it to scene.
         var loader = new GLTFLoader().setPath('assets/');
+
+        // Load texture file for mesh's
+        var textureLoader = new THREE.TextureLoader().setPath('assets/');
+        var texture = textureLoader.load(globalMeshTexture);
+        texture.flipY = false;
       
         loader.load(currentModelState + ".glb", function(glb) {
             currentObject = glb.scene;
+
+            // This block of code applies the texture to all Mesh's in the .glb file
+            currentObject.traverse ( ( o ) => {
+                if ( o.isMesh ) {
+                    o.material.map = texture;
+                    o.material.bumpMap = texture;
+                    o.material.roughnessMap = texture;
+
+                    // Affects how intense the shading is based on the texture
+                    o.material.bumpScale = 0.1;
+                }
+            } );
 
             // Gets animation from glb and plays it.
             mixer = new THREE.AnimationMixer(currentObject);
@@ -524,9 +516,13 @@ function loadModel(currentModelState, appStart = true, position = null) {
  * Initializes three.js objects necessary for rendering AR scene.
  */
 function init() {
-    // Create html element and add to container.
-    container = document.createElement('div');
-    document.getElementById("container").appendChild(container);
+
+    // Mute music by default.
+    document.getElementById("music").muted = true;
+
+    // Create html element and add to modelViewArea
+    modelViewArea = document.createElement('div');
+    document.getElementById("model-view-area").appendChild(modelViewArea);
 
     // Hide speech bubble
     hideNarrative();
@@ -551,7 +547,7 @@ function init() {
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.xr.enabled = true;
-    container.appendChild(renderer.domElement);
+    modelViewArea.appendChild(renderer.domElement);
 
     // Initializes object for environment map.
     pmremGenerator = new THREE.PMREMGenerator(renderer);

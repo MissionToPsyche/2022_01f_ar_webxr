@@ -349,14 +349,14 @@ function arPlace() {
  * Open menu click.
  */
 document.getElementById("menu-button").onclick = function openNav() {
-    document.getElementById("mySidenav").style.width = "250px";
+    document.getElementById("sidenav").style.width = "250px";
 }
 
 /**
  * Close menu click.
  */
 document.getElementById("close-menu").onclick = function closeNav() {
-    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("sidenav").style.width = "0";
 }
 
 /**

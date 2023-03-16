@@ -153,6 +153,9 @@ body {
   border: none;
   outline: none;
 }
+.btn:not(:active){
+  border: none;
+}
 
 #speech-box-button {
   display: none;
@@ -172,7 +175,7 @@ body {
   font-size: 70px;
   cursor: pointer;
 
-  background-image: url("/assets/pixel-menu-button.png");
+  background-image: url("/assets/buttons/pixel-menu-button.png");
   background-repeat: no-repeat;
   height: 50px;
   width: 100px;
@@ -197,10 +200,10 @@ body {
   width: 50px;
   background-size: 100% 100%;
 
-  background-image: url(assets/white-arcade-button-unpressed.png);
+  background-image: url(assets/buttons/white-arcade-button-unpressed.png);
 }
 .fact-button:active{
-  background-image: url(assets/white-arcade-button-pressed.png);
+  background-image: url(assets/buttons/white-arcade-button-pressed.png);
   border: none;
 }
 /* This gets rid of the ring border that shows up after the button is released */

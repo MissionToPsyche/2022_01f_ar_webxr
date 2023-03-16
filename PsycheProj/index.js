@@ -7,7 +7,7 @@ import {LinearToneMapping} from 'three';
 import {Clock} from './build/three.module.js';
 
 // General variables.
-let container;
+let modelViewArea;
 let camera, scene, renderer;
 let reticle,pmremGenerator, currentObject, controls;
 let hitTestSource = null;
@@ -125,7 +125,8 @@ $("#ARButton").click(async function() {
     loadModel(1);
 
     // Load the Place and Menu button.
-    loadPlaceMenuButtons();
+    // loadPlaceMenuButtons();
+    showViewElements("place-view-element");
 });
 
 /**
@@ -136,7 +137,7 @@ $("#ARButton").click(async function() {
 async function loadPlaceMenuButtons() {
     await sleep(1000);
     document.getElementById("place-button").style.display = "block";
-    document.getElementById("menu-icon").style.display = "block";
+    document.getElementById("menu-button").style.display = "block";
 }
 
 /**
@@ -149,6 +150,7 @@ $("#place-button").click(function() {
     loadModel(currentModelState, false);
     loadModelInfoToNarrative();
     unHideButtons();
+    showViewElements("main-view-element");
     document.getElementById("place-button").textContent = "Re-Place";
 });
 
@@ -193,16 +195,47 @@ function displayFact(factNumber) {
 }
 
 /**
+ * showViewElements Function
+ * 
+ * @param view - The class name for which view elements to show.
+ * 
+ * "main-view-element" - shows elements with class "main-view-element"
+ * "state-change-element" - shows elements with class "state-change-element"
+ */
+function showViewElements(view){
+
+    const elements = document.getElementsByClassName(view);
+
+    Array.from(elements).forEach(element => {
+        element.style.visibility = "visible";
+    });
+}
+
+/**
+ * hideViewElements Function
+ * 
+ * @param view - The class name for which view elements to hide.
+ * 
+ * "main-view-element" - hides elements with class "main-view-element"
+ * "state-change-element" - hides elements with class "state-change-element"
+ */
+function hideViewElements(view){
+    const elements = document.getElementsByClassName(view);
+
+    Array.from(elements).forEach(element => {
+        element.style.visibility = "hidden";
+    });
+}
+
+/**
  * hideButtons Function
  * 
  * Hides all the buttons on the screen.
  */
 function hideButtons() {
     document.getElementById("state-change").style.display = "none";
-    document.getElementById("fact-one").style.display = "none";
-    document.getElementById("fact-two").style.display = "none";
-    document.getElementById("fact-three").style.display = "none";
-    document.getElementById("menu-icon").style.display = "none";
+    document.getElementById("fact-button-area").style.visibility = "hidden";
+    document.getElementById("menu-button").style.display = "none";
     document.getElementById("place-button").style.display = "none";
 }
 
@@ -213,10 +246,8 @@ function hideButtons() {
  */
 function unHideButtons() {
     document.getElementById("state-change").style.display = "block";
-    document.getElementById("fact-one").style.display = "block";
-    document.getElementById("fact-two").style.display = "block";
-    document.getElementById("fact-three").style.display = "block";
-    document.getElementById("menu-icon").style.display = "block";
+    document.getElementById("fact-button-area").style.visibility = "visible";
+    document.getElementById("menu-button").style.display = "block";
     document.getElementById("place-button").style.display = "block";
 }
 
@@ -271,11 +302,21 @@ async function changeState(next_or_previous) {
 
     // If 'currentModelState' is an even number, we're in a transition state.  Hide buttons, display Next button.
     if ((currentModelState % 2) == 0) {
+        /*
         hideButtons();
         document.getElementById("next-button").style.display = "block";
+        */
+
+        hideViewElements("main-view-element");
+        showViewElements("state-change-element")
     } else {
+        /*
         unHideButtons();
         document.getElementById("next-button").style.display = "none";
+        */
+
+        hideViewElements("state-change-element");
+        showViewElements("main-view-element");
     }
 
     // Get current model position, remove model from scene.
@@ -307,15 +348,15 @@ function arPlace() {
 /**
  * Open menu click.
  */
-document.getElementById("menu-icon").onclick = function openNav() {
-    document.getElementById("mySidenav").style.width = "250px";
+document.getElementById("menu-button").onclick = function openNav() {
+    document.getElementById("sidenav").style.width = "250px";
 }
 
 /**
  * Close menu click.
  */
 document.getElementById("close-menu").onclick = function closeNav() {
-    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("sidenav").style.width = "0";
 }
 
 /**
@@ -349,7 +390,7 @@ function showNarrative() {
 
 function hideNarrative(){
     document.getElementById("textBox").style.display = "none";
-    //document.getElementById("narrative").style.display = "none";
+    document.getElementById("narrative").style.display = "none";
 }
 
 /**
@@ -429,6 +470,10 @@ function loadModel(currentModelState, appStart = true, position = null) {
                 if ( o.isMesh ) {
                     o.material.map = texture;
                     o.material.bumpMap = texture;
+                    o.material.roughnessMap = texture;
+
+                    // Affects how intense the shading is based on the texture
+                    o.material.bumpScale = 0.1;
                 }
             } );
 
@@ -475,9 +520,9 @@ function init() {
     // Mute music by default.
     document.getElementById("music").muted = true;
 
-    // Create html element and add to container.
-    container = document.createElement('div');
-    document.getElementById("container").appendChild(container);
+    // Create html element and add to modelViewArea
+    modelViewArea = document.createElement('div');
+    document.getElementById("model-view-area").appendChild(modelViewArea);
 
     // Hide speech bubble
     hideNarrative();
@@ -502,7 +547,7 @@ function init() {
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.xr.enabled = true;
-    container.appendChild(renderer.domElement);
+    modelViewArea.appendChild(renderer.domElement);
 
     // Initializes object for environment map.
     pmremGenerator = new THREE.PMREMGenerator(renderer);

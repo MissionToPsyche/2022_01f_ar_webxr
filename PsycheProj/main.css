@@ -36,10 +36,15 @@ body {
   height: 100vh;
 }
 
+.h-10{
+  height: 10%;
+}
 .h-20{
   height: 20%;
 }
-
+.h-30{
+  height: 30%;
+}
 .h-80{
   height: 80%;
 }
@@ -161,6 +166,11 @@ body {
   display: none;
   float: right;
   margin-bottom: 10px;
+}
+
+#dashboard{
+  /*border-top: 1px solid white;*/
+  background-color: rgba(179, 179, 179, 0.15);
 }
 
 #place-button {

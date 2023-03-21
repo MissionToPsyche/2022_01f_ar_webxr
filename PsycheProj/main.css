@@ -36,10 +36,15 @@ body {
   height: 100vh;
 }
 
+.h-10{
+  height: 10%;
+}
 .h-20{
   height: 20%;
 }
-
+.h-30{
+  height: 30%;
+}
 .h-80{
   height: 80%;
 }
@@ -149,10 +154,35 @@ body {
   visibility: hidden;
 }
 
+.dashboard-element{
+  visibility: hidden;
+}
+
+.btn:active{
+  border: none;
+  outline: none;
+}
+.btn:not(:active){
+  border: none;
+}
+
 #speech-box-button {
   display: none;
   float: right;
   margin-bottom: 10px;
+}
+
+#dashboard{
+  /*border-top: 1px solid white;*/
+  background-color: rgba(179, 179, 179, 0.15);
+  bottom: 0;
+
+  /* this allows the jQuery slideToggle() to work as desired */
+  position: absolute;
+}
+
+#dashboard-button{
+  color: #f1f1f1;
 }
 
 #place-button {
@@ -166,6 +196,12 @@ body {
 #menu-button {
   font-size: 70px;
   cursor: pointer;
+
+  background-image: url("/assets/buttons/pixel-menu-button.png");
+  background-repeat: no-repeat;
+  height: 50px;
+  width: 100px;
+  background-size: 100% 100%;
 }
 
 #state-change {
@@ -179,36 +215,37 @@ body {
 
 /* Class for shared attributes of fact buttons */
 .fact-button{
-  border-radius: 50%;
-  border: 0px;
+  border: none;
 
-  opacity: 0.9;
-
-  background-color: var(--psyche-dark-pink);
   background-repeat: no-repeat;
+  height: 50px;
+  width: 50px;
   background-size: 100% 100%;
 
-  box-shadow:
-    0 0 0 5px var(--psyche-light-purple),
-    0 0 0 10px var(--psyche-dark-purple),
-    0 0 0 15px black;
+  background-image: url(assets/buttons/white-arcade-button-unpressed.png);
+}
+.fact-button:active{
+  background-image: url(assets/buttons/white-arcade-button-pressed.png);
+  border: none;
+}
+/* This gets rid of the ring border that shows up after the button is released */
+.fact-button:not(:active){
+  border: none;
 }
 
 /* Represents the asteroid button */
 #fact-one {  
-  background-image: url("/assets/asteroid-art-32px-noCircle.png");
+  /*background-image: url("/assets/question-mark-64px.png");*/
 }
 
 /* Represents the question button */
 #fact-two {
-  background-color: #F57C33;
-  background-image: url("/assets/asteroid-art-32px-noCircle.png");
+  /*background-image: url("/assets/asteroid-art-32px-noCircle.png");*/
 }
 
 /* Represents the spacecraft button */
 #fact-three {
-  background-color: #F57C33;
-  background-image: url("/assets/asteroid-art-32px-noCircle.png");
+  /*background-image: url("/assets/asteroid-art-32px-noCircle.png");*/
 }
 
 #screen-bottom{

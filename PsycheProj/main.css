@@ -154,6 +154,10 @@ body {
   visibility: hidden;
 }
 
+.dashboard-element{
+  visibility: hidden;
+}
+
 .btn:active{
   border: none;
   outline: none;
@@ -171,6 +175,14 @@ body {
 #dashboard{
   /*border-top: 1px solid white;*/
   background-color: rgba(179, 179, 179, 0.15);
+  bottom: 0;
+
+  /* this allows the jQuery slideToggle() to work as desired */
+  position: absolute;
+}
+
+#dashboard-button{
+  color: #f1f1f1;
 }
 
 #place-button {

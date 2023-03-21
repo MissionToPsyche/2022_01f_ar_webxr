@@ -155,6 +155,13 @@ $("#place-button").click(function() {
 });
 
 /**
+ * Show/Hide Dashboard Button
+ */
+$("#dashboard-button").click(function() {
+    $("#dashboard").slideToggle("fast", "swing");
+})
+
+/**
  * Fact 1 button click.
  */
 $("#fact-one").click(function() {displayFact(1)});
@@ -194,6 +201,10 @@ function displayFact(factNumber) {
     }
 }
 
+// NOTE:    These show and hide functions can be replaced with simple JQuery functions.
+//          JQuery provides show() and hide() methods that can perform on class names.
+//          https://www.w3schools.com/jquery/jquery_hide_show.asp
+
 /**
  * showViewElements Function
  * 
@@ -203,7 +214,6 @@ function displayFact(factNumber) {
  * "state-change-element" - shows elements with class "state-change-element"
  */
 function showViewElements(view){
-
     const elements = document.getElementsByClassName(view);
 
     Array.from(elements).forEach(element => {

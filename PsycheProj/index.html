@@ -30,7 +30,7 @@
 			<source src="./assets/ivoryhaus-perseids.mp3" type="audio/mpeg">
 		</audio>
 
-		<!-- This container is divided into 5 rows -->
+		<!-- This container is divided into 5 rows and represents the screen elements -->
 		<div id="content" class="container-fluid p-0">
 
 			<!-- This is where the models get placed in JS. It spans the size of the screen -->
@@ -60,18 +60,23 @@
 			<div class="row h-20 w-100 m-0"></div>
 
 			<!-- 4/5 -->
-			<!-- Spacer -->
-			<div class="row h-20"></div>
+			<!-- Spacer, Dashboard Button -->
+			<div class="row h-20">
+
+				<!-- Toggle Dashboard Button -->
+				<div type="button" id="dashboard-button" class="btn align-self-end main-view-element">^</div>
+
+			</div>
 
 			<!-- 5/5 -->
 			<!-- This represents the slideable dashboard of buttons -->
-			<div id="dashboard" class="row h-20 w-100 m-0 main-view-element">
+			<div class="row h-20 w-100 m-0 main-view-element">
 
-				<div class="col">
+				<div id="dashboard" class="col h-20">
 
 					<!-- 1/2 -->
 					<!-- FACT BUTTONS -->
-					<div id="fact-button-area" class="row h-50 w-100 m-0 main-view-element">
+					<div id="fact-button-area" class="row h-50 w-100 m-0 main-view-element dashboard-element">
 
 						<!-- Science Question Button -->
 						<div class="col d-flex align-self-center justify-content-center">
@@ -97,7 +102,7 @@
 						<!-- LEFT: State change button -->
 						<div class="col d-flex align-items-center justify-content-center">
 							
-							<button type="button" id="state-change" class="btn btn-dark main-view-element">Change</button>
+							<button type="button" id="state-change" class="btn btn-dark main-view-element dashboard-element">Change</button>
 
 						</div>
 
@@ -108,14 +113,14 @@
 							<button type="button" id="next-button" class="btn btn-dark position-absolute state-change-element">Next</button>
 
 							<!-- Menu button -->
-							<button type="button" id="menu-button" class="btn main-view-element position-absolute place-view-element"><!--&#9776;--></span>
+							<button type="button" id="menu-button" class="btn main-view-element position-absolute place-view-element dashboard-element"><!--&#9776;--></span>
 
 						</div>
 			
 						<!-- RIGHT: Place button -->
 						<div class="col d-flex align-items-center justify-content-center">
 
-							<button type="button" id="place-button" class="btn btn-outline-dark main-view-element place-view-element">Place</button>
+							<button type="button" id="place-button" class="btn btn-outline-dark main-view-element place-view-element dashboard-element">Place</button>
 						
 						</div>
 					</div>

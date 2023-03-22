@@ -62,7 +62,7 @@ body {
 .speech-bubble {
   display: none;
   float: right;
-  width: 330px;
+  width: 100%;
   height: 150px;
   color: white;
   position: relative;
@@ -83,7 +83,7 @@ body {
   top: 15%;
   bottom: 15%;
   left: 10%;
-  right: 10%;
+  right: 15%;
   opacity: 1;
 
   overflow-y: scroll;

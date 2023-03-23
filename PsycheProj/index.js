@@ -104,8 +104,6 @@ const facts = [
 init();
 animate();
 
-document.getElementById("intro").textContent = introText;
-
 /**
  * Start AR button click.
  * 
@@ -133,23 +131,8 @@ $("#ARButton").click(async function() {
     showViewElements("place-view-element");
 
     // Remove <p> tag in order to preserve the formatting of the main HTML doc.
-
     document.getElementById("intro").style.display = "none";
-
-    // let intro = document.getElementById("intro");
-    // intro.parentNode.removeChild("intro");
 });
-
-/**
- * loadPlaceButton function
- * 
- * Delays the system execution (in order fro app screen to load), then loads the Place and Menu buttons.
- */
-async function loadPlaceMenuButtons() {
-    await sleep(1000);
-    document.getElementById("place-button").style.display = "block";
-    document.getElementById("menu-button").style.display = "block";
-}
 
 /**
  * Place button click.
@@ -537,6 +520,8 @@ function loadModel(currentModelState, appStart = true, position = null) {
  * Initializes three.js objects necessary for rendering AR scene.
  */
 function init() {
+    // Load the introduction text.
+    document.getElementById("intro").textContent = introText;
 
     // Mute music by default.
     document.getElementById("music").muted = true;

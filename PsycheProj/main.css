@@ -67,7 +67,7 @@ body {
   color: white;
   position: relative;
 
-  background-image: url("/assets/text-box.png");
+  background-image: url("/assets/pixel-text-box.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
   opacity: 0.75;
@@ -175,11 +175,11 @@ body {
 #dashboard{
   bottom: 0;
 
-  background-color: rgba(26, 26, 26, 0.75);
+  background-color: rgba(26, 26, 26, 0.9);
   background-repeat: no-repeat;
   background-size: 100% 100%;
 
-  box-shadow: 0 -4px 5px var(--psyche-light-orange);
+  box-shadow: 0 -4px 5px #faa00142;
 
   /*background-image: url(/assets/backgrounds/metalbackground-pixel-5.png);*/
 
@@ -189,6 +189,12 @@ body {
 
 #dashboard-button{
   color: #f1f1f1;
+  border: none;
+
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+
+  background-image: url(/assets/buttons/simple-up.png);
 }
 
 #place-button {

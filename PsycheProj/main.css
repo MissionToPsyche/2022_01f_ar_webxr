@@ -252,11 +252,8 @@ body {
 
 }
 
-#intro-header {
-  padding: 0px 10px 0px 10px;
-  position: absolute;
-  top: 50%;
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
-  color: black;
+.intro {
+  padding: 85px 25px 25px 25px;
+  color: white;
+  text-align: center;
 }

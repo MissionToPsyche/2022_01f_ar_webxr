@@ -22,8 +22,11 @@ const globalMeshTexture = "pixel-rocks.png";
 const assets = "assets/";
 
 // Narrative (const) text variables.
+const introText = "Welcome to the 16-Psyche AR Experience!  Here you'll learn all about NASA's Psyche asteroid exploration mission!" +
+    "  We'll teach you about the leading hypothesis of Psyche's creation as well as neat factoids about the mission.";
+
 const greeting = "Hello explorer!  I'm the Psyche spacecraft, here to guide you.  Look around and click the Place button " +
-    "when the reticle is in the center of your screen."
+    "when the reticle is in the center of your screen.";
 
 const modelDescriptions = [
     // Model 1 Description
@@ -101,6 +104,8 @@ const facts = [
 init();
 animate();
 
+document.getElementById("intro").textContent = introText;
+
 /**
  * Start AR button click.
  * 
@@ -125,8 +130,14 @@ $("#ARButton").click(async function() {
     loadModel(1);
 
     // Load the Place and Menu button.
-    // loadPlaceMenuButtons();
     showViewElements("place-view-element");
+
+    // Remove <p> tag in order to preserve the formatting of the main HTML doc.
+
+    document.getElementById("intro").style.display = "none";
+
+    // let intro = document.getElementById("intro");
+    // intro.parentNode.removeChild("intro");
 });
 
 /**

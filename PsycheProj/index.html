@@ -39,15 +39,11 @@
 			<!-- 1/5 -->
 			<!-- SPEECH BUBBLE, SPACECRAFT -->
 			<div id="screen-top" class="row h-20 w-100 m-0">
-
-				<div class="col-2 d-flex align-items-center justify-content-center">
-					<img align="right" src="assets/satellite.png" id="satellite" width="0" height="60"></img>
-				</div>
-
-				<div class="col-10 d-flex align-items-center justify-content-center">
+				<div class="col d-flex align-items-center justify-content-center">
 					<div id ="textBox" class="speech-bubble">
 						<p id="narrative"></p>
-						<!--<button id="speech-box-button">Continue</button>-->
+
+						<img align="right" src="/assets/psyche-spacecraft-pixel-art.png" id="satellite"></img>
 					</div>
 				</div>
 
@@ -61,13 +57,21 @@
 
 			<!-- 4/5 -->
 			<!-- Spacer, Dashboard Button -->
-			<div class="row h-20">
+			<div class="row h-20 m-0">
 
 				<!-- This is the intro message and will be removed after the introduction is complete -->
 				<p id="intro" class="intro"></p>
 
-				<!-- Toggle Dashboard Button -->
-				<div type="button" id="dashboard-button" class="btn align-self-end main-view-element">^</div>
+				<div class="col"></div>
+
+				<div class="d-flex col-1 h-10 justify-content-center align-self-end">
+
+					<!-- Dashboard button that shows/hides dashboard -->
+					<div type="button" id="dashboard-button" class="btn main-view-element"></div>
+
+				</div>
+				
+				<div class="col"></div>
 
 			</div>
 
@@ -105,7 +109,7 @@
 						<!-- LEFT: State change button -->
 						<div class="col d-flex align-items-center justify-content-center">
 							
-							<button type="button" id="state-change" class="btn btn-dark main-view-element dashboard-element">Change</button>
+							<button type="button" id="state-change" class="btn main-view-element dashboard-element"></button>
 
 						</div>
 
@@ -113,7 +117,7 @@
 						<div class="col d-flex align-items-center justify-content-center">
 
 							<!-- Next (State) Button-->
-							<button type="button" id="next-button" class="btn btn-dark position-absolute state-change-element">Next</button>
+							<button type="button" id="next-button" class="btn position-absolute state-change-element"></button>
 
 							<!-- Menu button -->
 							<button type="button" id="menu-button" class="btn main-view-element position-absolute place-view-element dashboard-element"><!--&#9776;--></span>
@@ -123,7 +127,7 @@
 						<!-- RIGHT: Place button -->
 						<div class="col d-flex align-items-center justify-content-center">
 
-							<button type="button" id="place-button" class="btn btn-outline-dark main-view-element place-view-element dashboard-element">Place</button>
+							<button type="button" id="place-button" class="btn main-view-element place-view-element dashboard-element"></button>
 						
 						</div>
 					</div>

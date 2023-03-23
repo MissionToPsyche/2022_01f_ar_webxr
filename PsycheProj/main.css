@@ -62,12 +62,12 @@ body {
 .speech-bubble {
   display: none;
   float: right;
-  width: 330px;
+  width: 100%;
   height: 150px;
   color: white;
   position: relative;
 
-  background-image: url("/assets/text-box.png");
+  background-image: url("/assets/pixel-text-box.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
   opacity: 0.75;
@@ -83,7 +83,7 @@ body {
   top: 15%;
   bottom: 15%;
   left: 10%;
-  right: 10%;
+  right: 15%;
   opacity: 1;
 
   overflow-y: scroll;
@@ -173,9 +173,15 @@ body {
 }
 
 #dashboard{
-  /*border-top: 1px solid white;*/
-  background-color: rgba(179, 179, 179, 0.15);
   bottom: 0;
+
+  background-color: rgba(26, 26, 26, 0.9);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+
+  box-shadow: 0 -4px 5px #faa00142;
+
+  /*background-image: url(/assets/backgrounds/metalbackground-pixel-5.png);*/
 
   /* this allows the jQuery slideToggle() to work as desired */
   position: absolute;
@@ -183,29 +189,80 @@ body {
 
 #dashboard-button{
   color: #f1f1f1;
+  border: none;
+
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+
+  background-image: url(/assets/buttons/simple-up.png);
 }
 
 #place-button {
+  border: none;
 
+  background-repeat: no-repeat;
+  height: 50px;
+  width: 50px;
+  background-size: 100% 100%;
+
+  background-image: url(assets/buttons/blue-arcade-button-cursor3-unpressed.png);
+}
+#place-button:active{
+  background-image: url(assets/buttons/blue-arcade-button-cursor3-pressed.png);
+  border: none;
+}
+/* This gets rid of the ring border that shows up after the button is released */
+#place-button:not(:active){
+  border: none;
 }
 
 #next-button {
+  border: none;
 
+  background-repeat: no-repeat;
+  height: 50px;
+  width: 50px;
+  background-size: 100% 100%;
+
+  background-image: url(assets/buttons/red-arcade-button-next-unpressed.png);
+}
+#next-button:active{
+  background-image: url(assets/buttons/red-arcade-button-next-pressed.png);
+  border: none;
+}
+/* This gets rid of the ring border that shows up after the button is released */
+#next-button:not(:active){
+  border: none;
 }
 
 #menu-button {
   font-size: 70px;
   cursor: pointer;
 
-  background-image: url("/assets/buttons/pixel-menu-button.png");
+  background-image: url("/assets/icons/List.png");
   background-repeat: no-repeat;
-  height: 50px;
-  width: 100px;
+  height: 35px;
+  width: 35px;
   background-size: 100% 100%;
 }
 
 #state-change {
+  border: none;
 
+  background-repeat: no-repeat;
+  height: 50px;
+  width: 50px;
+  background-size: 100% 100%;
+
+  background-image: url(assets/buttons/red-arcade-button-play-unpressed.png);
+}
+#state-change:active{
+  background-image: url(assets/buttons/red-arcade-button-play-pressed.png);
+  border: none;
+}
+/* This gets rid of the ring border that shows up after the button is released */
+#state-change:not(:active){
+  border: none;
 }
 
 /* Contains fact buttons */
@@ -240,7 +297,10 @@ body {
 
 /* Represents the question button */
 #fact-two {
-  /*background-image: url("/assets/asteroid-art-32px-noCircle.png");*/
+  background-image: url(assets/buttons/white-arcade-button-question-unpressed.png);
+}
+#fact-two:active{
+  background-image: url(assets/buttons/white-arcade-button-question-pressed.png);
 }
 
 /* Represents the spacecraft button */

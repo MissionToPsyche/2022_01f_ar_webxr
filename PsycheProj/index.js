@@ -145,7 +145,6 @@ $("#place-button").click(function() {
     loadModelInfoToNarrative();
     unHideButtons();
     showViewElements("main-view-element");
-    document.getElementById("place-button").textContent = "Re-Place";
 });
 
 /**
@@ -379,7 +378,7 @@ $("#music-settings").click(function() {
  * Loads the satellite guide onto the screen.
  */
 function loadSatellite() {
-    document.getElementById("satellite").width = "60";
+    $("#satellite").show();
 }
 
 /**

@@ -10,9 +10,35 @@
     <title>Psyche App Text Version</title>
     
 </head>
+<style type=text/css>
+    body{
+	  margin-left: 50px;
+    }
+    button{
+            cursor: pointer;
+            border: 1px solid #555;
+            text-align: center;
+            padding: 5px;
+            margin-left: 8px; 
+        }
+        .dark{
+            background-color: black;
+            color: white;
+        }
+</style>
 <body>
     <centre><h2>Psyche Model</h2></centre>
+
     <br>
+<button id="btn1" class='btn' onclick="darkMode()" >Light/Dark Mode</button> 
+      
+    <script>
+        function darkMode() {
+        var element = document.body;
+        element.classList.toggle("dark");
+        }
+    </script>
+
     <p>
 	  <h4>Stage 1: Formation of planetesimal</h4>
 	  <u>Description of Model:</u> 
@@ -73,7 +99,7 @@
     <br><br>
     <p>
         <u>Transition Between Stages 2 and 3:</u>
-	    The user is able to move objects into the planetesimal representing asteroid strikes that, hypothetically,
+	  The user is able to move objects into the planetesimal representing asteroid strikes that, hypothetically,
         would lead to the planetesimal breaking up, leaving the core exposed.
     </p>
     <br><br>
@@ -103,11 +129,14 @@
         </ul>
     </p>
     <br>
+    <centre>
     <a href="index.html">
 
-        <button class="btn">Return to AR Mode</button>
+        <button id="btn2" class='btn'>Return to AR Mode</button>
 
     </a>
+    </centre>
+<br><br>
 
 </body>
 </html>

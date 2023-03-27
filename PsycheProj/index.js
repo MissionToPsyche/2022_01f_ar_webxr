@@ -143,7 +143,6 @@ $("#place-button").click(function() {
     scene.remove(currentObject);
     loadModel(currentModelState, false);
     loadModelInfoToNarrative();
-    unHideButtons();
     showViewElements("main-view-element");
 });
 
@@ -231,39 +230,6 @@ function hideViewElements(view){
 }
 
 /**
- * hideButtons Function
- * 
- * Hides all the buttons on the screen.
- */
-function hideButtons() {
-    document.getElementById("state-change").style.display = "none";
-    document.getElementById("fact-button-area").style.visibility = "hidden";
-    document.getElementById("menu-button").style.display = "none";
-    document.getElementById("place-button").style.display = "none";
-}
-
-/**
- * unHideButtons Function
- * 
- * Displays all the buttons on the screen.
- */
-function unHideButtons() {
-    document.getElementById("state-change").style.display = "block";
-    document.getElementById("fact-button-area").style.visibility = "visible";
-    document.getElementById("menu-button").style.display = "block";
-    document.getElementById("place-button").style.display = "block";
-}
-
-/**
- * Speech Box button click.
- * 
- * The loadTextToNarrative() function does not use the argument in this case.  So it can be anything (or empty string).
- */
-/*
-$("#speech-box-button").click(function() {loadTextToNarrative("This argument can be anything.")});
-*/
-
-/**
  * Change State button click.
  */
 $("#state-change").click(function() {changeState(1)});
@@ -305,19 +271,9 @@ async function changeState(next_or_previous) {
 
     // If 'currentModelState' is an even number, we're in a transition state.  Hide buttons, display Next button.
     if ((currentModelState % 2) == 0) {
-        /*
-        hideButtons();
-        document.getElementById("next-button").style.display = "block";
-        */
-
         hideViewElements("main-view-element");
         showViewElements("state-change-element")
     } else {
-        /*
-        unHideButtons();
-        document.getElementById("next-button").style.display = "none";
-        */
-
         hideViewElements("state-change-element");
         showViewElements("main-view-element");
     }
@@ -585,37 +541,7 @@ function init() {
     scene.add(reticle);
 
     window.addEventListener('resize', onWindowResize);
-
-    // This code allows the user to spin the model by sliding across it with their finger.
-    /*
-    renderer.domElement.addEventListener('touchstart',function(e){
-        e.preventDefault();
-        touchDown=true;
-        touchX = e.touches[0].pageX;
-        touchY = e.touches[0].pageY;
-    },false)
-
-    renderer.domElement.addEventListener('touchend',function(e){
-        e.preventDefault();
-        touchDown=false;
-    },false)
-
-    renderer.domElement.addEventListener('touchmove',function(e){
-        e.preventDefault();
-        if(!touchDown){
-            return;
-        }
-
-        deltaX = e.touches[0].pageX-touchX;
-        deltaY = e.touches[0].pageY-touchY;
-        touchX = e.touches[0].pageX;
-        touchY = e.touches[0].pageY;
-
-        rotateObject();
-        
-    },false)*/
 }
-
 
 /**
  * rotateObject Function

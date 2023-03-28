@@ -98,6 +98,8 @@ const facts = [
     ]
 ];
 
+// This allows the user to arrive at a newly initialized session from
+// the back button in the browser.
 window.addEventListener( "pageshow", function ( event ) {
     var historyTraversal = event.persisted || 
                            ( typeof window.performance != "undefined" && 
@@ -106,7 +108,7 @@ window.addEventListener( "pageshow", function ( event ) {
       // Handle page restore.
       window.location.reload();
     }
-  });
+});
 
 init();
 animate();

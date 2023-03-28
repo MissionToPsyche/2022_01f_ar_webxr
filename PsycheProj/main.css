@@ -30,6 +30,13 @@ body {
   /*text-transform: uppercase;*/
 }
 
+#startup-image{
+  display: inline;
+  z-index: 99;
+  height: 100vh;
+  width: 100vw;
+}
+
 #content{
   position: relative;
   width: 100vw;

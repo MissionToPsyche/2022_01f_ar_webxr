@@ -111,9 +111,6 @@ $("#ARButton").click(async function() {
         currentObject.visible = false;
     }
 
-    // Remove title screen background.
-    document.getElementById("body").setAttribute("background-image", "none");
-
     // Set up preliminary objects and elements.
     setSpaceEnvironment(scene);
     loadSatellite();

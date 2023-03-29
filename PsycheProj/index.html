@@ -27,9 +27,13 @@
 
 
 	</head>
+<<<<<<< HEAD
+	<body id="body" style="background-image: url(./assets/psyche-title-screen-cropped.png); background-repeat: no-repeat; background-size: cover; background-position: center;">
+=======
 	<body id="body">
 
 		<img id="startup-image" src="./assets/psyche-title-screen.png" alt="">
+>>>>>>> aa90bd20b9e43a2d3baf77f10f0e7c4214e11442
 
 		<audio autoplay loop id="music">
 			<source src="./assets/ivoryhaus-perseids.mp3" type="audio/mpeg">
@@ -47,8 +51,8 @@
 				<div class="col d-flex align-items-center justify-content-center">
 					<div id ="textBox" class="speech-bubble">
 						<p id="narrative"></p>
-
 						<img align="right" src="/assets/psyche-spacecraft-pixel-art.png" id="satellite"></img>
+						<button id="speech-box-button" class="speech-box-button">...</button>
 					</div>
 				</div>
 
@@ -63,6 +67,9 @@
 			<!-- 4/5 -->
 			<!-- Spacer, Dashboard Button -->
 			<div class="row h-20 m-0">
+
+				<!-- This is the intro message and will be removed after the introduction is complete -->
+				<p id="intro" class="intro"></p>
 
 				<div class="col"></div>
 

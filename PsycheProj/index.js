@@ -97,6 +97,18 @@ const facts = [
     ]
 ];
 
+// This allows the user to arrive at a newly initialized session from
+// the back button in the browser.
+window.addEventListener( "pageshow", function ( event ) {
+    var historyTraversal = event.persisted || 
+                           ( typeof window.performance != "undefined" && 
+                                window.performance.navigation.type === 2 );
+    if ( historyTraversal ) {
+      // Handle page restore.
+      window.location.reload();
+    }
+});
+
 init();
 animate();
 
@@ -109,9 +121,6 @@ $("#ARButton").click(async function() {
     if(currentObject){
         currentObject.visible = false;
     }
-
-    // Remove title screen background.
-    document.getElementById("body").setAttribute("background-image", "none");
 
     // Set up preliminary objects and elements.
     setSpaceEnvironment(scene);

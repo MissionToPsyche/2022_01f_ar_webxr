@@ -56,7 +56,13 @@ class ARButton {
 
 				if ( currentSession === null ) {
 
-					navigator.xr.requestSession( 'immersive-ar', sessionInit ).then( onSessionStarted );
+					navigator.xr.requestSession( 'immersive-ar', sessionInit )
+						.then( onSessionStarted )
+						.catch( (error) => {
+
+
+							loadTextMode();
+						})
 
 				} else {
 
@@ -88,6 +94,12 @@ class ARButton {
 			disableButton();
 
 			button.textContent = 'AR NOT SUPPORTED';
+		}
+
+		// Loads text mode
+		function loadTextMode(){
+
+			document.getElementById("content").innerHTML='<object type="text/html" data="/text-version.html"></object>'
 
 		}
 

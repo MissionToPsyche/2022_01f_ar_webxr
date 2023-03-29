@@ -28,8 +28,7 @@ const assets = "assets/";
 const introText = "Welcome to the 16-Psyche AR Experience!  Here you'll learn all about NASA's Psyche asteroid exploration mission!" +
     "  We'll teach you about the leading hypothesis of Psyche's creation as well as neat factoids about the mission.";
 
-const greeting = "Hello explorer!  I'm the Psyche spacecraft, here to guide you.  Look around and click the Place button " +
-    "when the reticle is in the center of your screen.";
+const greeting = "Hello explorer!  When you're ready, look around and click the Place button when the reticle is in the center of your screen.";
 
 const modelDescriptions = [
     // Model 1 Description

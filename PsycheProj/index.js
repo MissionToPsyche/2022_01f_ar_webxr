@@ -15,6 +15,9 @@ let hitTestSourceRequested = false;
 let currentModelState = null;
 let touchDown, touchX, touchY, deltaX, deltaY;
 let mixer;
+let narrativeIterator;      // Number to keep track of narrative sequence when more than 1 speech box is needed for a single narrative.
+let narrativeTextIndicator; // Number to indicate what type of narrative text is currently in the speech box (model description (0), state change description (1), fact (2)).
+let currentFactNumber;      // Number to track of the current fact number when a narrative with multiple speech boxes is currently being iterated through.
 const clock = new THREE.Clock();
 
 // File name variables.
@@ -32,11 +35,15 @@ const modelDescriptions = [
     // Model 1 Description
     "Stage 1: Formation of planetesimal",
 
-    // State Change 1 Description
-    "<Explain transition from State 1 to State 2 - It accumulated particles over time.>",
+    // State Change 1 Description - String Array indicates it will use multiple speech boxes.
+    ["<Explain transition from State 1 to State 2 - It accumulated particles over time.>",
+    "This is a transition 1 -> 2 test.",
+    "Also a transition 1 -> 2 test."],
 
-    // Model 2 Description
-    "Stage 2: Planetesimal",
+    // Model 2 Description - String Array indicates it will use multiple speech boxes.
+    ["Stage 2: Planetesimal",
+    "This is a model 2 test.",
+    "Also a model 2 test."],
 
     // State Change 2 Description
     "<Explain transition from State 2 to State 1 - It was broken down over time.>",
@@ -48,56 +55,46 @@ const modelDescriptions = [
 const facts = [
     // Model 1 Educational Information
     [
-        // Model 1 - Asteroid Button
-        [
-            "Planetesimals are one of the building blocks of planets. The hypothesis that Psyche could potentially be leftover core material from a planetesimal could lead scientists to be able to investigate questions about Earth's core, including how it was formed."
-        ],
+        // Model 1 - Asteroid Button - String Array indicates it will use multiple speech boxes.
+        ["Planetesimals are one of the building blocks of planets. The hypothesis that Psyche could potentially be leftover core material from a",
+        "planetesimal could lead scientists to be able to investigate questions about Earth's core, including how it was formed."],
 
         // Model 1 - Question Button
-        [
-            "How might Psyche have formed?"
-        ],
+        "How might Psyche have formed?",
 
-        // Model 1 - Spacecraft Button
-        [
-            "The spacecraft will is equipped with two Multispectral Imagers. These high resolution cameras will capture images of the asteroid's surface at different wavelengths of light. This, along with pictures of the topography of Psyche, will allow scientists to study features that provide clues to Psyche's history."
-        ]
+        // Model 1 - Spacecraft Button - String Array indicates it will use multiple speech boxes.
+        ["The spacecraft will is equipped with two Multispectral Imagers. These high resolution cameras will capture images of the asteroid's surface at",
+        "different wavelengths of light. This, along with pictures of the topography of Psyche, will allow scientists to study features that provide",
+        "clues to Psyche's history."]
     ],
 
     // Model 2 Educational Information
     [
-        // Model 2 - Asteroid Button
-        [
-            "Scientists think Psyche may consist largely of metal from the core of a planetesimal, one of the building blocks of the rocky planets in our solar system (Mercury, Venus, Earth and Mars). Psyche is most likely a survivor of multiple violent hit-and-run collisions with other material, common when the solar system was forming."
-        ],
+        // Model 2 - Asteroid Button - String Array indicates it will use multiple speech boxes.
+        ["Scientists think Psyche may consist largely of metal from the core of a planetesimal, one of the building blocks of the rocky planets in our",
+        "solar system (Mercury, Venus, Earth and Mars). Psyche is most likely a survivor of multiple violent hit-and-run collisions with other material,",
+        "common when the solar system was forming."],
 
         // Model 2 - Question Button
-        [
-            "How will it be determined if Psyche is core material of a planetesimal?"
-        ],
+        "How will it be determined if Psyche is core material of a planetesimal?",
         
-        // Model 2 - Spacecraft Button
-        [
-            "All of the instruments on the spacecraft will provide clues but, in particular, the magnetometer will look for evidence of an ancient magnetic field: if Psyche has a significant magnetic field still recorded in its solid body, it was once a core that produced its own dynamo."
-        ]
+        // Model 2 - Spacecraft Button - String Array indicates it will use multiple speech boxes.
+        ["All of the instruments on the spacecraft will provide clues but, in particular, the magnetometer will look for evidence of an ancient",
+        "magnetic field: if Psyche has a significant magnetic field still in its solid body, it was once a core that produced its own dynamo."]
     ],
 
     // Model 3 Educational Information
     [
-        // Model 3 - Asteroid Button
-        [
-            "After numerous collisions, it is hypothesized that the potential planetesimal would have its rocky mantle stripped away and leave behind the core material. This core material could potentially be what makes up the current asteroid Psyche." 
-        ],
+        // Model 3 - Asteroid Button - String Array indicates it will use multiple speech boxes.
+        ["After numerous collisions, it is hypothesized that the potential planetesimal would have its rocky mantle stripped away and leave behind the",
+        "core material. This core material could potentially be what makes up the current asteroid Psyche."],
 
         // Model 3 - Question Button
-        [
-            "What is it that planetary cores are made of?"
-        ],
+        "What is it that planetary cores are made of?",
 
-        // Model 3 - Spacecraft Button
-        [
-            "The spacecraft contains a Gamma Ray and Neutron Spectrometer that will detect, measure, and map Psyche's elemental composition. These measurements will be able to give scientists a better idea of what exactly it is that potentially makes up the inner cores of planets."
-        ]
+        // Model 3 - Spacecraft Button - String Array indicates it will use multiple speech boxes.
+        ["The spacecraft contains a Gamma Ray and Neutron Spectrometer that will detect, measure, and map Psyche's elemental composition.  These measurements",
+        "will be able to give scientists a better idea of what exactly it is that potentially makes up the inner cores of planets."]
     ]
 ];
 
@@ -130,7 +127,7 @@ $("#ARButton").click(async function() {
     // Load the Place and Menu button.
     showViewElements("place-view-element");
 
-    // Remove <p> tag in order to preserve the formatting of the main HTML doc.
+    // Entirely remove the display of the <p> tag in order to preserve the formatting of the main HTML doc.
     document.getElementById("intro").style.display = "none";
 });
 
@@ -142,8 +139,9 @@ $("#ARButton").click(async function() {
 $("#place-button").click(function() {
     scene.remove(currentObject);
     loadModel(currentModelState, false);
-    loadModelInfoToNarrative();
     showViewElements("main-view-element");
+    narrativeTextIndicator = 0  // Set the indicator to indicate we are displaying a Model Description.
+    displayModelDescription();
 });
 
 /**
@@ -175,21 +173,32 @@ $("#fact-three").click(function() {displayFact(3)});
  * @param {*} factNumber - Number (1-3) representing which fact to display.
  */
 function displayFact(factNumber) {
+    let factText;
+    currentFactNumber = factNumber; // Set the global Fact Number variable.
+    narrativeTextIndicator = 2      // Set the indicator to indicate we are displaying a Fact.
+
     // Use switch to load correct string from 'facts' string array.
     switch (currentModelState) {
         case 1:
-            loadTextToNarrative(facts[0][factNumber - 1])
+            factText = facts[0][factNumber - 1];
             break;
         case 2:
             break;
         case 3:
-            loadTextToNarrative(facts[1][factNumber - 1])
+            factText = facts[1][factNumber - 1];
             break;
         case 4:
             break;
         case 5:
-            loadTextToNarrative(facts[2][factNumber - 1])
+            factText = facts[2][factNumber - 1];
             break;
+    }
+
+    // If 'factText' is an array, we need multiple sequential speech boxes.  Otherwise, it is a single String and is loaded directly.
+    if (Array.isArray(factText)) {
+        startNarrativeSequence(factText);
+    } else {
+        loadTextToNarrative(factText);
     }
 }
 
@@ -273,9 +282,11 @@ async function changeState(next_or_previous) {
     if ((currentModelState % 2) == 0) {
         hideViewElements("main-view-element");
         showViewElements("state-change-element")
+        narrativeTextIndicator = 1; // Set the indicator to indicate we are displaying a State Change Description.
     } else {
         hideViewElements("state-change-element");
         showViewElements("main-view-element");
+        narrativeTextIndicator = 0; // Set the indicator to indicate we are displaying a Model Description.
     }
 
     // Get current model position, remove model from scene.
@@ -286,10 +297,86 @@ async function changeState(next_or_previous) {
     loadModel(currentModelState, false, position);
 
     // Display proper narrative based on currentModelState variable.
-    loadModelInfoToNarrative();
+    displayModelDescription();
 
     // Display the speech box.
     showNarrative();
+}
+
+/** 
+ * startNarrativeSequence Function
+ * 
+ * Starts the narrative sequence for narratives that require the use of more than 1 speech box.  In lieu of using a
+ * scroll bar, this function initiates a sequence of speech boxes for narratives that do not fit into a single speech
+ * box.
+ * 
+ * @param {String Array} text - Text to be loaded to the narrative iteratively.
+*/
+function startNarrativeSequence(text) {
+    showViewElements("speech-box-button");
+    hideViewElements("main-view-element");
+    hideViewElements("state-change-element");
+    narrativeIterator = 0;
+    loadTextToNarrative(text[0]);
+}
+
+/**
+ * Speech Box button click.
+ * 
+ * Iterates to the next narrative element shown in the speech box.
+ */
+$("#speech-box-button").click(function() {
+    narrativeIterator++;
+    let length;
+    let nextText;
+
+    // Get the proper String Array depending on the 'narrativeTextIndicator' value (0 for Model, 1 for State Change, 2 for Fact).
+    if (narrativeTextIndicator == 0 || narrativeTextIndicator == 1) {
+        // Model and State Change Descriptions use same 'modelDescriptions' variable so are put in the same conditional statement.
+        length = modelDescriptions[currentModelState - 1].length;
+        nextText = modelDescriptions[currentModelState - 1][narrativeIterator];
+    } else if (narrativeTextIndicator == 2) {
+        // Because 'currentModelState' ranges 1-5 and the Facts[] Array has only 3 elements, use a switch to get proper String, similar to the switch in displayFact() function.
+        switch (currentModelState) {
+            case 1:
+                length = facts[0][currentFactNumber - 1].length;
+                nextText = facts[0][currentFactNumber - 1][narrativeIterator];
+                break;
+            case 3:
+                length = facts[1][currentFactNumber - 1].length;
+                nextText = facts[1][currentFactNumber - 1][narrativeIterator];
+                break;
+            case 5:
+                length = facts[2][currentFactNumber - 1].length;
+                nextText = facts[2][currentFactNumber - 1][narrativeIterator];
+                break;
+            default:
+                break;
+        }
+    }
+
+    loadTextToNarrative(nextText);
+
+    // If our iterator indicates that this is the last string of the sequence, we end the sequence.
+    if (narrativeIterator == (length - 1)) {
+        endNarrativeSequence();
+    }
+})
+
+/**
+ * endNarrativeSequence Function
+ * 
+ * Ends the narrative sequence.  Shows/Hides proper view elements and restarts all counters/iterators.
+ */
+function endNarrativeSequence() {
+    hideViewElements("speech-box-button");
+
+    // Show the proper button(s) based on the the type of narrative currently being shown in the speech box.
+    if (narrativeTextIndicator == 1) {
+        showViewElements("state-change-element");
+    } else {
+        showViewElements("main-view-element");
+    }
 }
 
 /**
@@ -353,12 +440,18 @@ function hideNarrative(){
 }
 
 /**
- * loadModelInfoToNarrative Function
+ * displayModelDescription Function
  * 
- * Loads the proper narrative text (not facts) about the current model to the speech box.
+ * Loads the proper model description about the current model to the speech box.
  */
-function loadModelInfoToNarrative() {
-    loadTextToNarrative(modelDescriptions[currentModelState - 1]);
+function displayModelDescription() {
+    let descriptionText = modelDescriptions[currentModelState - 1];
+
+    if (Array.isArray(descriptionText)) {
+        startNarrativeSequence(descriptionText);
+    } else {
+        loadTextToNarrative(descriptionText);
+    }
 }
 
 /**

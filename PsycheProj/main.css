@@ -137,6 +137,13 @@ body {
   .sidenav a {font-size: 18px;}
 }
 
+/* Only used for the intro <p> tag */
+.intro {
+  padding: 85px 25px 25px 25px;
+  color: white;
+  text-align: center;
+}
+
 /* This type of element should be visible in the main view 
    The main view is when the model and fact buttons are displayed */
 .main-view-element{
@@ -166,10 +173,8 @@ body {
   border: none;
 }
 
-#speech-box-button {
-  display: none;
-  float: right;
-  margin-bottom: 10px;
+.speech-box-button {
+  visibility: hidden;
 }
 
 #dashboard{
@@ -310,10 +315,4 @@ body {
 
 #screen-bottom{
 
-}
-
-.intro {
-  padding: 85px 25px 25px 25px;
-  color: white;
-  text-align: center;
 }

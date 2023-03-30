@@ -148,7 +148,7 @@ $("#ARButton").click(async function() {
     showViewElements("place-view-element");
 
     // Entirely remove the display of the <p> tag in order to preserve the formatting of the main HTML doc.
-    $("#intro").hide();
+    //$("#intro").hide();
     $("#startup-image").hide();
 });
 
@@ -590,7 +590,7 @@ function loadModel(currentModelState, appStart = true, position = null) {
  */
 function init() {
     // Load the introduction text.
-    document.getElementById("intro").textContent = introText;
+    //document.getElementById("intro").textContent = introText;
 
     // Mute music by default.
     document.getElementById("music").muted = true;

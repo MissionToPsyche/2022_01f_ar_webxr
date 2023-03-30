@@ -27,6 +27,7 @@
 	</head>
 	<body id="body">
 
+		<!-- This is a modal that shows if the user's browser does not support WebXR -->
 		<div id="incompatible-browser-modal" class="modal">
 
 			<div class="container-fluid">
@@ -61,14 +62,19 @@
 
 		</div>
 
-		<img id="startup-image" src="./assets/psyche-title-screen.png" alt="">
+		
 
 		<audio autoplay loop id="music">
 			<source src="./assets/ivoryhaus-perseids.mp3" type="audio/mpeg">
 		</audio>
 
 		<!-- This container is divided into 5 rows and represents the screen elements -->
-		<div id="content" class="container-fluid p-0">
+		<div id="content" class="container-fluid p-0 position-relative">
+
+			<img id="startup-image" class="position-absolute" src="./assets/psyche-title-screen.png">
+
+			<!-- This is the intro message and will be removed after the introduction is complete -->
+			<p id="intro" class="intro position-absolute"></p>
 
 			<!-- This is where the models get placed in JS. It spans the size of the screen -->
 			<div id="model-view-area"></div>
@@ -95,9 +101,6 @@
 			<!-- 4/5 -->
 			<!-- Spacer, Dashboard Button -->
 			<div class="row h-20 m-0">
-
-				<!-- This is the intro message and will be removed after the introduction is complete -->
-				<p id="intro" class="intro"></p>
 
 				<div class="col"></div>
 

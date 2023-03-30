@@ -16,7 +16,6 @@
 body {
   margin: 0;
   background-color: black;
-  background-image: url(./assets/psyche-title-screen-cropped.png);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -166,6 +165,7 @@ body {
   padding: 85px 25px 25px 25px;
   color: white;
   text-align: center;
+  z-index: 101;
 }
 
 /* This type of element should be visible in the main view 

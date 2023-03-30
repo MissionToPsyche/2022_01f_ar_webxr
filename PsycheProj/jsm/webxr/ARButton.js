@@ -17,7 +17,7 @@ class ARButton {
 				button.textContent = 'STOP AR';
 
 				currentSession = session;
-				
+			
 			}
 
 			function onSessionEnded( /*event*/ ) {
@@ -28,9 +28,9 @@ class ARButton {
 
 				currentSession = null;
 
+				// go to text mode
+				document.getElementById("content").innerHTML='<object type="text/html" data="text-version.html"></object>';
 			}
-
-			//
 
 			button.style.display = '';
 
@@ -56,10 +56,13 @@ class ARButton {
 
 				if ( currentSession === null ) {
 
-					navigator.xr.requestSession( 'immersive-ar', sessionInit ).then( onSessionStarted );
+					navigator.xr.requestSession( 'immersive-ar', sessionInit )
+						.then( onSessionStarted )
+						.catch( showTextMode );
 
 				} else {
 
+					alert("else of null session");
 					currentSession.end();
 
 				}
@@ -92,14 +95,19 @@ class ARButton {
 			showIncompatibleBrowserModal();
 		}
 
-		// Loads text mode
+		// Shows modal to handle browsers that don't support WebXR
 		function showIncompatibleBrowserModal(){
-
 			$("#startup-image").hide();
+			$("#incompatible-browser-modal").show();
+		}
 
-			document.getElementById("body").style.backgroundColor = "rbga(0, 0, 0, 0.4)";
-			document.getElementById("incompatible-browser-modal").style.display = "block";
+		function showTextMode(){
 
+			// hide startAR button
+			button.style.display = "none";
+
+			// load text mode
+			document.getElementById("content").innerHTML='<object type="text/html" data="text-version.html"></object>';
 		}
 
 		function stylizeElement( element ) {
@@ -136,6 +144,7 @@ class ARButton {
 
 		} else {
 
+			alert("else from 'xr' in navigator");
 			const message = document.createElement( 'a' );
 
 			if ( window.isSecureContext === false ) {

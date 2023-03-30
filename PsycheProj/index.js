@@ -148,7 +148,8 @@ $("#ARButton").click(async function() {
     showViewElements("place-view-element");
 
     // Entirely remove the display of the <p> tag in order to preserve the formatting of the main HTML doc.
-    document.getElementById("intro").style.display = "none";
+    $("#intro").hide();
+    $("#startup-image").hide();
 });
 
 /**

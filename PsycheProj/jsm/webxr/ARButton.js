@@ -56,13 +56,7 @@ class ARButton {
 
 				if ( currentSession === null ) {
 
-					navigator.xr.requestSession( 'immersive-ar', sessionInit )
-						.then( onSessionStarted )
-						.catch( (error) => {
-
-
-							loadTextMode();
-						})
+					navigator.xr.requestSession( 'immersive-ar', sessionInit ).then( onSessionStarted );
 
 				} else {
 
@@ -94,12 +88,17 @@ class ARButton {
 			disableButton();
 
 			button.textContent = 'AR NOT SUPPORTED';
+
+			showIncompatibleBrowserModal();
 		}
 
 		// Loads text mode
-		function loadTextMode(){
+		function showIncompatibleBrowserModal(){
 
-			document.getElementById("content").innerHTML='<object type="text/html" data="/text-version.html"></object>'
+			$("#startup-image").hide();
+
+			document.getElementById("body").style.backgroundColor = "rbga(0, 0, 0, 0.4)";
+			document.getElementById("incompatible-browser-modal").style.display = "block";
 
 		}
 
@@ -129,9 +128,9 @@ class ARButton {
 
 			navigator.xr.isSessionSupported( 'immersive-ar' ).then( function ( supported ) {
 
-				supported ? showStartAR() : showARNotSupported();
+				supported ? showStartAR() : showIncompatibleBrowserModal();
 
-			} ).catch( showARNotSupported );
+			} ).catch( showIncompatibleBrowserModal );
 
 			return button;
 

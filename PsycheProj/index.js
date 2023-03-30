@@ -112,6 +112,18 @@ window.addEventListener( "pageshow", function ( event ) {
 init();
 animate();
 
+$("#text-only-button").click(async function(){
+
+    $("#incompatible-browser-modal").hide();
+
+    // load text-version
+    document.getElementById("content").innerHTML='<object type="text/html" data="text-version.html"></object>';
+})
+
+$("#xr-viewer").click(async function(){
+
+})
+
 /**
  * Start AR button click.
  * 

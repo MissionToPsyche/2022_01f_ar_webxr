@@ -28,8 +28,6 @@ class ARButton {
 
 				currentSession = null;
 
-				// go to text mode
-				document.getElementById("content").innerHTML='<object type="text/html" data="text-version.html"></object>';
 			}
 
 			button.style.display = '';
@@ -107,7 +105,7 @@ class ARButton {
 			button.style.display = "none";
 
 			// load text mode
-			document.getElementById("content").innerHTML='<object type="text/html" data="text-version.html"></object>';
+			window.location.replace("text-version.html");
 		}
 
 		function stylizeElement( element ) {

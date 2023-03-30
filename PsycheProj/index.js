@@ -117,7 +117,7 @@ $("#text-only-button").click(async function(){
     $("#incompatible-browser-modal").hide();
 
     // load text-version
-    document.getElementById("content").innerHTML='<object type="text/html" data="text-version.html"></object>';
+    window.location.replace("text-version.html");
 })
 
 $("#xr-viewer").click(async function(){
@@ -149,7 +149,7 @@ $("#ARButton").click(async function() {
 
     // Entirely remove the display of the <p> tag in order to preserve the formatting of the main HTML doc.
     //$("#intro").hide();
-    $("#startup-image").hide();
+    //$("#startup-image").hide();
 });
 
 /**
@@ -335,8 +335,8 @@ async function changeState(next_or_previous) {
 */
 function startNarrativeSequence(text) {
     showViewElements("speech-box-button");
-    hideViewElements("main-view-element");
-    hideViewElements("state-change-element");
+    //hideViewElements("main-view-element");
+    //hideViewElements("state-change-element");
     narrativeIterator = 0;
     loadTextToNarrative(text[0]);
 }

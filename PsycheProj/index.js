@@ -194,6 +194,7 @@ $("#fact-three").click(function() {displayFact(3)});
  * @param {*} factNumber - Number (1-3) representing which fact to display.
  */
 function displayFact(factNumber) {
+    endNarrativeSequence();
     let factText;
     currentFactNumber = factNumber; // Set the global Fact Number variable.
     narrativeTextIndicator = 2      // Set the indicator to indicate we are displaying a Fact.
@@ -279,6 +280,7 @@ $("#next-button").click(function() {changeState(1)});
  * Passing -1 as parameter changes the model to the previous state
  */ 
 async function changeState(next_or_previous) {
+    endNarrativeSequence();
 
     if (next_or_previous == 1)
     {
@@ -391,7 +393,6 @@ $("#speech-box-button").click(function() {
  */
 function endNarrativeSequence() {
     hideViewElements("speech-box-button");
-
     // Show the proper button(s) based on the the type of narrative currently being shown in the speech box.
     if (narrativeTextIndicator == 1) {
         showViewElements("state-change-element");

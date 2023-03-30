@@ -10,13 +10,133 @@
     <title>Psyche App Text Version</title>
     
 </head>
+<style type=text/css>
+    body{
+	  margin-left: 50px;
+    }
+    button{
+            cursor: pointer;
+            border: 1px solid #555;
+            text-align: center;
+            padding: 5px;
+            margin-left: 8px; 
+        }
+        .dark{
+            background-color: black;
+            color: white;
+        }
+</style>
 <body>
-    
+    <centre><h2>Psyche Model</h2></centre>
+
+    <br>
+<button id="btn1" class='btn' onclick="darkMode()" >Light/Dark Mode</button> 
+      
+    <script>
+        function darkMode() {
+        var element = document.body;
+        element.classList.toggle("dark");
+        }
+    </script>
+
+    <p>
+	  <h4>Stage 1: Formation of planetesimal</h4>
+	  <u>Description of Model:</u> 
+	  <br>
+	  Many different objects representing particles and other objects in space loosely floating around. These objects 	  vary in size and shape. 
+	  <br><br>
+	  <u>Informational Buttons on Model:</u>
+        <ul>
+            <li> <b>Asteroid Button</b> - Planetesimals are one of the building blocks of planets. The hypothesis that
+                 Psyche could potentially be leftover core material from a planetesimal could lead scientists 
+                 to be abe to investigate questions about Earth's core, including how it was formed.
+            </li>
+            <li>
+                <b>Question Button</b> - How might Psyche have formed?
+            </li>
+            <li>
+                <b>Spacecraft Button</b> - The spacecraft is equpped with two Multispectral Imagers. These high 
+                resolution cameras will capture images of the asteroid's surface at different wavelengths of 
+                light. This, along with pictures of the topography of Psyche, will allow scientists to study 
+                features that provide clues to Psyche's history. 
+            </li>
+        </ul>
+    </p>
+    <br><br>
+    <p>
+	  <u>Trainsition Between Stages 1 and 2:</u>
+	  <br>
+	  The user is able to move the objects floating around to combine them into a singular object.
+    </p>
+    <br><br>
+    <p>
+	  <h4>Stage 2: Planetesimal</h4>
+	  <u>Description of Model:</u> 
+	  <br>
+	  There is a singular object that is large to represent the combined particles. This is the planetesimal and
+	  resembles a smaller, but similar, version of what a planet looks like.
+	  <br><br>
+	  <u>Informational Buttons on Model:</u>
+        <ul>
+            <li>
+                <b>Asteroid Button</b> - Scientists think Psyche may consist largely of metal from the core of a 
+                planetesimal, one of the building blocks of the rocky planets in our solar system (Mercury, 
+                Venus, Earth and Mars). Psyche is most likely a survivor of multiple violent hit-and-run 
+                collisions with other material, common when the solar system was forming. 
+            </li>
+            <li>
+                <b>Question Button</b> - How will it be determined if Psyche is core material of a planetesimal?
+            </li>
+            <li>
+                <b>Spacecraft Button</b> - All of the instruments on the spacecraft will provide clues but, in 
+                particular, the magnetometer will look for evidence of an ancient magnetic field: if Psyche 
+                has a significant magnetic field still recorded in its solid body, it was once a core that 
+                produced its own dynamo.
+            </li>
+        </ul>
+    </p>
+
+    <br><br>
+    <p>
+        <u>Transition Between Stages 2 and 3:</u>
+	  The user is able to move objects into the planetesimal representing asteroid strikes that, hypothetically,
+        would lead to the planetesimal breaking up, leaving the core exposed.
+    </p>
+    <br><br>
+
+    <p>
+	  <h4>Stage 3: Core/Current asteroid</h4>
+	  <u>Description of Model:</u> 
+	  <br>
+	  After being struck, there is a singular, oblong object. This is what may potentially be similar to the 
+        current Psyche asteroid. 
+	  <br><br>
+	  <u>Informational Buttons on Model:</u>
+        <ul>
+            <li>
+                <b>Asteroid Button</b> - After numerous collisions, it is hypothesized that the potential planetesimal would
+                have its rocky mantle stripped away, and leave behind the core material. This core material could 
+                potentially be what makes up the current asteroid Psyche.
+            </li>
+		<li>
+		    <b>Question Button</b> - What is it that planetary cores are made of?
+            </li>
+            <li>
+                <b>Spacecraft Button</b> - The satellite spacecraft contains a Gamma Ray and Neutron Spectrometer that will detect, measure, 
+                and map Psyche's elemental composition. These measurements will be able to give scientists a better idea 
+                of what exactly it is that potentially makes up the inner cores of planets.
+            </li>
+        </ul>
+    </p>
+    <br>
+    <centre>
     <a href="index.html">
 
-        <button class="btn">Return to AR Mode</button>
+        <button id="btn2" class='btn'>Return to AR Mode</button>
 
     </a>
+    </centre>
+<br><br>
 
 </body>
 </html>

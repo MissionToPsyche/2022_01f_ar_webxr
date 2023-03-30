@@ -25,13 +25,49 @@
 		<script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
 
 	</head>
-
 	<body id="body">
+
+		<div id="incompatible-browser-modal" class="modal">
+
+			<div class="container-fluid">
+
+				<h2 class="row h-20 w-50">Your browser is incompatible with WebXR</h1>
+
+				<div class="row h-80 w-50">
+
+					<div class="col-5 d-flex align-self-center justify-content-center">
+				
+						<p>
+							Click here if you would like to view our text-only version of the app.
+						</p>
+
+						<button id="text-only-button" class="btn-dark">Text-Only Mode</div>
+			
+					</div>
+		
+					<div class="col-5 d-flex align-self-center justify-content-center">
+	
+						<p>
+							Click here if you would like to download the XRViewer application to have the full AR experience.
+						</p>
+
+						<button id="xrviewer-button" class="btn-dark">Download XRViewer</div>
+	
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<img id="startup-image" src="./assets/psyche-title-screen.png" alt="">
+
 		<audio autoplay loop id="music">
 			<source src="./assets/ivoryhaus-perseids.mp3" type="audio/mpeg">
 		</audio>
 
-		<!-- This container is divided into 5 rows -->
+		<!-- This container is divided into 5 rows and represents the screen elements -->
 		<div id="content" class="container-fluid p-0">
 
 			<!-- This is where the models get placed in JS. It spans the size of the screen -->
@@ -40,15 +76,11 @@
 			<!-- 1/5 -->
 			<!-- SPEECH BUBBLE, SPACECRAFT -->
 			<div id="screen-top" class="row h-20 w-100 m-0">
-
-				<div class="col-2 d-flex align-items-center justify-content-center">
-					<img align="right" src="assets/satellite.png" id="satellite" width="0" height="60"></img>
-				</div>
-
-				<div class="col-10 d-flex align-items-center justify-content-center">
-					<div id ="textBox" class="speech-bubble">
+				<div class="col d-flex align-items-center justify-content-center">
+					<div id="textBox" class="speech-bubble">
 						<p id="narrative"></p>
-						<!--<button id="speech-box-button">Continue</button>-->
+						<img align="right" src="/assets/psyche-spacecraft-pixel-art.png" id="satellite"></img>
+						<button id="speech-box-button" class="speech-box-button">...</button>
 					</div>
 				</div>
 
@@ -61,53 +93,85 @@
 			<div class="row h-20 w-100 m-0"></div>
 
 			<!-- 4/5 -->
-			<!-- FACT BUTTONS -->
-			<div id="fact-button-area" class="row h-20 w-100 m-0 align-content-end main-view-element">
+			<!-- Spacer, Dashboard Button -->
+			<div class="row h-20 m-0">
 
-				<div class="col h-25 d-flex align-items-center justify-content-center">
-					<button id="fact-one" class="btn fact-button"></button>
+				<!-- This is the intro message and will be removed after the introduction is complete -->
+				<p id="intro" class="intro"></p>
+
+				<div class="col"></div>
+
+				<div class="d-flex col-1 h-10 justify-content-center align-self-end">
+
+					<!-- Dashboard button that shows/hides dashboard -->
+					<div type="button" id="dashboard-button" class="btn main-view-element"></div>
+
 				</div>
 				
-				<div class="col h-25 d-flex align-items-center justify-content-center">
-					<button id="fact-two" class="btn fact-button"></button>
-				</div>
-
-				<div class="col h-25 d-flex align-items-center justify-content-center">
-					<button id="fact-three" class="btn fact-button"></button>
-				</div>
+				<div class="col"></div>
 
 			</div>
 
 			<!-- 5/5 -->
-			<!-- STATE CHANGE, OPTIONS / NEXT, PLACE -->
-			<div id="screen-bottom" class="row h-20 w-100 m-0 align-content-center">
+			<!-- This represents the slideable dashboard of buttons -->
+			<div class="row h-20 w-100 m-0 main-view-element">
 
-				<!-- LEFT: State change button -->
-				<div class="col d-flex align-items-center justify-content-center">
-					
-					<button type="button" id="state-change" class="btn btn-outline-primary main-view-element">Change State</button>
+				<div id="dashboard" class="col h-20">
 
-				</div>
+					<!-- 1/2 -->
+					<!-- FACT BUTTONS -->
+					<div id="fact-button-area" class="row h-50 w-100 m-0 main-view-element dashboard-element">
 
-				<!-- MIDDLE: Next button and Menu button -->
-				<div class="col d-flex align-items-center justify-content-center">
+						<!-- Science Question Button -->
+						<div class="col d-flex align-self-center justify-content-center">
+							<button id="fact-one" class="btn fact-button"></button>
+						</div>
 
-					<button type="button" id="next-button" class="btn btn-outline-primary position-absolute state-change-element">Next</button>
+						<!-- About Psyche State Button -->
+						<div class="col d-flex align-self-end justify-content-center">
+							<button id="fact-two" class="btn fact-button"></button>
+						</div>
 
-					<span id="menu-button" class="main-view-element position-absolute place-view-element">&#9776;</span>
+						<!-- How Psyche mission will try to answer science question Button -->
+						<div class="col d-flex align-self-center justify-content-center">
+							<button id="fact-three" class="btn fact-button"></button>
+						</div>
 
-				</div>
-	
-				<!-- RIGHT: Place button -->
-				<div class="col d-flex align-items-center justify-content-center">
+					</div>
 
-					<button type="button" id="place-button" class="btn btn-outline-primary main-view-element place-view-element">Place</button>
-				
+					<!-- 2/2 -->
+					<!-- STATE CHANGE, OPTIONS / NEXT, PLACE -->
+					<div id="screen-bottom" class="row h-50 w-100 m-0 align-content-center">
+
+						<!-- LEFT: State change button -->
+						<div class="col d-flex align-items-center justify-content-center">
+							
+							<button type="button" id="state-change" class="btn main-view-element dashboard-element"></button>
+
+						</div>
+
+						<!-- MIDDLE: Next button and Menu button -->
+						<div class="col d-flex align-items-center justify-content-center">
+
+							<!-- Next (State) Button-->
+							<button type="button" id="next-button" class="btn position-absolute state-change-element"></button>
+
+							<!-- Menu button -->
+							<button type="button" id="menu-button" class="btn main-view-element position-absolute place-view-element dashboard-element"><!--&#9776;--></span>
+
+						</div>
+			
+						<!-- RIGHT: Place button -->
+						<div class="col d-flex align-items-center justify-content-center">
+
+							<button type="button" id="place-button" class="btn main-view-element place-view-element dashboard-element"></button>
+						
+						</div>
+					</div>
 				</div>
 			</div>
 
-			<!-- This is the options menu -->
-			<!-- !!!! This is currently broken and needs to be fixed !!!! -->
+			<!-- This is the options menu AKA sidenav -->
 			<div id="sidenav" class="sidenav">
 
 				<!-- Close menu button-->

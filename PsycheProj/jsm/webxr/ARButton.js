@@ -89,6 +89,17 @@ class ARButton {
 
 			button.textContent = 'AR NOT SUPPORTED';
 
+			showIncompatibleBrowserModal();
+		}
+
+		// Loads text mode
+		function showIncompatibleBrowserModal(){
+
+			$("#startup-image").hide();
+
+			document.getElementById("body").style.backgroundColor = "rbga(0, 0, 0, 0.4)";
+			document.getElementById("incompatible-browser-modal").style.display = "block";
+
 		}
 
 		function stylizeElement( element ) {
@@ -117,9 +128,9 @@ class ARButton {
 
 			navigator.xr.isSessionSupported( 'immersive-ar' ).then( function ( supported ) {
 
-				supported ? showStartAR() : showARNotSupported();
+				supported ? showStartAR() : showIncompatibleBrowserModal();
 
-			} ).catch( showARNotSupported );
+			} ).catch( showIncompatibleBrowserModal );
 
 			return button;
 

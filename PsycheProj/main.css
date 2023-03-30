@@ -16,9 +16,9 @@
 body {
   margin: 0;
   background-color: black;
-  background-image: url(./assets/psyche-title-screen.png);
-  background-size: cover;
-  background-repeat: no-repeat;
+  /*background-image: url(./assets/psyche-title-screen.png);*/
+  /*background-size: cover;*/
+  /*background-repeat: no-repeat;*/
   color: white;
 
   font-family: 'VT323', monospace;
@@ -28,6 +28,29 @@ body {
   font-variant: small-caps;
   /* Makes all text same size caps */
   /*text-transform: uppercase;*/
+
+  overflow: hidden;
+}
+
+#startup-image{
+  display: inline;
+  z-index: 99;
+  height: 100vh;
+  width: 100vw;
+
+  margin: 0%;
+  overflow: hidden;
+}
+
+#incompatible-browser-modal{
+  display: none;
+  z-index: 1000;
+
+  background-color: #111;
+  color: white;
+
+  border: 1px solid #888;
+
 }
 
 #content{
@@ -36,10 +59,15 @@ body {
   height: 100vh;
 }
 
+.h-10{
+  height: 10%;
+}
 .h-20{
   height: 20%;
 }
-
+.h-30{
+  height: 30%;
+}
 .h-80{
   height: 80%;
 }
@@ -57,12 +85,12 @@ body {
 .speech-bubble {
   display: none;
   float: right;
-  width: 330px;
+  width: 100%;
   height: 150px;
   color: white;
   position: relative;
 
-  background-image: url("/assets/text-box.png");
+  background-image: url("/assets/pixel-text-box.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
   opacity: 0.75;
@@ -78,7 +106,7 @@ body {
   top: 15%;
   bottom: 15%;
   left: 10%;
-  right: 10%;
+  right: 15%;
   opacity: 1;
 
   overflow-y: scroll;
@@ -132,6 +160,13 @@ body {
   .sidenav a {font-size: 18px;}
 }
 
+/* Only used for the intro <p> tag */
+.intro {
+  padding: 85px 25px 25px 25px;
+  color: white;
+  text-align: center;
+}
+
 /* This type of element should be visible in the main view 
    The main view is when the model and fact buttons are displayed */
 .main-view-element{
@@ -149,27 +184,113 @@ body {
   visibility: hidden;
 }
 
-#speech-box-button {
-  display: none;
-  float: right;
-  margin-bottom: 10px;
+.dashboard-element{
+  visibility: hidden;
+}
+
+.btn:active{
+  border: none;
+  outline: none;
+}
+.btn:not(:active){
+  border: none;
+}
+
+.speech-box-button {
+  visibility: hidden;
+}
+
+#dashboard{
+  bottom: 0;
+
+  background-color: rgba(26, 26, 26, 0.9);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+
+  box-shadow: 0 -4px 5px #faa00142;
+
+  /*background-image: url(/assets/backgrounds/metalbackground-pixel-5.png);*/
+
+  /* this allows the jQuery slideToggle() to work as desired */
+  position: absolute;
+}
+
+#dashboard-button{
+  color: #f1f1f1;
+  border: none;
+
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+
+  background-image: url(/assets/buttons/simple-up.png);
 }
 
 #place-button {
+  border: none;
 
+  background-repeat: no-repeat;
+  height: 50px;
+  width: 50px;
+  background-size: 100% 100%;
+
+  background-image: url(assets/buttons/blue-arcade-button-cursor3-unpressed.png);
+}
+#place-button:active{
+  background-image: url(assets/buttons/blue-arcade-button-cursor3-pressed.png);
+  border: none;
+}
+/* This gets rid of the ring border that shows up after the button is released */
+#place-button:not(:active){
+  border: none;
 }
 
 #next-button {
+  border: none;
 
+  background-repeat: no-repeat;
+  height: 50px;
+  width: 50px;
+  background-size: 100% 100%;
+
+  background-image: url(assets/buttons/red-arcade-button-next-unpressed.png);
+}
+#next-button:active{
+  background-image: url(assets/buttons/red-arcade-button-next-pressed.png);
+  border: none;
+}
+/* This gets rid of the ring border that shows up after the button is released */
+#next-button:not(:active){
+  border: none;
 }
 
 #menu-button {
   font-size: 70px;
   cursor: pointer;
+
+  background-image: url("/assets/icons/List.png");
+  background-repeat: no-repeat;
+  height: 35px;
+  width: 35px;
+  background-size: 100% 100%;
 }
 
 #state-change {
+  border: none;
 
+  background-repeat: no-repeat;
+  height: 50px;
+  width: 50px;
+  background-size: 100% 100%;
+
+  background-image: url(assets/buttons/red-arcade-button-play-unpressed.png);
+}
+#state-change:active{
+  background-image: url(assets/buttons/red-arcade-button-play-pressed.png);
+  border: none;
+}
+/* This gets rid of the ring border that shows up after the button is released */
+#state-change:not(:active){
+  border: none;
 }
 
 /* Contains fact buttons */
@@ -179,47 +300,42 @@ body {
 
 /* Class for shared attributes of fact buttons */
 .fact-button{
-  border-radius: 50%;
-  border: 0px;
+  border: none;
 
-  opacity: 0.9;
-
-  background-color: var(--psyche-dark-pink);
   background-repeat: no-repeat;
+  height: 50px;
+  width: 50px;
   background-size: 100% 100%;
 
-  box-shadow:
-    0 0 0 5px var(--psyche-light-purple),
-    0 0 0 10px var(--psyche-dark-purple),
-    0 0 0 15px black;
+  background-image: url(assets/buttons/white-arcade-button-unpressed.png);
+}
+.fact-button:active{
+  background-image: url(assets/buttons/white-arcade-button-pressed.png);
+  border: none;
+}
+/* This gets rid of the ring border that shows up after the button is released */
+.fact-button:not(:active){
+  border: none;
 }
 
 /* Represents the asteroid button */
 #fact-one {  
-  background-image: url("/assets/asteroid-art-32px-noCircle.png");
+  /*background-image: url("/assets/question-mark-64px.png");*/
 }
 
 /* Represents the question button */
 #fact-two {
-  background-color: #F57C33;
-  background-image: url("/assets/asteroid-art-32px-noCircle.png");
+  background-image: url(assets/buttons/white-arcade-button-question-unpressed.png);
+}
+#fact-two:active{
+  background-image: url(assets/buttons/white-arcade-button-question-pressed.png);
 }
 
 /* Represents the spacecraft button */
 #fact-three {
-  background-color: #F57C33;
-  background-image: url("/assets/asteroid-art-32px-noCircle.png");
+  /*background-image: url("/assets/asteroid-art-32px-noCircle.png");*/
 }
 
 #screen-bottom{
 
-}
-
-#intro-header {
-  padding: 0px 10px 0px 10px;
-  position: absolute;
-  top: 50%;
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
-  color: black;
 }

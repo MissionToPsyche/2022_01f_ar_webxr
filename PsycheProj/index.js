@@ -13,12 +13,12 @@ let reticle,pmremGenerator, currentObject, controls;
 let hitTestSource = null;
 let hitTestSourceRequested = false;
 let currentModelState = null;
-let touchDown, touchX, touchY, deltaX, deltaY;
 let mixer;
 let narrativeIterator;      // Number to keep track of narrative sequence when more than 1 speech box is needed for a single narrative.
 let narrativeTextIndicator; // Number to indicate what type of narrative text is currently in the speech box (model description (0), state change description (1), fact (2)).
 let currentFactNumber;      // Number to track of the current fact number when a narrative with multiple speech boxes is currently being iterated through.
 const clock = new THREE.Clock();
+let menuDisp = false;
 
 // File name variables.
 const globalMeshTexture = "pixel-rocks.png";
@@ -416,16 +416,20 @@ function arPlace() {
 /**
  * Open menu click.
  */
-document.getElementById("menu-button").onclick = function openNav() {
-    document.getElementById("sidenav").style.width = "250px";
+document.getElementById("menu-button").onclick = function toggleMenu() {
+
+    if(menuDisp){
+        $("#menu").css({"opacity":"0"});
+        menuDisp = !menuDisp;
+    }
+    else{
+        $("#menu").css({"opacity":"1"});
+        menuDisp = !menuDisp;
+    }
+    
 }
 
-/**
- * Close menu click.
- */
-document.getElementById("close-menu").onclick = function closeNav() {
-    document.getElementById("sidenav").style.width = "0";
-}
+
 
 /**
  * Music settings button click.
@@ -656,15 +660,6 @@ function init() {
     scene.add(reticle);
 
     window.addEventListener('resize', onWindowResize);
-}
-
-/**
- * rotateObject Function
- */
-function rotateObject() {
-    if (currentObject && reticle.visible) {
-        currentObject.rotation.y += (deltaX / 100);
-    }
 }
 
 /**

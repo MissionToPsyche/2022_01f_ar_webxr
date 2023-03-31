@@ -142,7 +142,8 @@ class ARButton {
 
 		} else {
 
-			alert("else from 'xr' in navigator");
+			showIncompatibleBrowserModal();
+
 			const message = document.createElement( 'a' );
 
 			if ( window.isSecureContext === false ) {

@@ -32,22 +32,27 @@
 
 			<div class="container-fluid h-100">
 
-				<h2 class="h-5">Your browser is incompatible with WebXR</h1>
+				<div class="row h-20 d-flex align-content-center justify-content-center" style="background-color: #FAA001;">
 
-				<div class="row h-25 position-relative">
+					<h2 style="text-align: center;">Your browser is incompatible with WebXR</h1>
 
-					<div class="col-12">
+				</div>
+
+				<!-- TEXT-ONLY BUTTON ROW -->
+				<div class="row h-25 p-3">
+
+					<div class="col-12" style="border: 2px solid white; border-radius: 5px;">
 				
-						<div class="row h-50">
+						<div class="row h-50 align-content-center">
 
-							<p>Click here if you would like to view our text-only version of the app.</p>
+							<p style="text-align: center;">Click here to view text-only mode.</p>
 
 						</div>
 			
 						<!-- TEXT-ONLY BUTTON -->
-						<div class="row h-20 w-100 m-0 d-flex justify-content-center">
+						<div class="row h-50 w-100 m-0 d-flex align-content-center justify-content-center">
 
-							<button id="text-only-button" class="btn-dark text-center">Text-Only Mode</button>
+							<button id="text-only-button" class="incompatible-browser-modal-button text-center">Text-Only Mode</button>
 							
 						</div>
 			
@@ -55,20 +60,21 @@
 
 				</div>
 
-				<div class="row h-25 position-relative">
+				<!-- WEBXR VIEWER DOWNLOAD BUTTON BLOCK-->
+				<div class="row h-25 p-3">
 
-					<div class="col-12">
+					<div class="col-12" style="border: 2px solid white; border-radius: 5px;">
 	
-						<div class="row h-50">
+						<div class="row h-50 pt-3 pb-4">
 
-							<p>Click here if you would like to download the XRViewer application to have the full AR experience.</p>
+							<p style="text-align: center;">Click here if you have an iPhone to download the XRViewer application to have the full AR experience.</p>
 
 						</div>
 
 						<!-- XR VIEWER BUTTON -->
-						<div class="row h-20 w-100 m-0 d-flex justify-content-center">
+						<div class="row h-50 w-100 m-0 d-flex align-content-center justify-content-center">
 
-							<button id="xrviewer-button" class="btn-dark text-center">Download XRViewer</button>
+							<button id="xrviewer-button" class="incompatible-browser-modal-button text-center">Download XRViewer</button>
 
 						</div>
 

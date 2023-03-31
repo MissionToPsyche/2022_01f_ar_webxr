@@ -27,33 +27,51 @@
 	</head>
 	<body id="body">
 
-		<!-- This is a modal that shows if the user's browser does not support WebXR -->
+		<!-- INCOMPATIBLE BROWSER MODAL - pop-up if the user's browser does not support WebXR -->
 		<div id="incompatible-browser-modal" class="modal">
 
-			<div class="container-fluid">
+			<div class="container-fluid h-100">
 
-				<h2 class="row h-20 w-50">Your browser is incompatible with WebXR</h1>
+				<h2 class="h-5">Your browser is incompatible with WebXR</h1>
 
-				<div class="row h-80 w-50">
+				<div class="row h-25 position-relative">
 
-					<div class="col-5 d-flex align-self-center justify-content-center">
+					<div class="col-12">
 				
-						<p>
-							Click here if you would like to view our text-only version of the app.
-						</p>
+						<div class="row h-50">
 
-						<button id="text-only-button" class="btn-dark">Text-Only Mode</div>
+							<p>Click here if you would like to view our text-only version of the app.</p>
+
+						</div>
+			
+						<!-- TEXT-ONLY BUTTON -->
+						<div class="row h-20 w-100 m-0 d-flex justify-content-center">
+
+							<button id="text-only-button" class="btn-dark text-center">Text-Only Mode</button>
+							
+						</div>
 			
 					</div>
-		
-					<div class="col-5 d-flex align-self-center justify-content-center">
-	
-						<p>
-							Click here if you would like to download the XRViewer application to have the full AR experience.
-						</p>
 
-						<button id="xrviewer-button" class="btn-dark">Download XRViewer</div>
+				</div>
+
+				<div class="row h-25 position-relative">
+
+					<div class="col-12">
 	
+						<div class="row h-50">
+
+							<p>Click here if you would like to download the XRViewer application to have the full AR experience.</p>
+
+						</div>
+
+						<!-- XR VIEWER BUTTON -->
+						<div class="row h-20 w-100 m-0 d-flex justify-content-center">
+
+							<button id="xrviewer-button" class="btn-dark text-center">Download XRViewer</button>
+
+						</div>
+
 					</div>
 
 				</div>

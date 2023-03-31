@@ -81,40 +81,25 @@ body {
   
 }
 
+#satellite{
+
+}
+
 /* Represents the image of the speech bubble */
 .speech-bubble {
   display: none;
-  float: right;
-  width: 100%;
-  height: 150px;
   color: white;
-  position: relative;
-
   background-image: url("/assets/pixel-text-box.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
   opacity: 0.75;
-
-  align-items: center;
-  justify-content: center;
 }
 
 /* Represents the container for the educational text inside of the speech bubble */
 #narrative {
   display: none;
-  position: absolute;
-  top: 15%;
-  bottom: 15%;
-  left: 10%;
-  right: 15%;
   opacity: 1;
-
   overflow-y: scroll;
-
-  margin: auto;
-
-  align-items: center;
-  justify-content: center;
 }
   
 .sidenav {
@@ -199,6 +184,13 @@ body {
 
 .speech-box-button {
   visibility: hidden;
+  border: none;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  height: 13px;
+  width: 18px;
+  background-image: url(assets/buttons/down-arrow.png);
 }
 
 #dashboard{

@@ -451,13 +451,13 @@ function loadSatellite() {
  * Displays the speech box (narrative text).
  */
 function showNarrative() {
-    document.getElementById("textBox").style.display = "block";
-    document.getElementById("narrative").style.display = "block";
+    $("#text-box").show();
+    $("#narrative").show();
 }
 
 function hideNarrative(){
-    document.getElementById("textBox").style.display = "none";
-    document.getElementById("narrative").style.display = "none";
+    $("#text-box").show();
+    $("#narrative").show();
 }
 
 /**

@@ -13,12 +13,12 @@ let reticle,pmremGenerator, currentObject, controls;
 let hitTestSource = null;
 let hitTestSourceRequested = false;
 let currentModelState = null;
-let touchDown, touchX, touchY, deltaX, deltaY;
 let mixer;
 let narrativeIterator;      // Number to keep track of narrative sequence when more than 1 speech box is needed for a single narrative.
 let narrativeTextIndicator; // Number to indicate what type of narrative text is currently in the speech box (model description (0), state change description (1), fact (2)).
 let currentFactNumber;      // Number to track of the current fact number when a narrative with multiple speech boxes is currently being iterated through.
 const clock = new THREE.Clock();
+let menuDisp = false;
 
 // File name variables.
 const globalMeshTexture = "pixel-rocks.png";
@@ -117,7 +117,7 @@ $("#text-only-button").click(async function(){
     $("#incompatible-browser-modal").hide();
 
     // load text-version
-    document.getElementById("content").innerHTML='<object type="text/html" data="text-version.html"></object>';
+    window.location.replace("text-version.html");
 })
 
 $("#xr-viewer").click(async function(){
@@ -148,7 +148,8 @@ $("#ARButton").click(async function() {
     showViewElements("place-view-element");
 
     // Entirely remove the display of the <p> tag in order to preserve the formatting of the main HTML doc.
-    document.getElementById("intro").style.display = "none";
+    //$("#intro").hide();
+    //$("#startup-image").hide();
 });
 
 /**
@@ -193,6 +194,7 @@ $("#fact-three").click(function() {displayFact(3)});
  * @param {*} factNumber - Number (1-3) representing which fact to display.
  */
 function displayFact(factNumber) {
+    endNarrativeSequence();
     let factText;
     currentFactNumber = factNumber; // Set the global Fact Number variable.
     narrativeTextIndicator = 2      // Set the indicator to indicate we are displaying a Fact.
@@ -278,6 +280,7 @@ $("#next-button").click(function() {changeState(1)});
  * Passing -1 as parameter changes the model to the previous state
  */ 
 async function changeState(next_or_previous) {
+    endNarrativeSequence();
 
     if (next_or_previous == 1)
     {
@@ -334,8 +337,8 @@ async function changeState(next_or_previous) {
 */
 function startNarrativeSequence(text) {
     showViewElements("speech-box-button");
-    hideViewElements("main-view-element");
-    hideViewElements("state-change-element");
+    //hideViewElements("main-view-element");
+    //hideViewElements("state-change-element");
     narrativeIterator = 0;
     loadTextToNarrative(text[0]);
 }
@@ -390,7 +393,6 @@ $("#speech-box-button").click(function() {
  */
 function endNarrativeSequence() {
     hideViewElements("speech-box-button");
-
     // Show the proper button(s) based on the the type of narrative currently being shown in the speech box.
     if (narrativeTextIndicator == 1) {
         showViewElements("state-change-element");
@@ -414,16 +416,20 @@ function arPlace() {
 /**
  * Open menu click.
  */
-document.getElementById("menu-button").onclick = function openNav() {
-    document.getElementById("sidenav").style.width = "250px";
+document.getElementById("menu-button").onclick = function toggleMenu() {
+
+    if(menuDisp){
+        $("#menu").css({"opacity":"0"});
+        menuDisp = !menuDisp;
+    }
+    else{
+        $("#menu").css({"opacity":"1"});
+        menuDisp = !menuDisp;
+    }
+    
 }
 
-/**
- * Close menu click.
- */
-document.getElementById("close-menu").onclick = function closeNav() {
-    document.getElementById("sidenav").style.width = "0";
-}
+
 
 /**
  * Music settings button click.
@@ -450,13 +456,13 @@ function loadSatellite() {
  * Displays the speech box (narrative text).
  */
 function showNarrative() {
-    document.getElementById("textBox").style.display = "block";
-    document.getElementById("narrative").style.display = "block";
+    $("#text-box").show();
+    $("#narrative").show();
 }
 
 function hideNarrative(){
-    document.getElementById("textBox").style.display = "none";
-    document.getElementById("narrative").style.display = "none";
+    $("#text-box").show();
+    $("#narrative").show();
 }
 
 /**
@@ -589,7 +595,7 @@ function loadModel(currentModelState, appStart = true, position = null) {
  */
 function init() {
     // Load the introduction text.
-    document.getElementById("intro").textContent = introText;
+    //document.getElementById("intro").textContent = introText;
 
     // Mute music by default.
     document.getElementById("music").muted = true;
@@ -654,15 +660,6 @@ function init() {
     scene.add(reticle);
 
     window.addEventListener('resize', onWindowResize);
-}
-
-/**
- * rotateObject Function
- */
-function rotateObject() {
-    if (currentObject && reticle.visible) {
-        currentObject.rotation.y += (deltaX / 100);
-    }
 }
 
 /**

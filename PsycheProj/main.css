@@ -13,12 +13,13 @@
   --psyche-dark-orange: #F57C33;
 }
 
+
 body {
   margin: 0;
   background-color: black;
-  /*background-image: url(./assets/psyche-title-screen.png);*/
-  /*background-size: cover;*/
-  /*background-repeat: no-repeat;*/
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
   color: white;
 
   font-family: 'VT323', monospace;
@@ -81,90 +82,66 @@ body {
   
 }
 
+#satellite{
+
+}
+
 /* Represents the image of the speech bubble */
 .speech-bubble {
   display: none;
-  float: right;
-  width: 100%;
-  height: 150px;
   color: white;
-  position: relative;
-
   background-image: url("/assets/pixel-text-box.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
   opacity: 0.75;
-
-  align-items: center;
-  justify-content: center;
 }
 
 /* Represents the container for the educational text inside of the speech bubble */
 #narrative {
   display: none;
-  position: absolute;
-  top: 15%;
-  bottom: 15%;
-  left: 10%;
-  right: 15%;
   opacity: 1;
-
   overflow-y: scroll;
-
-  margin: auto;
-
-  align-items: center;
-  justify-content: center;
 }
   
-.sidenav {
-  height: 100%;
-  width: 0;
+#menu {
   position: fixed;
   z-index: 1;
-  top: 0;
-  left: 0;
-  background-color: #111;
-  overflow-x: hidden;
-  transition: 0.5s;
-  padding-top: 60px;
+  top: 50%;
+  left: 50%;
+  background-color: rgba(26, 26, 26, 0.9);
+  list-style-type: none;
+  transform: translate(-50%, -50%);
+  padding: 0;
+  opacity: 0;
 }
 
-.sidenav a {
-  padding: 8px 8px 8px 32px;
-  text-decoration: none;
-  font-size: 25px;
-  color: #818181;
-  display: block;
-  transition: 0.3s;
+#menu li {
+  padding: 2px 5px;
+  border: 1px solid black;
+  color: white;
+  text-decoration: solid;
 }
 
-.sidenav a:hover {
-  color: #f1f1f1;
-}
-
-.sidenav .closebtn {
-  position: absolute;
-  top: 0;
-  right: 25px;
-  font-size: 36px;
-  margin-left: 50px;
+#menu li a{
+    color: inherit;
+    text-decoration: none; /* no underline */
 }
 
 .horizontal {
   display: inline-block;
 }
 
-@media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
-}
+/*@media screen and (max-height: 450px) {
+  .menu {padding-top: 15px;}
+  .menu a {font-size: 18px;}
+}*/
 
 /* Only used for the intro <p> tag */
 .intro {
   padding: 85px 25px 25px 25px;
   color: white;
   text-align: center;
+  z-index: 101;
 }
 
 /* This type of element should be visible in the main view 
@@ -198,6 +175,13 @@ body {
 
 .speech-box-button {
   visibility: hidden;
+  border: none;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  height: 13px;
+  width: 18px;
+  background-image: url(assets/buttons/down-arrow.png);
 }
 
 #dashboard{

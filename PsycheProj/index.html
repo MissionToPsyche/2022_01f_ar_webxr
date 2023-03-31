@@ -27,6 +27,7 @@
 	</head>
 	<body id="body">
 
+		<!-- This is a modal that shows if the user's browser does not support WebXR -->
 		<div id="incompatible-browser-modal" class="modal">
 
 			<div class="container-fluid">
@@ -61,14 +62,17 @@
 
 		</div>
 
-		<img id="startup-image" src="./assets/psyche-title-screen.png" alt="">
-
 		<audio autoplay loop id="music">
 			<source src="./assets/ivoryhaus-perseids.mp3" type="audio/mpeg">
 		</audio>
 
+		<img id="startup-image" src="/assets/psyche-title-screen.png">
+
 		<!-- This container is divided into 5 rows and represents the screen elements -->
 		<div id="content" class="container-fluid p-0">
+
+			<!-- This is the intro message and will be removed after the introduction is complete -->
+			<!-- <p id="intro" class="intro position-absolute"></p> -->
 
 			<!-- This is where the models get placed in JS. It spans the size of the screen -->
 			<div id="model-view-area"></div>
@@ -76,12 +80,59 @@
 			<!-- 1/5 -->
 			<!-- SPEECH BUBBLE, SPACECRAFT -->
 			<div id="screen-top" class="row h-20 w-100 m-0">
-				<div class="col d-flex align-items-center justify-content-center">
-					<div id="textBox" class="speech-bubble">
-						<p id="narrative"></p>
-						<img align="right" src="/assets/psyche-spacecraft-pixel-art.png" id="satellite"></img>
-						<button id="speech-box-button" class="speech-box-button">...</button>
+
+				<div class="container-fluid h-100">
+
+					<div id="text-box" class="row h-100 position-relative speech-bubble">
+
+						<!-- NARRATIVE - This is the text that will be displayed to the user -->
+						<div class="col-10 p-4 pe-0 d-flex h-100">
+
+							<p id="narrative" class=""></p>
+
+						</div>
+
+						<!-- PSYCHE SPACECRAFT, TEXT BUTTONS -->
+						<div class="col-2 h-100 p-2">
+
+							<!-- PSYCHE SPACECRAFT -->
+							<div class="row h-50 align-content-center">
+
+								<div class="col">
+
+									<img id="satellite" class="h-100" src="/assets/psyche-spacecraft-pixel-art.png"></img>
+
+								</div>
+								
+
+							</div>
+
+							<!-- TEXT UP BUTTON -->
+							<div class="row h-25">
+
+								<div class="col">
+
+									<!-- TEXT UP BUTTON GOES HERE -->
+
+								</div>
+
+							</div>
+
+							<!-- TEXT DOWN BUTTON -->
+							<div class="row h-25">
+
+								<div class="col">
+									
+									<button id="speech-box-button" class="speech-box-button col"></button>
+
+								</div>
+
+							</div>
+
+						</div>
+						
 					</div>
+
 				</div>
 
 			</div>
@@ -95,9 +146,6 @@
 			<!-- 4/5 -->
 			<!-- Spacer, Dashboard Button -->
 			<div class="row h-20 m-0">
-
-				<!-- This is the intro message and will be removed after the introduction is complete -->
-				<p id="intro" class="intro"></p>
 
 				<div class="col"></div>
 
@@ -172,18 +220,13 @@
 			</div>
 
 			<!-- This is the options menu AKA sidenav -->
-			<div id="sidenav" class="sidenav">
-
-				<!-- Close menu button-->
-				<a href="javascript:void(0)" class="closebtn" id="close-menu">&times;</a>
-				
-				<a href="text-version.html">Text-Only Mode</a>
-				
-				<a id ="music-settings">Mute/Unmute</a>
-				
-				<a href="https://psyche.asu.edu/">Visit Psyche Website</a>
-
-			</div>
+			<ul id="menu">
+				<li><h1>Menu</h1></li>
+				<li><a href="text-version.html">Text-Only Mode</a></li>
+				<li><a id ="music-settings">Mute/Unmute</a></li>
+				<li><a href="https://psyche.asu.edu/">Visit Psyche Website</a></li>
+				<li><a href=".">Restart</a></li>
+			</ul>
 		</div>
 
 	</body>

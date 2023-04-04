@@ -470,6 +470,23 @@ document.getElementById("menu-button").onclick = function toggleMenu() {
     
 }
 
+//menu disappears when you click anywhere off of it
+$(document).mouseup(function(e){
+    let menu = $('#menu');
+    let menuButton = $('#menu-button')
+    if (!menu.is(e.target) 
+    && menu.has(e.target).length === 0)
+    {
+        if(menuDisp){
+            $("#menu").css({"opacity":"0"});
+            if(!menuButton.is(e.target)){
+                menuDisp = !menuDisp;
+            }
+        }
+
+    }
+ });
+
 
 
 /**

@@ -35,9 +35,8 @@ const modelDescriptions = [
     "Stage 1: Formation of planetesimal",
 
     // State Change 1 Description - String Array indicates it will use multiple speech boxes.
-    ["<Explain transition from State 1 to State 2 - It accumulated particles over time.>",
-    "This is a transition 1 -> 2 test.",
-    "Also a transition 1 -> 2 test."],
+    ["As small particles of things such as ice and dust combine, they form larger particles. Eventually these particles combine through different",
+    "processes to form an object large enough to be classified as a planetesimal."],
 
     // Model 2 Description - String Array indicates it will use multiple speech boxes.
     ["Stage 2: Planetesimal",
@@ -45,7 +44,9 @@ const modelDescriptions = [
     "Also a model 2 test."],
 
     // State Change 2 Description
-    "<Explain transition from State 2 to State 1 - It was broken down over time.>",
+    ["Objects are colliding with the planetesimal. These collisions cause the surface layer of the planetesimal to become worn away. After many ",
+    "of these collisions, the surface no longer remains intact and the core of the planetesimal is exposed. Though there may possibly be some ",
+    "remnants of the surface layer and other material remaining, what is left after these collisions is mainly core material of the planetesimal."],
 
     // Model 3 Description
     "Stage 3: Core/Current asteroid"

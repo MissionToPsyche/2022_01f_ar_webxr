@@ -322,7 +322,10 @@ body {
 
 /* Represents the asteroid button */
 #fact-one {  
-  /*background-image: url("/assets/question-mark-64px.png");*/
+  background-image: url("/assets/buttons/white-arcade-button-psyche-unpressed.png");
+}
+#fact-one:active{
+  background-image: url("/assets/buttons/white-arcade-button-psyche-pressed.png");
 }
 
 /* Represents the question button */
@@ -335,7 +338,10 @@ body {
 
 /* Represents the spacecraft button */
 #fact-three {
-  /*background-image: url("/assets/asteroid-art-32px-noCircle.png");*/
+  background-image: url("assets/buttons/white-arcade-button-measure-unpressed.png");
+}
+#fact-three:active{
+  background-image: url("/assets/buttons/white-arcade-button-measure-pressed.png");
 }
 
 #screen-bottom{

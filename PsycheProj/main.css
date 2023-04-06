@@ -118,6 +118,7 @@ body {
   display: none;
   opacity: 1;
   overflow-y: scroll;
+  min-height: 80px;
 }
   
 #menu {

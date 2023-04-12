@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="text.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <title>WebXR Not Supported</title>
+
+</head>
+<body>
+    <!-- INCOMPATIBLE BROWSER MODAL - pop-up if the user's browser does not support WebXR -->
+    <div class="container-fluid">
+
+        <div class="row">
+
+            <div id="header-column" class="col d-flex p-4">
+
+                <img src="/assets/psyche-logo.png" class="img-fluid" alt="NASA Psyche Logo">
+
+            </div>
+
+        </div>
+
+        <!-- SCREEN TOP -->
+        <div class="row p-4 pt-0">
+
+            <div class="col">
+
+                <!-- HEADING -->
+                <div class="row">
+
+                    <div class="col d-flex justify-content-center">
+
+                        <h1 class="pt-4 pb-3">WebXR Not Supported</h1>
+
+                    </div>
+                    
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- WEBXR VIEWER DOWNLOAD BUTTON BLOCK-->
+        <div class="row m-3">
+
+            <div class="col-12" style="border: 2px solid black; border-radius: 5px;">
+
+                <div class="row py-3">
+            
+                    <div class="col">
+
+                        <h3 style="text-align: center; color: var(--psyche-dark-pink)">iPhone Users</h3>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <p style="text-align: left;">
+                        1. Copy app URL
+                    </p>
+                </div>
+
+                <div class="row">
+                    <!-- INSTRUCTIONS-->
+                    <div class="col mb-3 d-flex align-items-center justify-content-center">
+
+                        <button class="webxr-not-supported-button" id="copy-link-button">Click Here to Copy URL</button>
+
+                    </div>
+                    
+                </div>
+
+                <div class="row">
+                    <p style="text-align: left;">
+                        2. Download XRViewer App
+                    </p>
+                </div>
+
+                <!-- XR VIEWER BUTTON -->
+                <div class="row m-0">
+
+                    <!-- DOWNLOAD XRVIEWER BUTTON -->
+                    <div class="col mb-3 d-flex align-items-center justify-content-center">	
+                        <button id="download-xrviewer-button" class="webxr-not-supported-button text-center">Download XRViewer</button>
+                    </div>
+                    
+                </div>
+
+                <div class="row">
+                    <p style="text-align: left;">
+                        3. Paste URL into XRViewer window address
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- TEXT-ONLY BUTTON BLOCK -->
+        <div class="row m-3">
+
+            <div class="col-12" style="border: 2px solid black; border-radius: 5px;">
+
+                <div class="row py-3">
+            
+                    <div class="col">
+
+                        <h3 style="text-align: center; color: var(--psyche-dark-pink)">Non-iPhone Users</h3>
+
+                    </div>
+
+                </div>
+        
+                <div class="row">
+
+                    <div class="col d-flex align-items-center justify-content-center">
+                        <p style="text-align: center;">Click here to view text-only mode.</p>
+                    </div>
+
+                </div>
+    
+                <!-- TEXT-ONLY BUTTON -->
+                <div class="row w-100 m-0 d-flex">
+
+                    <div class="col my-3 d-flex align-items-center justify-content-center">
+
+                        <button id="text-only-button" class="webxr-not-supported-button text-center">Text-Only Mode</button>
+
+                    </div>
+                    
+                </div>
+    
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        $("#text-only-button").click(function(){
+
+            //$("#incompatible-browser-modal").hide();
+
+            // load text-version
+            window.location.replace("text-version.html");
+        })
+
+        $("#download-xrviewer-button").click(async function(){
+
+            window.location.href = 'https://apps.apple.com/us/app/webxr-viewer/id1295998056';
+
+        })
+
+        $('#copy-link-button').click(function() {
+
+            // Copy current URL to clickboard
+            const currentUrl = window.location.href;
+            navigator.clipboard.writeText(currentUrl);
+
+            // Shows user that the text has been copied
+            $('#copy-link-button').text("COPIED!");
+            $('#copy-link-button').css('background-color', 'green');
+
+            // Change text back
+            setTimeout(function() {
+                $('#copy-link-button').text('Click Here to Copy URL');
+                $('#copy-link-button').css('background-color', 'var(--light-blue)');
+            }, 1500);  
+
+            /*
+            // This code is used to handle an unsecure connection
+            // App will be hosted using HTTPS, so this code shouldn't be needed
+            try {
+                // Copy current URL to clickboard
+                const currentUrl = window.location.href;
+                navigator.clipboard.writeText(currentUrl);
+
+                // Shows user that the text has been copied
+                $('#copy-link-button').text("COPIED!");
+
+                // Change text back
+                setTimeout(function() {
+                    $('#copy-link-button').text('Click Here to Copy');
+                }, 1500);  
+
+            } catch (error) {
+
+                $("#copy-link-buttonk").text(currentUrl);
+            }   
+            */ 
+        });  
+
+    </script>
+</body>
+</html>
+

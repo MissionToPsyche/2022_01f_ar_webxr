@@ -56,7 +56,7 @@ class ARButton {
 
 					navigator.xr.requestSession( 'immersive-ar', sessionInit )
 						.then( onSessionStarted )
-						.catch( showTextMode );
+						.catch( showIncompatibleBrowserModal );
 
 				} else {
 
@@ -96,7 +96,9 @@ class ARButton {
 		// Shows modal to handle browsers that don't support WebXR
 		function showIncompatibleBrowserModal(){
 			$("#startup-image").hide();
-			$("#incompatible-browser-modal").show();
+			//$("#incompatible-browser-modal").show();
+
+			window.location.replace("webxr-not-supported.html");
 		}
 
 		function showTextMode(){

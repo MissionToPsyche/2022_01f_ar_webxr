@@ -34,6 +34,7 @@ body {
 }
 
 #startup-image{
+  position: absolute;
   display: inline;
   z-index: 99;
   height: 100vh;
@@ -41,25 +42,6 @@ body {
 
   margin: 0%;
   overflow: hidden;
-}
-
-#incompatible-browser-modal{
-  display: none;
-  z-index: 1000;
-
-  background-color: #3b4351;
-  color: white;
-
-  border: 1px solid #888;
-
-}
-.incompatible-browser-modal-button{
-
-  border: none;
-  border-radius: 5px;
-  background-color: var(--light-blue);
-  color: white;
-
 }
 
 #content{

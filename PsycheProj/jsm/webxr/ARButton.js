@@ -2,7 +2,7 @@ class ARButton {
 
 	static createButton( renderer, sessionInit = {} ) {
 
-		window.polyfill = new WebXRPolyfill();
+		//window.polyfill = new WebXRPolyfill();
 
 		const button = document.createElement( 'button' );
 
@@ -11,8 +11,6 @@ class ARButton {
 			let currentSession = null;
 
 			function onSessionStarted( session ) {
-
-				//session.addEventListener( 'end', onSessionEnded );
 
 				renderer.xr.setReferenceSpaceType( 'local' );
 				renderer.xr.setSession( session );
@@ -61,7 +59,11 @@ class ARButton {
 
 					navigator.xr.requestSession( 'immersive-ar', sessionInit )
 						.then( onSessionStarted )
-						.catch( showIncompatibleBrowserModal );
+						.catch( error =>{
+							console.log(error);
+							
+							showWebXRNotSupported();
+						} );
 
 				} else {
 
@@ -96,15 +98,16 @@ class ARButton {
 
 			button.textContent = 'AR NOT SUPPORTED';
 
-			showIncompatibleBrowserModal();
+			showWebXRNotSupported();
 		}
 		*/
 
 		// Shows modal to handle browsers that don't support WebXR
-		function showIncompatibleBrowserModal(){
-			$("#startup-image").hide();
+		function showWebXRNotSupported(){
 
 			window.location.replace("webxr-not-supported.html");
+
+			$("#startup-image").hide();
 		}
 
 		/*
@@ -145,31 +148,25 @@ class ARButton {
 			const immersiveOK = navigator.xr.isSessionSupported("immersive-ar");
 
 			if (immersiveOK) {
-
 				showStartAR();
-				// Create and use an immersive VR session
 
 			} else {
-
-				// Create an inline session instead, or tell the user about the
-				// incompatibility if inline is required
-				showIncompatibleBrowserModal();
-
+				showWebXRNotSupported();
 			}
 
 			/*
 			navigator.xr.isSessionSupported( 'immersive-ar' ).then( function ( supported ) {
 
-				supported ? showStartAR() : showIncompatibleBrowserModal();
+				supported ? showStartAR() : showWebXRNotSupported();
 
-			} ).catch( showIncompatibleBrowserModal );
+			} ).catch( showWebXRNotSupported );
 			*/
 
 			return button;
 
 		} else {
 
-			showIncompatibleBrowserModal();
+			showWebXRNotSupported();
 
 			const message = document.createElement( 'a' );
 

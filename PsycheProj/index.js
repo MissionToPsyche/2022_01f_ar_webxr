@@ -40,9 +40,7 @@ const modelDescriptions = [
     "processes to form an object large enough to be classified as a planetesimal."],
 
     // Model 2 Description - String Array indicates it will use multiple speech boxes.
-    ["Stage 2: Planetesimal",
-    "This is a model 2 test.",
-    "Also a model 2 test."],
+    "Stage 2: Planetesimal",
 
     // State Change 2 Description
     ["Objects are colliding with the planetesimal. These collisions cause the surface layer of the planetesimal to become worn away. After many ",
@@ -116,7 +114,7 @@ animate();
 
 $("#text-only-button").click(async function(){
 
-    $("#incompatible-browser-modal").hide();
+    //$("#incompatible-browser-modal").hide();
 
     // load text-version
     window.location.replace("text-version.html");
@@ -189,10 +187,6 @@ $("#ARButton").click(async function() {
 
     // Load the Place and Menu button.
     showViewElements("place-view-element");
-
-    // Entirely remove the display of the <p> tag in order to preserve the formatting of the main HTML doc.
-    //$("#intro").hide();
-    //$("#startup-image").hide();
 });
 
 /**
@@ -654,12 +648,7 @@ function loadModel(currentModelState, appStart = true, position = null) {
  * Initializes three.js objects necessary for rendering AR scene.
  */
 function init() {
-    // Load the introduction text.
-    //document.getElementById("intro").textContent = introText;
-
-    // Mute music by default.
-    document.getElementById("music").muted = true;
-
+    
     // Create html element and add to modelViewArea
     modelViewArea = document.createElement('div');
     document.getElementById("model-view-area").appendChild(modelViewArea);

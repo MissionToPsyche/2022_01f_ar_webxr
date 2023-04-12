@@ -2,6 +2,8 @@ class ARButton {
 
 	static createButton( renderer, sessionInit = {} ) {
 
+		window.polyfill = new WebXRPolyfill();
+
 		const button = document.createElement( 'button' );
 
 		function showStartAR( /*device*/ ) {
@@ -10,7 +12,7 @@ class ARButton {
 
 			function onSessionStarted( session ) {
 
-				session.addEventListener( 'end', onSessionEnded );
+				//session.addEventListener( 'end', onSessionEnded );
 
 				renderer.xr.setReferenceSpaceType( 'local' );
 				renderer.xr.setSession( session );
@@ -20,7 +22,8 @@ class ARButton {
 			
 			}
 
-			function onSessionEnded( /*event*/ ) {
+			/*
+			function onSessionEnded(  ) {
 
 				currentSession.removeEventListener( 'end', onSessionEnded );
 
@@ -29,6 +32,8 @@ class ARButton {
 				currentSession = null;
 
 			}
+			*/
+			
 
 			button.style.display = '';
 
@@ -56,7 +61,7 @@ class ARButton {
 
 					navigator.xr.requestSession( 'immersive-ar', sessionInit )
 						.then( onSessionStarted )
-						.catch( showTextMode );
+						.catch( showIncompatibleBrowserModal );
 
 				} else {
 
@@ -84,6 +89,7 @@ class ARButton {
 
 		}
 
+		/*
 		function showARNotSupported() {
 
 			disableButton();
@@ -92,13 +98,16 @@ class ARButton {
 
 			showIncompatibleBrowserModal();
 		}
+		*/
 
 		// Shows modal to handle browsers that don't support WebXR
 		function showIncompatibleBrowserModal(){
 			$("#startup-image").hide();
-			$("#incompatible-browser-modal").show();
+
+			window.location.replace("webxr-not-supported.html");
 		}
 
+		/*
 		function showTextMode(){
 
 			// hide startAR button
@@ -107,6 +116,7 @@ class ARButton {
 			// load text mode
 			window.location.replace("text-version.html");
 		}
+		*/
 
 		function stylizeElement( element ) {
 
@@ -132,11 +142,28 @@ class ARButton {
 
 			stylizeElement( button );
 
+			const immersiveOK = navigator.xr.isSessionSupported("immersive-ar");
+
+			if (immersiveOK) {
+
+				showStartAR();
+				// Create and use an immersive VR session
+
+			} else {
+
+				// Create an inline session instead, or tell the user about the
+				// incompatibility if inline is required
+				showIncompatibleBrowserModal();
+
+			}
+
+			/*
 			navigator.xr.isSessionSupported( 'immersive-ar' ).then( function ( supported ) {
 
 				supported ? showStartAR() : showIncompatibleBrowserModal();
 
 			} ).catch( showIncompatibleBrowserModal );
+			*/
 
 			return button;
 

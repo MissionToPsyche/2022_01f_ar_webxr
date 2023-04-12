@@ -17,8 +17,9 @@ let mixer;
 let narrativeIterator;      // Number to keep track of narrative sequence when more than 1 speech box is needed for a single narrative.
 let narrativeTextIndicator; // Number to indicate what type of narrative text is currently in the speech box (model description (0), state change description (1), fact (2)).
 let currentFactNumber;      // Number to track of the current fact number when a narrative with multiple speech boxes is currently being iterated through.
-const clock = new THREE.Clock();
 let menuDisp = false;
+const clock = new THREE.Clock();
+
 
 // File name variables.
 const globalMeshTexture = "pixel-rocks.png";

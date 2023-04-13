@@ -11,17 +11,23 @@ var geometry = new THREE.CubeGeometry(1,1,1);
 var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
 var cube = new THREE.Mesh( geometry, material );
 
-
+/**
+ * This ModelViewArea class represents a 3D viewing area
+ */
 class ModelViewArea{
     scene;
     camera;
     renderer;
+    mixer;
 
     constructor(){
         // Instantiate scene, camera, and renderer
         this.scene = new THREE.Scene();
         this.camera = new THREE.PerspectiveCamera(70, (window.innerWidth / window.innerHeight), 0.001, 200);
         this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+
+        // Setup camera - makes 3D model visible
+        this.camera.position.z = 1.5;
 
         // Setup renderer
         this.renderer.setPixelRatio(window.devicePixelRatio);
@@ -33,17 +39,20 @@ class ModelViewArea{
 }
 
 function init(){
-    console.log("init()");
+
+    // Convert .glb files to ModelViewArea objects and fill modelViewAreas array
+    let path = '/assets/models/';
+    let format = '.glb';
+
+    for (let i = 0; i < 5; i++) {
+        let filePath = path + (i + 1) + format;
+        modelViewAreas[i] = getModelViewAreaFrom(filePath);
+    }
 
     // Setup Model View Area 1
-    const modelViewArea1 = new ModelViewArea();
-    modelViewAreas[0] = modelViewArea1;
-    $('#model-1').append(modelViewArea1.renderer.domElement);
-    render(modelViewArea1);
-
-    // Proof of concept - cube works in android but not iPhone
-    modelViewArea1.scene.add( cube );
-    modelViewArea1.camera.position.z = 5;
+    $('#model-1').append(modelViewAreas[0].renderer.domElement);
+    //modelViewAreas[0].renderer.domElement = document.getElementById("model-1");
+    
 
     // Model View Area 2
 
@@ -64,8 +73,7 @@ function init(){
 init();
 
 /**
- * This function adds lighting to the scene.
- * 
+ * Adds lighting to the scene.
  * @param {*} scene - The scene object to add lighting to
  */
 function addLightingTo(scene){
@@ -80,6 +88,53 @@ function addLightingTo(scene){
     scene.add(spotLight);
 }
 
+/**
+ * Takes a .glb file and returns a ModelViewArea object
+ * @param {*} glbFilePath - the filepath of the .glb file to get a ModelViewArea from
+ * @returns ModelViewArea object based on .glb file
+ */
+function getModelViewAreaFrom(glbFilePath){
+
+    const loader = new GLTFLoader();
+
+    let modelViewArea = new ModelViewArea();
+
+    // Get the scene from the glb file
+    loader.load(glbFilePath, function(glb){
+
+        textureAllMeshes(glb.scene);
+
+        // Add the scene to the ModelViewArea object
+        modelViewArea.scene.add(glb.scene);
+    })
+
+    return modelViewArea;
+}
+
+/**
+ * Applies a texture to all Meshes in a scene.
+ * @param {*} scene - scene for which a texture will be applied to all meshes
+ */
+function textureAllMeshes(scene){
+
+    // Load texture file
+    var textureLoader = new THREE.TextureLoader().setPath('assets/');
+    var texture = textureLoader.load("pixel-rocks.png");
+    texture.flipY = false;
+
+    // Find the meshes in the scene and texture them
+    scene.traverse ( ( o ) => {
+        if ( o.isMesh ) {
+            o.material.map = texture;
+            o.material.bumpMap = texture;
+            o.material.roughnessMap = texture;
+
+            // Affects how intense the shading is based on the texture
+            o.material.bumpScale = 0.1;
+        }
+    });
+}
+
 function render(){
 
     // Gets change in position for model and updates, allowing for animations.
@@ -87,9 +142,6 @@ function render(){
     const delta = clock.getDelta();
     mixer.update(delta)
     */
-
-    cube.rotation.x += 0.001;
-    cube.rotation.y += 0.001;
 
     requestAnimationFrame(render);
     modelViewAreas[0].renderer.render( modelViewAreas[0].scene, modelViewAreas[0].camera );

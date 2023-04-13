@@ -114,8 +114,6 @@ animate();
 
 $("#text-only-button").click(async function(){
 
-    //$("#incompatible-browser-modal").hide();
-
     // load text-version
     window.location.replace("text-version.html");
 })
@@ -141,28 +139,6 @@ $('#copy-link-button').click(function() {
         $('#copy-link-button').text('Click Here to Copy URL');
         $('#copy-link-button').css('background-color', 'var(--light-blue)');
     }, 1500);  
-
-    /*
-    // This code is used to handle an unsecure connection
-    // App will be hosted using HTTPS, so this code shouldn't be needed
-    try {
-        // Copy current URL to clickboard
-        const currentUrl = window.location.href;
-        navigator.clipboard.writeText(currentUrl);
-
-        // Shows user that the text has been copied
-        $('#copy-link-button').text("COPIED!");
-
-        // Change text back
-        setTimeout(function() {
-            $('#copy-link-button').text('Click Here to Copy');
-        }, 1500);  
-
-      } catch (error) {
-
-        $("#copy-link-buttonk").text(currentUrl);
-    }   
-    */ 
 });  
 
 /**
@@ -613,14 +589,6 @@ function loadModel(currentModelState, appStart = true, position = null) {
             mixer = new THREE.AnimationMixer(currentObject);
 
             glb.animations.forEach(animation =>{
-
-                /*
-                // This if statement will ensure that state change animations only play once
-                if((currentModelState % 2) == 0){
-                    mixer.clipAction(animation).setLoop(THREE.LoopOnce);
-                }
-                */
-
                 mixer.clipAction(animation).play()
             })
 

@@ -2,8 +2,6 @@ class ARButton {
 
 	static createButton( renderer, sessionInit = {} ) {
 
-		//window.polyfill = new WebXRPolyfill();
-
 		const button = document.createElement( 'button' );
 
 		function showStartAR( /*device*/ ) {
@@ -19,20 +17,7 @@ class ARButton {
 				currentSession = session;
 			
 			}
-
-			/*
-			function onSessionEnded(  ) {
-
-				currentSession.removeEventListener( 'end', onSessionEnded );
-
-				button.textContent = 'START AR';
-
-				currentSession = null;
-
-			}
-			*/
 			
-
 			button.style.display = '';
 
 			button.style.cursor = 'pointer';
@@ -91,17 +76,6 @@ class ARButton {
 
 		}
 
-		/*
-		function showARNotSupported() {
-
-			disableButton();
-
-			button.textContent = 'AR NOT SUPPORTED';
-
-			showWebXRNotSupported();
-		}
-		*/
-
 		// Shows modal to handle browsers that don't support WebXR
 		function showWebXRNotSupported(){
 
@@ -109,17 +83,6 @@ class ARButton {
 
 			$("#startup-image").hide();
 		}
-
-		/*
-		function showTextMode(){
-
-			// hide startAR button
-			button.style.display = "none";
-
-			// load text mode
-			window.location.replace("text-version.html");
-		}
-		*/
 
 		function stylizeElement( element ) {
 

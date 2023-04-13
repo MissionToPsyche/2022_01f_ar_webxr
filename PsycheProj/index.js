@@ -18,7 +18,6 @@ let mixer;
 let narrativeIterator;      // Number to keep track of narrative sequence when more than 1 speech box is needed for a single narrative.
 let narrativeTextIndicator; // Number to indicate what type of narrative text is currently in the speech box (model description (0), state change description (1), fact (2)).
 let currentFactNumber;      // Number to track of the current fact number when a narrative with multiple speech boxes is currently being iterated through.
-let menuDisp = false;
 const clock = new THREE.Clock();
 
 // File name variables.
@@ -56,7 +55,7 @@ $("#ARButton").click(async function() {
 
     // Set up preliminary objects and elements.
     setSpaceEnvironment(scene);
-    loadSatellite();
+    $("#satellite").show();
     showNarrative();
     loadTextToNarrative(greeting);
 
@@ -330,15 +329,6 @@ function arPlace() {
 };
 
 /**
- * loadSatellite Function
- * 
- * Loads the satellite guide onto the screen.
- */
-function loadSatellite() {
-    $("#satellite").show();
-}
-
-/**
  * showNarrative Function
  * 
  * Displays the speech box (narrative text).
@@ -376,17 +366,6 @@ function displayModelDescription() {
  */
 function loadTextToNarrative(text) {
     document.getElementById("narrative").textContent = text;
-}
-
-/**
- * sleep Function
- * 
- * Pauses program execution.
- * @param {number} ms - Amount of time to pause in milliseconds.
- * @returns - Promise object.
- */
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 /**

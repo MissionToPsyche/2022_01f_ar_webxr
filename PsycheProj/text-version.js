@@ -1,16 +1,8 @@
 import * as THREE from 'three';
-import {OrbitControls} from '../jsm/controls/OrbitControls.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
-import {RGBELoader} from 'three/addons/loaders/RGBELoader.js';
 
-let camera, scene;
-let mixer;
 let modelViewAreas = [];
 const clock = new THREE.Clock();
-
-var geometry = new THREE.CubeGeometry(1,1,1);
-var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-var cube = new THREE.Mesh( geometry, material );
 
 /**
  * This ModelViewArea class represents a 3D viewing area
@@ -29,14 +21,19 @@ class ModelViewArea{
         // Instantiate scene, camera, and renderer
         this.scene = new THREE.Scene();
         this.camera = new THREE.PerspectiveCamera(70, (window.innerWidth / window.innerHeight), 0.001, 200);
-        this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        this.renderer = new THREE.WebGLRenderer({ 
+            antialias: true, 
+            alpha: true,
+            pixelRatio: window.devicePixelRatio
+        });
 
         // Setup camera - makes 3D model visible
         this.camera.position.z = 1.5;
+        this.camera.position.y = 0.5;
+        this.camera.rotation.x = -.25;
 
         // Setup renderer
-        this.renderer.setPixelRatio(window.devicePixelRatio);
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.setSize(window.innerWidth / 2, window.innerHeight / 2);
         this.renderer.xr.enabled = false;
 
         addLightingTo(this.scene);
@@ -67,8 +64,6 @@ function init(){
         modelViewAreas[i].elementID = "model-" + modelNumber;
     }
 
-    
-    
     // Maybe this code could be more efficient??
 
     // Creates a system of observers that set the isObserved Boolean 
@@ -80,7 +75,6 @@ function init(){
                 modelViewAreas.forEach(mva => {
                     if(mva.elementID === entry.target.id){
                         mva.isObserved = true;
-                        console.log("visible", entry.target.id, mva);
                     }
                 });
             }
@@ -89,7 +83,6 @@ function init(){
                 modelViewAreas.forEach(mva => {
                     if(mva.elementID === entry.target.id){
                         mva.isObserved = false;
-                        console.log("not visible", mva);
                     }
                 });
             }
@@ -134,9 +127,7 @@ function getModelViewAreaFrom(glbFilePath){
     // Get scene and animations from the glb file
     loader.load(glbFilePath, function(glb){
 
-        
         textureAllMeshes(glb.scene);
-        //modelViewArea.glb = glb;
         modelViewArea.mixer = new THREE.AnimationMixer(glb.scene);
 
         // Start Animations
@@ -176,6 +167,9 @@ function textureAllMeshes(scene){
     });
 }
 
+/**
+ *  Render loop that shows and updates models and animations
+ */
 function render(){
 
     if(modelViewAreas.length == 0){

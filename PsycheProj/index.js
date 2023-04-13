@@ -104,6 +104,16 @@ $("#fact-two").click(function() {displayFact(2)});
 $("#fact-three").click(function() {displayFact(3)});
 
 /**
+ * Change State button click.
+ */
+$("#state-change").click(function() {changeState(1)});
+
+/**
+ * Next button click.
+ */
+$("#next-button").click(function() {changeState(1)});
+
+/**
  * displayFact Function
  * 
  * Displays appropriate fact depending on currentModelState variable.
@@ -175,16 +185,6 @@ function hideViewElements(view){
         element.style.visibility = "hidden";
     });
 }
-
-/**
- * Change State button click.
- */
-$("#state-change").click(function() {changeState(1)});
-
-/**
- * Next button click.
- */
-$("#next-button").click(function() {changeState(1)});
 
 /**
  * nextState Function
@@ -328,51 +328,6 @@ function arPlace() {
         currentObject.visible = true;
     }
 };
-
-/**
- * Open menu click.
- */
-document.getElementById("menu-button").onclick = function toggleMenu() {
-
-    if(menuDisp){
-        $("#menu").css({"opacity":"0"});
-        menuDisp = !menuDisp;
-    }
-    else{
-        $("#menu").css({"opacity":"1"});
-        menuDisp = !menuDisp;
-    }
-    
-}
-
-//menu disappears when you click anywhere off of it
-$(document).mouseup(function(e){
-    let menu = $('#menu');
-    let menuButton = $('#menu-button')
-    if (!menu.is(e.target) 
-    && menu.has(e.target).length === 0)
-    {
-        if(menuDisp){
-            $("#menu").css({"opacity":"0"});
-            if(!menuButton.is(e.target)){
-                menuDisp = !menuDisp;
-            }
-        }
-
-    }
- });
-
-
-
-/**
- * Music settings button click.
- * 
- * Mutes/Unmutes the ambient music.
- */
-$("#music-settings").click(function() {
-    let myAudio = document.getElementById("music");
-    myAudio.muted=!myAudio.muted;
-})
 
 /**
  * loadSatellite Function

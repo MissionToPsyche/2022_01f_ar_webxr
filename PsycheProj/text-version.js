@@ -5,7 +5,8 @@ import {RGBELoader} from 'three/addons/loaders/RGBELoader.js';
 
 let camera, scene;
 let mixer;
-const modelViewAreas = [];
+let modelViewAreas = [];
+const clock = new THREE.Clock();
 
 var geometry = new THREE.CubeGeometry(1,1,1);
 var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
@@ -15,10 +16,14 @@ var cube = new THREE.Mesh( geometry, material );
  * This ModelViewArea class represents a 3D viewing area
  */
 class ModelViewArea{
+    glb;
     scene;
     camera;
     renderer;
+    animations = [];
     mixer;
+    elementID;
+    isObserved = false;
 
     constructor(){
         // Instantiate scene, camera, and renderer
@@ -38,36 +43,63 @@ class ModelViewArea{
     }
 }
 
+/**
+ * Main logic of text-version
+ */
 function init(){
 
     // Convert .glb files to ModelViewArea objects and fill modelViewAreas array
     let path = '/assets/models/';
     let format = '.glb';
+    let filePath, modelNumber;
 
     for (let i = 0; i < 5; i++) {
-        let filePath = path + (i + 1) + format;
+
+        modelNumber = i + 1;
+        filePath = path + modelNumber + format;
+        
         modelViewAreas[i] = getModelViewAreaFrom(filePath);
+
+        // Creates a <canvas> inside of the div with the elementID = model-(i-1)
+        $("#model-" + modelNumber).append(modelViewAreas[i].renderer.domElement);
+
+        // Save the elementID for later
+        modelViewAreas[i].elementID = "model-" + modelNumber;
     }
 
-    // Setup Model View Area 1
-    $('#model-1').append(modelViewAreas[0].renderer.domElement);
-    //modelViewAreas[0].renderer.domElement = document.getElementById("model-1");
     
+    
+    // Maybe this code could be more efficient??
 
-    // Model View Area 2
+    // Creates a system of observers that set the isObserved Boolean 
+    // depending on if the ModelViewArea is in view or not.
+    const observer = new IntersectionObserver( entries => {
+        entries.forEach(entry => {
+            if(entry.isIntersecting){
+                // ModelViewArea object is observed, set isObserved = true
+                modelViewAreas.forEach(mva => {
+                    if(mva.elementID === entry.target.id){
+                        mva.isObserved = true;
+                        console.log("visible", entry.target.id, mva);
+                    }
+                });
+            }
+            else{
+                // ModelViewArea object is not observed, set isObserved = false
+                modelViewAreas.forEach(mva => {
+                    if(mva.elementID === entry.target.id){
+                        mva.isObserved = false;
+                        console.log("not visible", mva);
+                    }
+                });
+            }
+        })
+    })
 
-
-    // Model View Area 3
-
-
-
-    // Model View Area 4
-
-
-
-    // Model View Area 5
-
-
+    const divsToWatch = document.querySelectorAll('.model-view-area');
+    divsToWatch.forEach(div => {
+        observer.observe(div);
+    })
 }
 
 init();
@@ -99,20 +131,29 @@ function getModelViewAreaFrom(glbFilePath){
 
     let modelViewArea = new ModelViewArea();
 
-    // Get the scene from the glb file
+    // Get scene and animations from the glb file
     loader.load(glbFilePath, function(glb){
 
+        
         textureAllMeshes(glb.scene);
+        //modelViewArea.glb = glb;
+        modelViewArea.mixer = new THREE.AnimationMixer(glb.scene);
 
-        // Add the scene to the ModelViewArea object
-        modelViewArea.scene.add(glb.scene);
-    })
+        // Start Animations
+        glb.animations.forEach(animation =>{
+            modelViewArea.mixer.clipAction(animation).play();
+        });
+
+        modelViewArea.animations = glb.animations;
+
+        modelViewArea.scene.add(glb.scene);  
+    });
 
     return modelViewArea;
 }
 
 /**
- * Applies a texture to all Meshes in a scene.
+ * Applies a texture to all Meshes in a glb.scene.
  * @param {*} scene - scene for which a texture will be applied to all meshes
  */
 function textureAllMeshes(scene){
@@ -137,14 +178,28 @@ function textureAllMeshes(scene){
 
 function render(){
 
-    // Gets change in position for model and updates, allowing for animations.
-    /*
-    const delta = clock.getDelta();
-    mixer.update(delta)
-    */
+    if(modelViewAreas.length == 0){
+        return;
+    }
 
     requestAnimationFrame(render);
-    modelViewAreas[0].renderer.render( modelViewAreas[0].scene, modelViewAreas[0].camera );
+
+    modelViewAreas.forEach( mva =>{
+
+        // Only render if the ModelViewArea object is being observed
+        if(mva.isObserved){
+
+            mva.renderer.setAnimationLoop(render);
+
+            // Render first!
+            mva.renderer.render( mva.scene, mva.camera );
+        
+            // Then animate.
+            const delta = clock.getDelta();
+            mva.mixer.update(delta);
+
+        }
+    })
 }
 render();
 

@@ -34,6 +34,7 @@ body {
 }
 
 #startup-image{
+  position: absolute;
   display: inline;
   z-index: 99;
   height: 100vh;
@@ -41,25 +42,6 @@ body {
 
   margin: 0%;
   overflow: hidden;
-}
-
-#incompatible-browser-modal{
-  display: none;
-  z-index: 1000;
-
-  background-color: #3b4351;
-  color: white;
-
-  border: 1px solid #888;
-
-}
-.incompatible-browser-modal-button{
-
-  border: none;
-  border-radius: 5px;
-  background-color: var(--light-blue);
-  color: white;
-
 }
 
 #content{
@@ -118,6 +100,7 @@ body {
   display: none;
   opacity: 1;
   overflow-y: scroll;
+  min-height: 80px;
 }
   
 #menu {
@@ -321,7 +304,10 @@ body {
 
 /* Represents the asteroid button */
 #fact-one {  
-  /*background-image: url("/assets/question-mark-64px.png");*/
+  background-image: url("/assets/buttons/white-arcade-button-psyche-unpressed.png");
+}
+#fact-one:active{
+  background-image: url("/assets/buttons/white-arcade-button-psyche-pressed.png");
 }
 
 /* Represents the question button */
@@ -334,7 +320,10 @@ body {
 
 /* Represents the spacecraft button */
 #fact-three {
-  /*background-image: url("/assets/asteroid-art-32px-noCircle.png");*/
+  background-image: url("assets/buttons/white-arcade-button-measure-unpressed.png");
+}
+#fact-three:active{
+  background-image: url("/assets/buttons/white-arcade-button-measure-pressed.png");
 }
 
 #screen-bottom{

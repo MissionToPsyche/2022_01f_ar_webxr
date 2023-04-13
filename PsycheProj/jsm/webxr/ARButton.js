@@ -8,28 +8,15 @@ class ARButton {
 
 			let currentSession = null;
 
+			// This function runs when 
 			function onSessionStarted( session ) {
-
-				session.addEventListener( 'end', onSessionEnded );
 
 				renderer.xr.setReferenceSpaceType( 'local' );
 				renderer.xr.setSession( session );
-				button.textContent = 'STOP AR';
-
+				
 				currentSession = session;
+			}
 			
-			}
-
-			function onSessionEnded( /*event*/ ) {
-
-				currentSession.removeEventListener( 'end', onSessionEnded );
-
-				button.textContent = 'START AR';
-
-				currentSession = null;
-
-			}
-
 			button.style.display = '';
 
 			button.style.cursor = 'pointer';
@@ -39,73 +26,40 @@ class ARButton {
 			button.textContent = 'START AR';
 
 			button.onmouseenter = function () {
-
 				button.style.opacity = '1.0';
-
 			};
 
 			button.onmouseleave = function () {
-
 				button.style.opacity = '0.5';
-
 			};
 
+			// ARButton Click Event
 			button.onclick = function () {
 
 				if ( currentSession === null ) {
 
 					navigator.xr.requestSession( 'immersive-ar', sessionInit )
 						.then( onSessionStarted )
-						.catch( showTextMode );
+						.catch( error =>{
+							console.log(error);
+							
+							showWebXRNotSupported();
+						} );
 
 				} else {
-
-					alert("else of null session");
 					currentSession.end();
-
 				}
 
 			};
 
 		}
 
-		function disableButton() {
+		// Shows page to handle hardware / software combinations that don't support WebXR
+		function showWebXRNotSupported(){
 
-			button.style.display = '';
+			window.location.replace("webxr-not-supported.html");
 
-			button.style.cursor = 'auto';
-			button.style.left = 'calc(50% - 75px)';
-			button.style.width = '150px';
-
-			button.onmouseenter = null;
-			button.onmouseleave = null;
-
-			button.onclick = null;
-
-		}
-
-		function showARNotSupported() {
-
-			disableButton();
-
-			button.textContent = 'AR NOT SUPPORTED';
-
-			showIncompatibleBrowserModal();
-		}
-
-		// Shows modal to handle browsers that don't support WebXR
-		function showIncompatibleBrowserModal(){
 			$("#startup-image").hide();
-			$("#incompatible-browser-modal").show();
-		}
-
-		function showTextMode(){
-
-			// hide startAR button
-			button.style.display = "none";
-
-			// load text mode
-			window.location.replace("text-version.html");
 		}
 
 		function stylizeElement( element ) {
@@ -132,44 +86,21 @@ class ARButton {
 
 			stylizeElement( button );
 
-			navigator.xr.isSessionSupported( 'immersive-ar' ).then( function ( supported ) {
+			const immersiveOK = navigator.xr.isSessionSupported("immersive-ar");
 
-				supported ? showStartAR() : showIncompatibleBrowserModal();
+			if (immersiveOK) {
+				showStartAR();
 
-			} ).catch( showIncompatibleBrowserModal );
+			} else {
+				showWebXRNotSupported();
+			}
 
 			return button;
 
 		} else {
-
-			showIncompatibleBrowserModal();
-
-			const message = document.createElement( 'a' );
-
-			if ( window.isSecureContext === false ) {
-
-				message.href = document.location.href.replace( /^http:/, 'https:' );
-				message.innerHTML = 'WEBXR NEEDS HTTPS'; // TODO Improve message
-
-			} else {
-
-				message.href = 'https://immersiveweb.dev/';
-				message.innerHTML = 'WEBXR NOT AVAILABLE';
-
-			}
-
-			message.style.left = 'calc(50% - 90px)';
-			message.style.width = '180px';
-			message.style.textDecoration = 'none';
-
-			stylizeElement( message );
-
-			return message;
-
+			showWebXRNotSupported();
 		}
-
 	}
-
 }
 
 export { ARButton };

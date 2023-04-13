@@ -2,37 +2,21 @@ class ARButton {
 
 	static createButton( renderer, sessionInit = {} ) {
 
-		//window.polyfill = new WebXRPolyfill();
-
 		const button = document.createElement( 'button' );
 
 		function showStartAR( /*device*/ ) {
 
 			let currentSession = null;
 
+			// This function runs when 
 			function onSessionStarted( session ) {
 
 				renderer.xr.setReferenceSpaceType( 'local' );
 				renderer.xr.setSession( session );
-				button.textContent = 'STOP AR';
-
+				
 				currentSession = session;
-			
 			}
-
-			/*
-			function onSessionEnded(  ) {
-
-				currentSession.removeEventListener( 'end', onSessionEnded );
-
-				button.textContent = 'START AR';
-
-				currentSession = null;
-
-			}
-			*/
 			
-
 			button.style.display = '';
 
 			button.style.cursor = 'pointer';
@@ -42,17 +26,14 @@ class ARButton {
 			button.textContent = 'START AR';
 
 			button.onmouseenter = function () {
-
 				button.style.opacity = '1.0';
-
 			};
 
 			button.onmouseleave = function () {
-
 				button.style.opacity = '0.5';
-
 			};
 
+			// ARButton Click Event
 			button.onclick = function () {
 
 				if ( currentSession === null ) {
@@ -66,60 +47,20 @@ class ARButton {
 						} );
 
 				} else {
-
-					alert("else of null session");
 					currentSession.end();
-
 				}
 
 			};
 
 		}
 
-		function disableButton() {
-
-			button.style.display = '';
-
-			button.style.cursor = 'auto';
-			button.style.left = 'calc(50% - 75px)';
-			button.style.width = '150px';
-
-			button.onmouseenter = null;
-			button.onmouseleave = null;
-
-			button.onclick = null;
-
-		}
-
-		/*
-		function showARNotSupported() {
-
-			disableButton();
-
-			button.textContent = 'AR NOT SUPPORTED';
-
-			showWebXRNotSupported();
-		}
-		*/
-
-		// Shows modal to handle browsers that don't support WebXR
+		// Shows page to handle hardware / software combinations that don't support WebXR
 		function showWebXRNotSupported(){
 
 			window.location.replace("webxr-not-supported.html");
 
 			$("#startup-image").hide();
 		}
-
-		/*
-		function showTextMode(){
-
-			// hide startAR button
-			button.style.display = "none";
-
-			// load text mode
-			window.location.replace("text-version.html");
-		}
-		*/
 
 		function stylizeElement( element ) {
 
@@ -154,46 +95,12 @@ class ARButton {
 				showWebXRNotSupported();
 			}
 
-			/*
-			navigator.xr.isSessionSupported( 'immersive-ar' ).then( function ( supported ) {
-
-				supported ? showStartAR() : showWebXRNotSupported();
-
-			} ).catch( showWebXRNotSupported );
-			*/
-
 			return button;
 
 		} else {
-
 			showWebXRNotSupported();
-
-			const message = document.createElement( 'a' );
-
-			if ( window.isSecureContext === false ) {
-
-				message.href = document.location.href.replace( /^http:/, 'https:' );
-				message.innerHTML = 'WEBXR NEEDS HTTPS'; // TODO Improve message
-
-			} else {
-
-				message.href = 'https://immersiveweb.dev/';
-				message.innerHTML = 'WEBXR NOT AVAILABLE';
-
-			}
-
-			message.style.left = 'calc(50% - 90px)';
-			message.style.width = '180px';
-			message.style.textDecoration = 'none';
-
-			stylizeElement( message );
-
-			return message;
-
 		}
-
 	}
-
 }
 
 export { ARButton };

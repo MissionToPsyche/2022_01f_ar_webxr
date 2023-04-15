@@ -140,8 +140,27 @@
                     </div>
                     
                 </div>
+
+                <div class="row">
+
+                    <div class="col d-flex align-items-center justify-content-center">
+                        <p style="text-align: center;">Click here to view the non-AR mode.</p>
+                    </div>
+
+                </div>
+
+                <!-- NON-AR-EXPERIENCE -->
+                <div class="row w-100 m-0 d-flex">
+
+                    <div class="col my-3 d-flex align-items-center justify-content-center">
     
-            </div>
+                        <button id="non-ar-button" class="webxr-not-supported-button text-center">Non-AR Mode</button>
+    
+                    </div>
+                        
+                </div>
+    
+                </div>
 
         </div>
 
@@ -151,10 +170,15 @@
 
         $("#text-only-button").click(function(){
 
-            //$("#incompatible-browser-modal").hide();
 
             // load text-version
             window.location.replace("text-version.html");
+        })
+
+        $("#non-ar-button").click(function(){
+
+            // load non-ar-version
+            window.location.replace("non-AR-index.html");
         })
 
         $("#download-xrviewer-button").click(async function(){

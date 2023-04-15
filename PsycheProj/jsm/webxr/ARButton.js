@@ -43,7 +43,7 @@ class ARButton {
 						.catch( error =>{
 							console.log(error);
 							
-							showWebXRNotSupported();
+							showWebXRNotSupported()
 						} );
 
 				} else {
@@ -59,8 +59,8 @@ class ARButton {
 
 			window.location.replace("webxr-not-supported.html");
 
-			$("#startup-image").hide();
 		}
+
 
 		function stylizeElement( element ) {
 
@@ -98,6 +98,7 @@ class ARButton {
 			return button;
 
 		} else {
+            alert("test")
 			showWebXRNotSupported();
 		}
 	}

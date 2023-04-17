@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import {ARButton} from 'three/addons/webxr/ARButton.js';
 import {OrbitControls} from '../jsm/controls/OrbitControls.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {RGBELoader} from 'three/addons/loaders/RGBELoader.js';
@@ -10,10 +9,8 @@ import utilities from '/three-utilities.js';
 
 // General variables.
 let modelViewArea;
-let camera, scene, renderer;
+let scene, renderer, camera;
 let reticle, currentObject, controls;
-let hitTestSource = null;
-let hitTestSourceRequested = false;
 let currentModelState = null;
 let mixer;
 let narrativeIterator;      // Number to keep track of narrative sequence when more than 1 speech box is needed for a single narrative.
@@ -25,7 +22,7 @@ const clock = new THREE.Clock();
 const globalMeshTexture = "pixel-rocks.png";
 
 // Variables for text from text.js
-const greeting = text.greeting;
+const greeting = text.greetingNonAR;
 const modelDescriptions = text.modelDescriptions;
 const facts = text.facts;
 
@@ -45,23 +42,26 @@ init();
 animate();
 
 /**
- * Start AR button click.
+ * non-ar-start-button click.
  * 
- * Initializes the AR experience.
+ * Initializes the non-AR experience.
  */
-$("#ARButton").click(async function() {
+$("#non-ar-start-button").click(async function() {
+
     if(currentObject){
         currentObject.visible = false;
     }
 
-    // Set up preliminary objects and elements.
-    let starImagesFilePath = '/assets/stars/'
-    utilities.setSpaceEnvironment(scene, starImagesFilePath);
+    $('#non-ar-start-button').hide();
+    $("#startup-image").hide();
 
+    // Set up preliminary objects and elements.
+    let starImagesFilePath = '/assets/stars_opaque/'
+    utilities.setSpaceEnvironment(scene, starImagesFilePath);
     $("#satellite").show();
     showNarrative();
     loadTextToNarrative(greeting);
-
+    
     // Initiate with model 1.
     currentModelState = 1;
     loadModel(1);
@@ -76,6 +76,7 @@ $("#ARButton").click(async function() {
  * Displays the Fact buttons, State Change button, and changes narrative text.
  */
 $("#place-button").click(function() {
+    $('#place-button').prop('disabled', true);
     scene.remove(currentObject);
     loadModel(currentModelState, false);
     showViewElements("main-view-element");
@@ -320,18 +321,6 @@ function endNarrativeSequence() {
 }
 
 /**
- * arPlace Function
- * 
- * Places the Psyche asteroid model on the screen at the reticle location.
- */
-function arPlace() {
-    if (reticle.visible) {
-        currentObject.position.setFromMatrixPosition(reticle.matrix);
-        currentObject.visible = true;
-    }
-};
-
-/**
  * showNarrative Function
  * 
  * Displays the speech box (narrative text).
@@ -398,7 +387,7 @@ function loadModel(currentModelState, appStart = true, position = null) {
     // texturing is done, causing a glitch. Perhaps there is a workaround, 
     // but for now, having this repeated code block here is the solution.
 
-    // Load texture file for mesh's
+    //Load texture file for meshes
     var textureLoader = new THREE.TextureLoader().setPath('assets/');
     var texture = textureLoader.load(globalMeshTexture);
     texture.flipY = false;
@@ -422,23 +411,34 @@ function loadModel(currentModelState, appStart = true, position = null) {
         mixer = new THREE.AnimationMixer(currentObject);
 
         glb.animations.forEach(animation =>{
+            let pri = JSON.stringify(animation)
+            console.log(animation)
             mixer.clipAction(animation).play()
         })
 
         // Only place model if we are not in the initial app start.
         if (appStart == false) {
+            let currObj = JSON.stringify(currentObject)
+            //alert(currObj)
             scene.add(currentObject);
 
             // If a position parameter was passed, place at specified position.
-            if (position != null) {
-                currentObject.position.set(position.x, position.y, position.z);
-            } else {
-                arPlace();
-            }
+            //alert("place")
+            
+            currentObject.position.set(0,0,0)
+            //alert("test")
+            let pri = JSON.stringify(currentObject.position)
+            //alert(pri)
+            currentObject.visible = true;
+            // arPlace();
+            
         }
 
+
         controls.update();
+        
         render();
+        // alert("after update")
     })
 }
 
@@ -458,7 +458,11 @@ function init() {
 
     // Initialize scene and camera.
     scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(70, (window.innerWidth / window.innerHeight), 0.001, 200);
+    
+    camera = new THREE.PerspectiveCamera(45, (window.innerWidth / window.innerHeight), 1, 1000);
+    camera.position.set(1,2,-3);
+    camera.lookAt(0,0,0);
+    //alert("test")
 
     // Add lights to the scene
     utilities.addLightingTo(scene);
@@ -467,7 +471,7 @@ function init() {
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.xr.enabled = true;
+    //renderer.xr.enabled = true;
     modelViewArea.appendChild(renderer.domElement);
 
     // Allows the camera to orbit around an object.
@@ -476,28 +480,24 @@ function init() {
     controls.minDistance = 2;
     controls.maxDistance = 10;
     controls.target.set(0, 0, -0.2);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.05;
+
+    // Gives the sense that the 3D world is slowly spinning
+    controls.autoRotate=true;
+    controls.autoRotateSpeed = 0.1;
 
     let options = {
-        requiredFeatures: ['hit-test'],
         optionalFeatures: ['dom-overlay']
     }
 
     options.domOverlay = {root: document.getElementById('content')};
-    document.body.appendChild(ARButton.createButton(renderer, options));
-
-    // Handles the creation of reticle, white circle.
-    reticle = new THREE.Mesh(
-        new THREE.RingGeometry(0.15, 0.2, 32).rotateX((-Math.PI)/ 2 ),
-        new THREE.MeshBasicMaterial()
-    );
-    reticle.matrixAutoUpdate = false;
-    reticle.visible = false;
-    scene.add(reticle);
+    const button = document.createElement( 'button' );
+    button.id = 'non-ar-start-button';
+    button.textContent = 'START NON-AR VERSION';
+    document.body.appendChild(button);
 
     window.addEventListener('resize', onWindowResize);
 }
+
 
 /**
  * onWindowResize Function
@@ -514,7 +514,9 @@ function onWindowResize() {
  */
 function animate() {
     renderer.setAnimationLoop(render);
+    //render();
     requestAnimationFrame(animate);
+    //alert(check)
     controls.update();
 }
 
@@ -524,54 +526,12 @@ function animate() {
  * @param {*} frame 
  */
 function render(timestamp, frame) {
-    if (frame) {
-        const referenceSpace = renderer.xr.getReferenceSpace();
-        const session = renderer.xr.getSession();
 
-        // Gets change in position for model and updates, allowing for animations.
-        const delta = clock.getDelta();
+    if(mixer){
+        let delta = clock.getDelta();
         mixer.update(delta)
-
-
-        if (hitTestSourceRequested === false) {
-            session.requestReferenceSpace('viewer').then(function(referenceSpace) {
-                session.requestHitTestSource({ space: referenceSpace }).then(function(source) {
-                    hitTestSource = source;
-                } );
-            } );
-
-            session.addEventListener('end', function() {
-                hitTestSourceRequested = false;
-                hitTestSource = null;
-
-                reticle.visible = false;
-
-                var box = new THREE.Box3();
-                box.setFromObject(currentObject);
-                box.center(controls.target);
-
-                document.getElementById("place-button").setAttribute("disabled", "true");
-            } );
-
-            hitTestSourceRequested = true;
-        }
-
-        if (hitTestSource) {
-            const hitTestResults = frame.getHitTestResults(hitTestSource);
-
-            if (hitTestResults.length) {
-                const hit = hitTestResults[0];
-
-                document.getElementById("place-button").removeAttribute("disabled");
-
-                reticle.visible = true;
-                reticle.matrix.fromArray(hit.getPose(referenceSpace).transform.matrix);
-            } else {
-                reticle.visible = false;
-                document.getElementById("place-button").setAttribute("disabled", "true");
-            }
-        }
     }
 
     renderer.render( scene, camera );
+
 }

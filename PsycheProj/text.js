@@ -2,7 +2,9 @@
 const introText = "Welcome to the 16-Psyche AR Experience!  Here you'll learn all about NASA's Psyche asteroid exploration mission!" +
     "  We'll teach you about the leading hypothesis of Psyche's creation as well as neat factoids about the mission.";
 
-const greeting = "Hello explorer!  When you're ready, look around and click the Place button when the reticle is in the center of your screen.";
+const greeting = "Hello explorer!  When you're ready, look around and click the blue Place button when the reticle is in the center of your screen.";
+
+const greetingNonAR = "Hello explorer! When you're ready, click the blue Place button to view the first stage of the Psyche formation hypothesis."
 
 const modelDescriptions = [
     // Model 1 Description
@@ -70,4 +72,4 @@ const facts = [
     ]
 ];
 
-export default { greeting, modelDescriptions, facts };
+export default { greeting, greetingNonAR, modelDescriptions, facts };

@@ -6,11 +6,11 @@ let menuDisp = false;
 $("#menu-button").click(function toggleMenu() {
 
     if(menuDisp){
-        $("#menu").css({"opacity":"0"});
+        $("#menu").css({"opacity":"0","pointer-events": "none"});
         menuDisp = !menuDisp;
     }
     else{
-        $("#menu").css({"opacity":"1"});
+        $("#menu").css({"opacity":"1","pointer-events": "auto"});
         menuDisp = !menuDisp;
     }
     
@@ -22,8 +22,8 @@ $("#menu-button").click(function toggleMenu() {
  * Mutes/Unmutes the ambient music.
  */
 $("#music-settings").click(function() {
-    let myAudio = document.getElementById("music");
-    myAudio.muted=!myAudio.muted;
+        let myAudio = document.getElementById("music");
+        myAudio.muted=!myAudio.muted;
 })
 
 /**

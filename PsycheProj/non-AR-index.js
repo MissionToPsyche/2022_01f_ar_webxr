@@ -10,7 +10,7 @@ import utilities from '/three-utilities.js';
 // General variables.
 let modelViewArea;
 let scene, renderer, camera;
-let reticle,pmremGenerator, currentObject, controls;
+let reticle, currentObject, controls;
 let currentModelState = null;
 let mixer;
 let narrativeIterator;      // Number to keep track of narrative sequence when more than 1 speech box is needed for a single narrative.
@@ -37,8 +37,6 @@ window.addEventListener( "pageshow", function ( event ) {
       window.location.reload();
     }
 });
-
-
 
 init();
 animate();
@@ -380,77 +378,66 @@ function loadTextToNarrative(text) {
  * left blank, model will be placed at reticle location.
  */
 function loadModel(currentModelState, appStart = true, position = null) {
-    new RGBELoader()
-    .setDataType(THREE.UnsignedByteType)
-    .setPath('assets/')
-    .load('photo_studio_01_1k.hdr', function(texture) {
 
+    // Load glb file and add it to scene.
+    var loader = new GLTFLoader().setPath('assets/');
 
+    // Calling utility.textureAllMeshes() causes model to load before 
+    // texturing is done, causing a glitch. Perhaps there is a workaround, 
+    // but for now, having this repeated code block here is the solution.
 
-        // Create environment property of scene, involves lighting of object. 
-        // https://threejs.org/docs/#api/en/scenes/Scene
-        var envmap = pmremGenerator.fromEquirectangular(texture).texture;
-        scene.enviroment = envmap;
-        texture.dispose();
-        pmremGenerator.dispose();
+    //Load texture file for meshes
+    var textureLoader = new THREE.TextureLoader().setPath('assets/');
+    var texture = textureLoader.load(globalMeshTexture);
+    texture.flipY = false;
+    
+    loader.load(currentModelState + ".glb", function(glb) {
+        currentObject = glb.scene;
 
-        // Load glb file and add it to scene.
-        var loader = new GLTFLoader().setPath('assets/');
+        // This block of code applies the texture to all Mesh's in the .glb file
+        currentObject.traverse ( ( o ) => {
+            if ( o.isMesh ) {
+                o.material.map = texture;
+                o.material.bumpMap = texture;
+                o.material.roughnessMap = texture;
 
-        // Load texture file for mesh's
-        var textureLoader = new THREE.TextureLoader().setPath('assets/');
-        var texture = textureLoader.load(globalMeshTexture);
-        texture.flipY = false;
-      
-        loader.load(currentModelState + ".glb", function(glb) {
-            currentObject = glb.scene;
-
-            // This block of code applies the texture to all Mesh's in the .glb file
-            currentObject.traverse ( ( o ) => {
-                if ( o.isMesh ) {
-                    o.material.map = texture;
-                    o.material.bumpMap = texture;
-                    o.material.roughnessMap = texture;
-
-                    // Affects how intense the shading is based on the texture
-                    o.material.bumpScale = 0.1;
-                }
-            } );
-
-            // Gets animation from glb and plays it.
-            mixer = new THREE.AnimationMixer(currentObject);
-
-            glb.animations.forEach(animation =>{
-                let pri = JSON.stringify(animation)
-                console.log(animation)
-                mixer.clipAction(animation).play()
-            })
-
-            // Only place model if we are not in the initial app start.
-            if (appStart == false) {
-                let currObj = JSON.stringify(currentObject)
-                //alert(currObj)
-                scene.add(currentObject);
-
-                // If a position parameter was passed, place at specified position.
-                //alert("place")
-                
-                currentObject.position.set(0,0,0)
-                //alert("test")
-                let pri = JSON.stringify(currentObject.position)
-                //alert(pri)
-                currentObject.visible = true;
-                // arPlace();
-                
+                // Affects how intense the shading is based on the texture
+                o.material.bumpScale = 0.1;
             }
+        } );
 
+        // Gets animation from glb and plays it.
+        mixer = new THREE.AnimationMixer(currentObject);
 
-            controls.update();
-            
-            render();
-           // alert("after update")
+        glb.animations.forEach(animation =>{
+            let pri = JSON.stringify(animation)
+            console.log(animation)
+            mixer.clipAction(animation).play()
         })
 
+        // Only place model if we are not in the initial app start.
+        if (appStart == false) {
+            let currObj = JSON.stringify(currentObject)
+            //alert(currObj)
+            scene.add(currentObject);
+
+            // If a position parameter was passed, place at specified position.
+            //alert("place")
+            
+            currentObject.position.set(0,0,0)
+            //alert("test")
+            let pri = JSON.stringify(currentObject.position)
+            //alert(pri)
+            currentObject.visible = true;
+            // arPlace();
+            
+        }
+
+
+        controls.update();
+        
+        render();
+        // alert("after update")
     })
 }
 
@@ -485,10 +472,6 @@ function init() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     //renderer.xr.enabled = true;
     modelViewArea.appendChild(renderer.domElement);
-
-    // Initializes object for environment map.
-    pmremGenerator = new THREE.PMREMGenerator(renderer);
-    pmremGenerator.compileEquirectangularShader()
 
     // Allows the camera to orbit around an object.
     controls = new OrbitControls(camera, renderer.domElement);

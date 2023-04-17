@@ -480,7 +480,10 @@ function init() {
     controls.minDistance = 2;
     controls.maxDistance = 10;
     controls.target.set(0, 0, -0.2);
+
+    // Gives the sense that the 3D world is slowly spinning
     controls.autoRotate=true;
+    controls.autoRotateSpeed = 0.1;
 
     let options = {
         optionalFeatures: ['dom-overlay']

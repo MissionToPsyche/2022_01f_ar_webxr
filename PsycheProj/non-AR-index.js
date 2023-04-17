@@ -5,6 +5,7 @@ import {RGBELoader} from 'three/addons/loaders/RGBELoader.js';
 import {LinearToneMapping} from 'three';
 import {Clock} from './build/three.module.js';
 import text from '/text.js';
+import utilities from '/three-utilities.js';
 
 // General variables.
 let modelViewArea;
@@ -43,12 +44,11 @@ init();
 animate();
 
 /**
- * Start AR button click.
+ * non-ar-start-button click.
  * 
- * Initializes the AR experience.
+ * Initializes the non-AR experience.
  */
 $("#non-ar-start-button").click(async function() {
-
 
     if(currentObject){
         currentObject.visible = false;
@@ -57,23 +57,19 @@ $("#non-ar-start-button").click(async function() {
     $('#non-ar-start-button').hide();
     $("#startup-image").hide();
 
-   
-
     // Set up preliminary objects and elements.
-    setSpaceEnvironment(scene);
+    let starImagesFilePath = '/assets/stars_opaque/'
+    utilities.setSpaceEnvironment(scene, starImagesFilePath);
     $("#satellite").show();
     showNarrative();
     loadTextToNarrative(greeting);
     
-  
     // Initiate with model 1.
     currentModelState = 1;
     loadModel(1);
 
-
     // Load the Place and Menu button.
     showViewElements("place-view-element");
-
 });
 
 /**
@@ -531,27 +527,6 @@ function onWindowResize() {
     camera.updateProjectionMatrix();
 
     renderer.setSize(window.innerWidth, window.innerHeight);
-}
-
-/**
- * setSpaceEnvironment Function
- * 
- * Creates skybox and sets as the space environment scene background.
- * @param {*} scene - three.js Scene object.  Defined in init() Function.
- */
-function setSpaceEnvironment(scene) {
-    let path = '/assets/stars/';
-    let format = '.png';
-    let urls = [
-        path + 'xpos' + format, path + 'xneg' + format,
-        path + 'ypos' + format, path + 'yneg' + format,
-        path + 'zpos' + format, path + 'zneg' + format
-    ];
-
-    let spaceCube = new THREE.CubeTextureLoader().load(urls);
-    spaceCube.format = THREE.RGBAFormat;
-    
-    scene.background = spaceCube;
 }
 
 /**

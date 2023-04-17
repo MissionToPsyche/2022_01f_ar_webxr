@@ -6,6 +6,7 @@ import {RGBELoader} from 'three/addons/loaders/RGBELoader.js';
 import {LinearToneMapping} from 'three';
 import {Clock} from './build/three.module.js';
 import text from '/text.js';
+import utilities from '/three-utilities.js';
 
 // General variables.
 let modelViewArea;
@@ -54,7 +55,9 @@ $("#ARButton").click(async function() {
     }
 
     // Set up preliminary objects and elements.
-    setSpaceEnvironment(scene);
+    let starImagesFilePath = '/assets/stars/'
+    utilities.setSpaceEnvironment(scene, starImagesFilePath);
+
     $("#satellite").show();
     showNarrative();
     loadTextToNarrative(greeting);
@@ -524,27 +527,6 @@ function onWindowResize() {
     camera.updateProjectionMatrix();
 
     renderer.setSize(window.innerWidth, window.innerHeight);
-}
-
-/**
- * setSpaceEnvironment Function
- * 
- * Creates skybox and sets as the space environment scene background.
- * @param {*} scene - three.js Scene object.  Defined in init() Function.
- */
-function setSpaceEnvironment(scene) {
-    let path = '/assets/stars/';
-    let format = '.png';
-    let urls = [
-        path + 'xpos' + format, path + 'xneg' + format,
-        path + 'ypos' + format, path + 'yneg' + format,
-        path + 'zpos' + format, path + 'zneg' + format
-    ];
-
-    let spaceCube = new THREE.CubeTextureLoader().load(urls);
-    spaceCube.format = THREE.RGBAFormat;
-    
-    scene.background = spaceCube;
 }
 
 /**

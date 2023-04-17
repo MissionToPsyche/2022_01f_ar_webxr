@@ -475,16 +475,9 @@ function init() {
     camera.position.set(1,2,-3);
     camera.lookAt(0,0,0);
     //alert("test")
+
     // Add lights to the scene
-    const directionalLight = new THREE.DirectionalLight(0x404040, 1);
-    scene.add(directionalLight);
-
-    const hemisphereLight = new THREE.HemisphereLight(0xf6e86d, 0x404040, 1);
-    scene.add(hemisphereLight);
-
-    const spotLight = new THREE.SpotLight(0xf6e86d, 1, 10, Math.PI/2);
-    scene.add(spotLight);
-    
+    utilities.addLightingTo(scene);
 
     // Initialize renderer.
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });

@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import utilities from '/three-utilities.js';
 
 let modelViewAreas = [];
 const clock = new THREE.Clock();
@@ -36,7 +37,7 @@ class ModelViewArea{
         this.renderer.setSize(window.innerWidth / 2, window.innerHeight / 2);
         this.renderer.xr.enabled = false;
 
-        addLightingTo(this.scene);
+        utilities.addLightingTo(this.scene);
     }
 }
 
@@ -97,21 +98,21 @@ function init(){
 
 init();
 
-/**
- * Adds lighting to the scene.
- * @param {*} scene - The scene object to add lighting to
- */
-function addLightingTo(scene){
-    // Create light sources
-    const directionalLight = new THREE.DirectionalLight(0x404040, 1);
-    const hemisphereLight = new THREE.HemisphereLight(0xf6e86d, 0x404040, 1);
-    const spotLight = new THREE.SpotLight(0xf6e86d, 1, 10, Math.PI/2);
+// /**
+//  * Adds lighting to the scene.
+//  * @param {*} scene - The scene object to add lighting to
+//  */
+// function addLightingTo(scene){
+//     // Create light sources
+//     const directionalLight = new THREE.DirectionalLight(0x404040, 1);
+//     const hemisphereLight = new THREE.HemisphereLight(0xf6e86d, 0x404040, 1);
+//     const spotLight = new THREE.SpotLight(0xf6e86d, 1, 10, Math.PI/2);
 
-    // Add lights to scene
-    scene.add(hemisphereLight);
-    scene.add(directionalLight);
-    scene.add(spotLight);
-}
+//     // Add lights to scene
+//     scene.add(hemisphereLight);
+//     scene.add(directionalLight);
+//     scene.add(spotLight);
+// }
 
 /**
  * Takes a .glb file and returns a ModelViewArea object

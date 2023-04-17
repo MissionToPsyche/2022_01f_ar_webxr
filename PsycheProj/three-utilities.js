@@ -25,6 +25,23 @@ function setSpaceEnvironment(scene, path) {
     scene.background = spaceCube;
 }
 
+/**
+ * Adds lighting to the scene.
+ * @param {*} scene - The three.js scene object to add lighting to
+ */
+function addLightingTo(scene){
+    // Create light sources
+    const directionalLight = new THREE.DirectionalLight(0x404040, 1);
+    const hemisphereLight = new THREE.HemisphereLight(0xf6e86d, 0x404040, 1);
+    const spotLight = new THREE.SpotLight(0xf6e86d, 1, 10, Math.PI/2);
+
+    // Add lights to scene
+    scene.add(hemisphereLight);
+    scene.add(directionalLight);
+    scene.add(spotLight);
+}
+
 export default{
-    setSpaceEnvironment
+    setSpaceEnvironment,
+    addLightingTo,
 };

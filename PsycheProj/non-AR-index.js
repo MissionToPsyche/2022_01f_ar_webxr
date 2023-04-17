@@ -5,11 +5,12 @@ import {RGBELoader} from 'three/addons/loaders/RGBELoader.js';
 import {LinearToneMapping} from 'three';
 import {Clock} from './build/three.module.js';
 import text from '/text.js';
+import utilities from '/three-utilities.js';
 
 // General variables.
 let modelViewArea;
 let scene, renderer, camera;
-let reticle,pmremGenerator, currentObject, controls;
+let reticle, currentObject, controls;
 let currentModelState = null;
 let mixer;
 let narrativeIterator;      // Number to keep track of narrative sequence when more than 1 speech box is needed for a single narrative.
@@ -21,7 +22,7 @@ const clock = new THREE.Clock();
 const globalMeshTexture = "pixel-rocks.png";
 
 // Variables for text from text.js
-const greeting = text.greeting;
+const greeting = text.greetingNonAR;
 const modelDescriptions = text.modelDescriptions;
 const facts = text.facts;
 
@@ -37,18 +38,15 @@ window.addEventListener( "pageshow", function ( event ) {
     }
 });
 
-
-
 init();
 animate();
 
 /**
- * Start AR button click.
+ * non-ar-start-button click.
  * 
- * Initializes the AR experience.
+ * Initializes the non-AR experience.
  */
 $("#non-ar-start-button").click(async function() {
-
 
     if(currentObject){
         currentObject.visible = false;
@@ -57,23 +55,19 @@ $("#non-ar-start-button").click(async function() {
     $('#non-ar-start-button').hide();
     $("#startup-image").hide();
 
-   
-
     // Set up preliminary objects and elements.
-    setSpaceEnvironment(scene);
+    let starImagesFilePath = '/assets/stars_opaque/'
+    utilities.setSpaceEnvironment(scene, starImagesFilePath);
     $("#satellite").show();
     showNarrative();
     loadTextToNarrative(greeting);
     
-  
     // Initiate with model 1.
     currentModelState = 1;
     loadModel(1);
 
-
     // Load the Place and Menu button.
     showViewElements("place-view-element");
-
 });
 
 /**
@@ -82,6 +76,7 @@ $("#non-ar-start-button").click(async function() {
  * Displays the Fact buttons, State Change button, and changes narrative text.
  */
 $("#place-button").click(function() {
+    $('#place-button').prop('disabled', true);
     scene.remove(currentObject);
     loadModel(currentModelState, false);
     showViewElements("main-view-element");
@@ -384,77 +379,66 @@ function loadTextToNarrative(text) {
  * left blank, model will be placed at reticle location.
  */
 function loadModel(currentModelState, appStart = true, position = null) {
-    new RGBELoader()
-    .setDataType(THREE.UnsignedByteType)
-    .setPath('assets/')
-    .load('photo_studio_01_1k.hdr', function(texture) {
 
+    // Load glb file and add it to scene.
+    var loader = new GLTFLoader().setPath('assets/');
 
+    // Calling utility.textureAllMeshes() causes model to load before 
+    // texturing is done, causing a glitch. Perhaps there is a workaround, 
+    // but for now, having this repeated code block here is the solution.
 
-        // Create environment property of scene, involves lighting of object. 
-        // https://threejs.org/docs/#api/en/scenes/Scene
-        var envmap = pmremGenerator.fromEquirectangular(texture).texture;
-        scene.enviroment = envmap;
-        texture.dispose();
-        pmremGenerator.dispose();
+    //Load texture file for meshes
+    var textureLoader = new THREE.TextureLoader().setPath('assets/');
+    var texture = textureLoader.load(globalMeshTexture);
+    texture.flipY = false;
+    
+    loader.load(currentModelState + ".glb", function(glb) {
+        currentObject = glb.scene;
 
-        // Load glb file and add it to scene.
-        var loader = new GLTFLoader().setPath('assets/');
+        // This block of code applies the texture to all Mesh's in the .glb file
+        currentObject.traverse ( ( o ) => {
+            if ( o.isMesh ) {
+                o.material.map = texture;
+                o.material.bumpMap = texture;
+                o.material.roughnessMap = texture;
 
-        // Load texture file for mesh's
-        var textureLoader = new THREE.TextureLoader().setPath('assets/');
-        var texture = textureLoader.load(globalMeshTexture);
-        texture.flipY = false;
-      
-        loader.load(currentModelState + ".glb", function(glb) {
-            currentObject = glb.scene;
-
-            // This block of code applies the texture to all Mesh's in the .glb file
-            currentObject.traverse ( ( o ) => {
-                if ( o.isMesh ) {
-                    o.material.map = texture;
-                    o.material.bumpMap = texture;
-                    o.material.roughnessMap = texture;
-
-                    // Affects how intense the shading is based on the texture
-                    o.material.bumpScale = 0.1;
-                }
-            } );
-
-            // Gets animation from glb and plays it.
-            mixer = new THREE.AnimationMixer(currentObject);
-
-            glb.animations.forEach(animation =>{
-                let pri = JSON.stringify(animation)
-                console.log(animation)
-                mixer.clipAction(animation).play()
-            })
-
-            // Only place model if we are not in the initial app start.
-            if (appStart == false) {
-                let currObj = JSON.stringify(currentObject)
-                //alert(currObj)
-                scene.add(currentObject);
-
-                // If a position parameter was passed, place at specified position.
-                //alert("place")
-                
-                currentObject.position.set(0,0,0)
-                //alert("test")
-                let pri = JSON.stringify(currentObject.position)
-                //alert(pri)
-                currentObject.visible = true;
-                // arPlace();
-                
+                // Affects how intense the shading is based on the texture
+                o.material.bumpScale = 0.1;
             }
+        } );
 
+        // Gets animation from glb and plays it.
+        mixer = new THREE.AnimationMixer(currentObject);
 
-            controls.update();
-            
-            render();
-           // alert("after update")
+        glb.animations.forEach(animation =>{
+            let pri = JSON.stringify(animation)
+            console.log(animation)
+            mixer.clipAction(animation).play()
         })
 
+        // Only place model if we are not in the initial app start.
+        if (appStart == false) {
+            let currObj = JSON.stringify(currentObject)
+            //alert(currObj)
+            scene.add(currentObject);
+
+            // If a position parameter was passed, place at specified position.
+            //alert("place")
+            
+            currentObject.position.set(0,0,0)
+            //alert("test")
+            let pri = JSON.stringify(currentObject.position)
+            //alert(pri)
+            currentObject.visible = true;
+            // arPlace();
+            
+        }
+
+
+        controls.update();
+        
+        render();
+        // alert("after update")
     })
 }
 
@@ -479,16 +463,9 @@ function init() {
     camera.position.set(1,2,-3);
     camera.lookAt(0,0,0);
     //alert("test")
+
     // Add lights to the scene
-    const directionalLight = new THREE.DirectionalLight(0x404040, 1);
-    scene.add(directionalLight);
-
-    const hemisphereLight = new THREE.HemisphereLight(0xf6e86d, 0x404040, 1);
-    scene.add(hemisphereLight);
-
-    const spotLight = new THREE.SpotLight(0xf6e86d, 1, 10, Math.PI/2);
-    scene.add(spotLight);
-    
+    utilities.addLightingTo(scene);
 
     // Initialize renderer.
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -497,17 +474,16 @@ function init() {
     //renderer.xr.enabled = true;
     modelViewArea.appendChild(renderer.domElement);
 
-    // Initializes object for environment map.
-    pmremGenerator = new THREE.PMREMGenerator(renderer);
-    pmremGenerator.compileEquirectangularShader()
-
     // Allows the camera to orbit around an object.
     controls = new OrbitControls(camera, renderer.domElement);
     controls.addEventListener('change', render);
     controls.minDistance = 2;
     controls.maxDistance = 10;
     controls.target.set(0, 0, -0.2);
+
+    // Gives the sense that the 3D world is slowly spinning
     controls.autoRotate=true;
+    controls.autoRotateSpeed = 0.1;
 
     let options = {
         optionalFeatures: ['dom-overlay']
@@ -531,27 +507,6 @@ function onWindowResize() {
     camera.updateProjectionMatrix();
 
     renderer.setSize(window.innerWidth, window.innerHeight);
-}
-
-/**
- * setSpaceEnvironment Function
- * 
- * Creates skybox and sets as the space environment scene background.
- * @param {*} scene - three.js Scene object.  Defined in init() Function.
- */
-function setSpaceEnvironment(scene) {
-    let path = '/assets/stars/';
-    let format = '.png';
-    let urls = [
-        path + 'xpos' + format, path + 'xneg' + format,
-        path + 'ypos' + format, path + 'yneg' + format,
-        path + 'zpos' + format, path + 'zneg' + format
-    ];
-
-    let spaceCube = new THREE.CubeTextureLoader().load(urls);
-    spaceCube.format = THREE.RGBAFormat;
-    
-    scene.background = spaceCube;
 }
 
 /**

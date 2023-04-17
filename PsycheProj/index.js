@@ -6,11 +6,12 @@ import {RGBELoader} from 'three/addons/loaders/RGBELoader.js';
 import {LinearToneMapping} from 'three';
 import {Clock} from './build/three.module.js';
 import text from '/text.js';
+import utilities from '/three-utilities.js';
 
 // General variables.
 let modelViewArea;
 let camera, scene, renderer;
-let reticle,pmremGenerator, currentObject, controls;
+let reticle, currentObject, controls;
 let hitTestSource = null;
 let hitTestSourceRequested = false;
 let currentModelState = null;
@@ -54,7 +55,9 @@ $("#ARButton").click(async function() {
     }
 
     // Set up preliminary objects and elements.
-    setSpaceEnvironment(scene);
+    let starImagesFilePath = '/assets/stars/'
+    utilities.setSpaceEnvironment(scene, starImagesFilePath);
+
     $("#satellite").show();
     showNarrative();
     loadTextToNarrative(greeting);
@@ -387,63 +390,55 @@ function loadTextToNarrative(text) {
  * left blank, model will be placed at reticle location.
  */
 function loadModel(currentModelState, appStart = true, position = null) {
-    new RGBELoader()
-    .setDataType(THREE.UnsignedByteType)
-    .setPath('assets/')
-    .load('photo_studio_01_1k.hdr', function(texture) {
 
-        // Create environment property of scene, involves lighting of object. 
-        // https://threejs.org/docs/#api/en/scenes/Scene
-        var envmap = pmremGenerator.fromEquirectangular(texture).texture;
-        scene.enviroment = envmap;
-        texture.dispose();
-        pmremGenerator.dispose();
+    // Load glb file and add it to scene.
+    var loader = new GLTFLoader().setPath('assets/');
 
-        // Load glb file and add it to scene.
-        var loader = new GLTFLoader().setPath('assets/');
+    // Calling utility.textureAllMeshes() causes model to load before 
+    // texturing is done, causing a glitch. Perhaps there is a workaround, 
+    // but for now, having this repeated code block here is the solution.
 
-        // Load texture file for mesh's
-        var textureLoader = new THREE.TextureLoader().setPath('assets/');
-        var texture = textureLoader.load(globalMeshTexture);
-        texture.flipY = false;
-      
-        loader.load(currentModelState + ".glb", function(glb) {
-            currentObject = glb.scene;
+    // Load texture file for mesh's
+    var textureLoader = new THREE.TextureLoader().setPath('assets/');
+    var texture = textureLoader.load(globalMeshTexture);
+    texture.flipY = false;
+    
+    loader.load(currentModelState + ".glb", function(glb) {
+        currentObject = glb.scene;
 
-            // This block of code applies the texture to all Mesh's in the .glb file
-            currentObject.traverse ( ( o ) => {
-                if ( o.isMesh ) {
-                    o.material.map = texture;
-                    o.material.bumpMap = texture;
-                    o.material.roughnessMap = texture;
+        // This block of code applies the texture to all Mesh's in the .glb file
+        currentObject.traverse ( ( o ) => {
+            if ( o.isMesh ) {
+                o.material.map = texture;
+                o.material.bumpMap = texture;
+                o.material.roughnessMap = texture;
 
-                    // Affects how intense the shading is based on the texture
-                    o.material.bumpScale = 0.1;
-                }
-            } );
-
-            // Gets animation from glb and plays it.
-            mixer = new THREE.AnimationMixer(currentObject);
-
-            glb.animations.forEach(animation =>{
-                mixer.clipAction(animation).play()
-            })
-
-            // Only place model if we are not in the initial app start.
-            if (appStart == false) {
-                scene.add(currentObject);
-
-                // If a position parameter was passed, place at specified position.
-                if (position != null) {
-                    currentObject.position.set(position.x, position.y, position.z);
-                } else {
-                    arPlace();
-                }
+                // Affects how intense the shading is based on the texture
+                o.material.bumpScale = 0.1;
             }
+        } );
 
-            controls.update();
-            render();
+        // Gets animation from glb and plays it.
+        mixer = new THREE.AnimationMixer(currentObject);
+
+        glb.animations.forEach(animation =>{
+            mixer.clipAction(animation).play()
         })
+
+        // Only place model if we are not in the initial app start.
+        if (appStart == false) {
+            scene.add(currentObject);
+
+            // If a position parameter was passed, place at specified position.
+            if (position != null) {
+                currentObject.position.set(position.x, position.y, position.z);
+            } else {
+                arPlace();
+            }
+        }
+
+        controls.update();
+        render();
     })
 }
 
@@ -466,15 +461,7 @@ function init() {
     camera = new THREE.PerspectiveCamera(70, (window.innerWidth / window.innerHeight), 0.001, 200);
 
     // Add lights to the scene
-    const directionalLight = new THREE.DirectionalLight(0x404040, 1);
-    scene.add(directionalLight);
-
-    const hemisphereLight = new THREE.HemisphereLight(0xf6e86d, 0x404040, 1);
-    scene.add(hemisphereLight);
-
-    const spotLight = new THREE.SpotLight(0xf6e86d, 1, 10, Math.PI/2);
-    scene.add(spotLight);
-    
+    utilities.addLightingTo(scene);
 
     // Initialize renderer.
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -482,10 +469,6 @@ function init() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.xr.enabled = true;
     modelViewArea.appendChild(renderer.domElement);
-
-    // Initializes object for environment map.
-    pmremGenerator = new THREE.PMREMGenerator(renderer);
-    pmremGenerator.compileEquirectangularShader()
 
     // Allows the camera to orbit around an object.
     controls = new OrbitControls(camera, renderer.domElement);
@@ -524,27 +507,6 @@ function onWindowResize() {
     camera.updateProjectionMatrix();
 
     renderer.setSize(window.innerWidth, window.innerHeight);
-}
-
-/**
- * setSpaceEnvironment Function
- * 
- * Creates skybox and sets as the space environment scene background.
- * @param {*} scene - three.js Scene object.  Defined in init() Function.
- */
-function setSpaceEnvironment(scene) {
-    let path = '/assets/stars/';
-    let format = '.png';
-    let urls = [
-        path + 'xpos' + format, path + 'xneg' + format,
-        path + 'ypos' + format, path + 'yneg' + format,
-        path + 'zpos' + format, path + 'zneg' + format
-    ];
-
-    let spaceCube = new THREE.CubeTextureLoader().load(urls);
-    spaceCube.format = THREE.RGBAFormat;
-    
-    scene.background = spaceCube;
 }
 
 /**

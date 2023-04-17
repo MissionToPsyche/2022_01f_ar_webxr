@@ -22,7 +22,7 @@ const clock = new THREE.Clock();
 const globalMeshTexture = "pixel-rocks.png";
 
 // Variables for text from text.js
-const greeting = text.greeting;
+const greeting = text.greetingNonAR;
 const modelDescriptions = text.modelDescriptions;
 const facts = text.facts;
 
@@ -76,6 +76,7 @@ $("#non-ar-start-button").click(async function() {
  * Displays the Fact buttons, State Change button, and changes narrative text.
  */
 $("#place-button").click(function() {
+    $('#place-button').prop('disabled', true);
     scene.remove(currentObject);
     loadModel(currentModelState, false);
     showViewElements("main-view-element");

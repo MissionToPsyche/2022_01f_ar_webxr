@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import {OrbitControls} from '../jsm/controls/OrbitControls.js';
+import {OrbitControls} from '../scripts/jsm/controls/OrbitControls.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {RGBELoader} from 'three/addons/loaders/RGBELoader.js';
 
@@ -52,7 +52,7 @@ function addLightingTo(scene){
 function textureAllMeshes(scene){
 
     // Load texture file
-    var textureLoader = new THREE.TextureLoader().setPath('assets/');
+    var textureLoader = new THREE.TextureLoader().setPath('../../assets/');
     var texture = textureLoader.load("pixel-rocks.png");
     texture.flipY = false;
 

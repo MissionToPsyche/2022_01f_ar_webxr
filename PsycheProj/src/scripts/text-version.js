@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
-import utilities from '/three-utilities.js';
+import utilities from './three-utilities.js';
 
 let modelViewAreas = [];
 const clock = new THREE.Clock();
@@ -47,7 +47,7 @@ class ModelViewArea{
 function init(){
 
     // Convert .glb files to ModelViewArea objects and fill modelViewAreas array
-    let path = '/assets/models/';
+    let path = '../../assets/models/';
     let format = '.glb';
     let filePath, modelNumber;
 

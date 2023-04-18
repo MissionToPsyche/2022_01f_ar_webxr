@@ -1,12 +1,12 @@
 import * as THREE from 'three';
 import {ARButton} from 'three/addons/webxr/ARButton.js';
-import {OrbitControls} from '../jsm/controls/OrbitControls.js';
+import {OrbitControls} from './jsm/controls/OrbitControls.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {RGBELoader} from 'three/addons/loaders/RGBELoader.js';
 import {LinearToneMapping} from 'three';
-import {Clock} from './build/three.module.js';
-import text from '/text.js';
-import utilities from '/three-utilities.js';
+import {Clock} from '../../build/three.module.js';
+import text from './text.js';
+import utilities from './three-utilities.js';
 
 // General variables.
 let modelViewArea;
@@ -55,7 +55,7 @@ $("#ARButton").click(async function() {
     }
 
     // Set up preliminary objects and elements.
-    let starImagesFilePath = '/assets/stars/'
+    let starImagesFilePath = '../../assets/stars/'
     utilities.setSpaceEnvironment(scene, starImagesFilePath);
 
     $("#satellite").show();
@@ -392,14 +392,14 @@ function loadTextToNarrative(text) {
 function loadModel(currentModelState, appStart = true, position = null) {
 
     // Load glb file and add it to scene.
-    var loader = new GLTFLoader().setPath('assets/');
+    var loader = new GLTFLoader().setPath('../../assets/');
 
     // Calling utility.textureAllMeshes() causes model to load before 
     // texturing is done, causing a glitch. Perhaps there is a workaround, 
     // but for now, having this repeated code block here is the solution.
 
     // Load texture file for mesh's
-    var textureLoader = new THREE.TextureLoader().setPath('assets/');
+    var textureLoader = new THREE.TextureLoader().setPath('../../assets/');
     var texture = textureLoader.load(globalMeshTexture);
     texture.flipY = false;
     

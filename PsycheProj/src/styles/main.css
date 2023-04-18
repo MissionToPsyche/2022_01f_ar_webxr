@@ -82,7 +82,8 @@ body {
 }
 
 #satellite{
-
+ height: 15vh !important;
+ width: 15vw !important;
 }
 
 /* Represents the image of the speech bubble */

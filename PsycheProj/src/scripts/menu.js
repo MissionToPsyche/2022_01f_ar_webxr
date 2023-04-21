@@ -24,12 +24,22 @@ $("#menu-button").click(function toggleMenu() {
 $("#music-settings").click(function() {
         let myAudio = document.getElementById("music");
         myAudio.muted=!myAudio.muted;
+        if(myAudio.muted){
+            $("#music-settings").text('Unmute Music');
+        }
+        else{
+            $("#music-settings").text('Mute Music');
+        }
+        
 })
 
 /**
  * This code makes the menu disappear when the user clicks outside of the menu
  */
 $(document).mouseup(function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("test")
     let menu = $('#menu');
     let menuButton = $('#menu-button')
     if (!menu.is(e.target) 

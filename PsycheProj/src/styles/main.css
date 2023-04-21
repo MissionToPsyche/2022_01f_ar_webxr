@@ -201,6 +201,14 @@ body {
   background-size: 100% 100%;
   height: 13px;
   width: 18px;
+}
+
+.speech-box-button-up {
+  background-image: url(../../assets/buttons/down-arrow.png);
+  transform: rotate(180deg);
+}
+
+.speech-box-button-down {
   background-image: url(../../assets/buttons/down-arrow.png);
 }
 

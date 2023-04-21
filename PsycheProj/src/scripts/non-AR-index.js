@@ -255,7 +255,8 @@ async function changeState(next_or_previous) {
  * @param {String Array} text - Text to be loaded to the narrative iteratively.
 */
 function startNarrativeSequence(text) {
-    showViewElements("speech-box-button");
+    //showViewElements("speech-box-button");
+    document.getElementById('speech-box-button').style.visibility = "visible";
     //hideViewElements("main-view-element");
     //hideViewElements("state-change-element");
     narrativeIterator = 0;
@@ -267,8 +268,18 @@ function startNarrativeSequence(text) {
  * 
  * Iterates to the next narrative element shown in the speech box.
  */
-$("#speech-box-button").click(function() {
-    narrativeIterator++;
+$(".speech-box-button").click(function() {
+    if(this.id == "speech-box-button"){
+        narrativeIterator++;
+        document.getElementById('speech-box-button-up').style.visibility = "visible";
+    }
+    else if(this.id == "speech-box-button-up"){
+        narrativeIterator-=1;
+        if(narrativeIterator == 0){
+            document.getElementById('speech-box-button-up').style.visibility = "hidden";
+
+        }
+    }
     let length;
     let nextText;
 
@@ -303,6 +314,9 @@ $("#speech-box-button").click(function() {
     if (narrativeIterator == (length - 1)) {
         endNarrativeSequence();
     }
+    else{
+        document.getElementById('speech-box-button').style.visibility = "visible";
+    }
 })
 
 /**
@@ -311,7 +325,8 @@ $("#speech-box-button").click(function() {
  * Ends the narrative sequence.  Shows/Hides proper view elements and restarts all counters/iterators.
  */
 function endNarrativeSequence() {
-    hideViewElements("speech-box-button");
+    //hideViewElements("speech-box-button");
+    document.getElementById('speech-box-button').style.visibility = "hidden";
     // Show the proper button(s) based on the the type of narrative currently being shown in the speech box.
     if (narrativeTextIndicator == 1) {
         showViewElements("state-change-element");
@@ -433,7 +448,6 @@ function loadModel(currentModelState, appStart = true, position = null) {
             // arPlace();
             
         }
-
 
         controls.update();
         

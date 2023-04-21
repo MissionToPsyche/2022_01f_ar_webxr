@@ -40,13 +40,10 @@ window.addEventListener( "pageshow", function ( event ) {
 
 init();
 animate();
+startSession();
 
-/**
- * non-ar-start-button click.
- * 
- * Initializes the non-AR experience.
- */
-$("#non-ar-start-button").click(async function() {
+
+function startSession(){
 
     if(currentObject){
         currentObject.visible = false;
@@ -58,9 +55,6 @@ $("#non-ar-start-button").click(async function() {
     // Set up preliminary objects and elements.
     let starImagesFilePath = '../../assets/stars_opaque/'
     utilities.setSpaceEnvironment(scene, starImagesFilePath);
-    $("#satellite").show();
-    showNarrative();
-    loadTextToNarrative(greeting);
     
     // Initiate with model 1.
     currentModelState = 1;
@@ -68,7 +62,12 @@ $("#non-ar-start-button").click(async function() {
 
     // Load the Place and Menu button.
     showViewElements("place-view-element");
-});
+
+    $("#satellite").show();
+    showNarrative();
+    loadTextToNarrative(greeting);
+
+}
 
 /**
  * Place button click.

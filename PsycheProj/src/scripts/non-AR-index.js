@@ -340,12 +340,12 @@ function endNarrativeSequence() {
  * Displays the speech box (narrative text).
  */
 function showNarrative() {
-    $("#text-box").show();
+    $("#text-box").css('visibility', 'visible');
     $("#narrative").show();
 }
 
 function hideNarrative(){
-    $("#text-box").show();
+    $("#text-box").css('visibility', 'hidden');
     $("#narrative").show();
 }
 

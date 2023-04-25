@@ -8,7 +8,6 @@ class ARButton {
 
 			let currentSession = null;
 
-			// This function runs when 
 			function onSessionStarted( session ) {
 
 				renderer.xr.setReferenceSpaceType( 'local' );
@@ -98,7 +97,7 @@ class ARButton {
 			return button;
 
 		} else {
-            alert("test")
+            //alert("test")
 			showWebXRNotSupported();
 		}
 	}

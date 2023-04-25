@@ -82,6 +82,7 @@ body {
 }
 
 #satellite{
+ visibility: hidden;
  height: 15vh !important;
  width: 15vw !important;
 }

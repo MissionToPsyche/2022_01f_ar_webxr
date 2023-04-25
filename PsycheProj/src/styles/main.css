@@ -81,10 +81,14 @@ body {
   
 }
 
+#text-box{
+  
+}
+
 #satellite{
- visibility: hidden;
- height: 15vh !important;
- width: 15vw !important;
+ display: none;
+ height: 64px !important;
+ width: 64px !important;
 }
 
 /* Represents the image of the speech bubble */

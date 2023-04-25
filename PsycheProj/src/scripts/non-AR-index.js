@@ -91,6 +91,14 @@ $("#dashboard-button").click(function() {
 })
 
 /**
+ * Fact button class click.
+ */
+$(".fact-button").click(function(){
+    // makes sure that up button is never displayed upon loading a new text
+    $('#speech-box-button-up').css('visibility', 'hidden');
+})
+
+/**
  * Fact 1 button click.
  */
 $("#fact-one").click(function() {displayFact(1)});
@@ -108,12 +116,18 @@ $("#fact-three").click(function() {displayFact(3)});
 /**
  * Change State button click.
  */
-$("#state-change").click(function() {changeState(1)});
+$("#state-change").click(function() {
+    $('#speech-box-button-up').css('visibility', 'hidden');
+    changeState(1)
+});
 
 /**
  * Next button click.
  */
-$("#next-button").click(function() {changeState(1)});
+$("#next-button").click(function() {
+    $('#speech-box-button-up').css('visibility', 'hidden');
+    changeState(1)
+});
 
 /**
  * displayFact Function
@@ -340,12 +354,12 @@ function endNarrativeSequence() {
  * Displays the speech box (narrative text).
  */
 function showNarrative() {
-    $("#text-box").show();
+    $("#text-box").css('visibility', 'visible');
     $("#narrative").show();
 }
 
 function hideNarrative(){
-    $("#text-box").show();
+    $("#text-box").css('visibility', 'hidden');
     $("#narrative").show();
 }
 

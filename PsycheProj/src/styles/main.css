@@ -96,21 +96,6 @@ body {
  width: 64px !important;
 }
 
-
-/* Represents the image of the speech bubble */
-/*
-.speech-bubble {
-  display: none;
-  color: white;
-  background-image: url("../../assets/pixel-text-box.png");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  opacity: 0.75;
-}
-*/
-
-
-
 /* Represents the container for the educational text inside of the speech bubble */
 #narrative {
   display: none;

@@ -81,19 +81,19 @@ body {
   
 }
 
-#satellite{
- height: 15vh !important;
- width: 15vw !important;
-}
-
-/* Represents the image of the speech bubble */
-.speech-bubble {
-  display: none;
+#text-box{
+  visibility: hidden;
   color: white;
   background-image: url("../../assets/pixel-text-box.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
   opacity: 0.75;
+}
+
+#satellite{
+ display: none;
+ height: 64px !important;
+ width: 64px !important;
 }
 
 /* Represents the container for the educational text inside of the speech bubble */

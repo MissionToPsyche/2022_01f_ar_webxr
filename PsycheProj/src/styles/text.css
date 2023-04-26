@@ -1,0 +1,95 @@
+/* This style sheet is for the text-version and the webxr-not-supported screens */
+
+:root{
+    /* Colors of the speech box */
+    --light-blue: #12A7F5;
+    --darker-blue: #1072F5;
+    --darkest-blue: #101DDB;
+  
+    /* Colors from the Psyche logo*/
+    --psyche-light-purple: #5B2552;
+    --psyche-dark-purple: #322247;
+    --psyche-light-pink: #EF5965;
+    --psyche-dark-pink: #A43F5D;
+    --psyche-light-orange: #FAA001;
+    --psyche-dark-orange: #F57C33;
+  }
+
+body{
+    font-family: "Helvetica",sans-serif;
+    font-size: 1.1875rem;
+}
+
+h2{
+    font-weight: 300;
+}
+
+h3{
+    font-family: "Helvetica",sans-serif;
+    font-weight: normal;
+    font-size: 36px;
+    line-height: 1.4;
+    color: #302144;
+}
+
+h5{
+    color: #A53F5B !important;
+    font-weight: 500;
+
+    padding-top: 0.25em;
+    font-family: "TradeGothic",sans-serif;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+button{
+    background-color: #A53F5B;
+    color: white;
+    cursor: pointer;
+    border: 1px solid #555;
+    border-radius: 5px;
+    font-size: small;
+}
+
+.dark{
+    background-color: #3b4351;
+    color: white;
+}
+.dark h3{
+    color: white;
+}
+.dark h5{
+    color: #F57C33 !important;
+}
+.dark button{
+    background-color: #F57C33;
+    color: white;
+}
+.dark #header-column{
+    background-color: white;
+}
+
+#incompatible-browser-modal{
+    display: none;
+    z-index: 1000;
+  
+    background-color: #3b4351;
+    color: white;
+  
+    border: 1px solid #888;
+  
+}
+.webxr-not-supported-button{
+  
+    border: none;
+    border-radius: 5px;
+    background-color: var(--light-blue);
+    color: white;
+  
+}
+
+.model-view-area{
+    
+}

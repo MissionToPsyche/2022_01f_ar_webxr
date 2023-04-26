@@ -1,0 +1,361 @@
+:root{
+  /* Colors of the speech box */
+  --light-blue: #12A7F5;
+  --darker-blue: #1072F5;
+  --darkest-blue: #101DDB;
+
+  /* Colors from the Psyche logo*/
+  --psyche-light-purple: #5B2552;
+  --psyche-dark-purple: #322247;
+  --psyche-light-pink: #EF5965;
+  --psyche-dark-pink: #A43F5D;
+  --psyche-light-orange: #FAA001;
+  --psyche-dark-orange: #F57C33;
+}
+
+
+body {
+  margin: 0;
+  background-color: black;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  color: white;
+
+  font-family: 'VT323', monospace;
+  font-size: 25px;
+  font-weight: 100;
+  /*All caps, but capital letters are bigger*/
+  font-variant: small-caps;
+  /* Makes all text same size caps */
+  /*text-transform: uppercase;*/
+
+  overflow: hidden;
+}
+
+#startup-image{
+  position: absolute;
+  display: inline;
+  z-index: 99;
+  height: 100vh;
+  width: 100vw;
+
+  margin: 0%;
+  overflow: hidden;
+}
+
+#content{
+  position: inherit;
+  width: 100vw;
+  height: 100vh;
+}
+
+.h-10{
+  height: 10%;
+}
+.h-15{
+  height: 15%;
+}
+.h-20{
+  height: 20%;
+}
+.h-30{
+  height: 30%;
+}
+.h-40{
+  height: 40%;
+}
+.h-70{
+  height: 70%;
+}
+.h-80{
+  height: 80%;
+}
+
+#model-view-area{
+  position: absolute;
+}
+
+/* Represents the top of the screen */
+#screen-top {
+  
+}
+
+#text-box{
+  visibility: hidden;
+  color: white;
+  background-image: url("../../assets/pixel-text-box.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  opacity: 0.75;
+}
+
+#satellite{
+ display: none;
+ height: 64px !important;
+ width: 64px !important;
+}
+
+/* Represents the container for the educational text inside of the speech bubble */
+#narrative {
+  display: none;
+  opacity: 1;
+  overflow-y: scroll;
+  min-height: 80px;
+}
+  
+#menu {
+  position: fixed;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  background-color: rgba(26, 26, 26, 0.9);
+  list-style-type: none;
+  transform: translate(-50%, -50%);
+  padding: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+#menu li {
+  padding: 2px 5px;
+  border: 1px solid black;
+  color: white;
+  text-decoration: solid;
+}
+
+#non-ar-start-button {
+  position: absolute;
+  bottom: 20px;
+  padding: 12px 6px;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  background: rgba(0,0,0,0.1);
+  color: #fff;
+  font: normal 13px sans-serif;
+  text-align: center;
+  opacity: 0.5;
+  outline: none;
+  z-index: 999;
+  cursor: pointer;
+  left: calc(50% - 50px);
+  width: 100px;
+}
+
+#menu li a{
+    color: inherit;
+    text-decoration: none; /* no underline */
+}
+
+.horizontal {
+  display: inline-block;
+}
+
+/*@media screen and (max-height: 450px) {
+  .menu {padding-top: 15px;}
+  .menu a {font-size: 18px;}
+}*/
+
+/* Only used for the intro <p> tag */
+.intro {
+  padding: 85px 25px 25px 25px;
+  color: white;
+  text-align: center;
+  z-index: 101;
+}
+
+/* This type of element should be visible in the main view 
+   The main view is when the model and fact buttons are displayed */
+.main-view-element{
+  visibility: hidden;
+}
+
+/* This type of element should be visible in the state change view 
+   The state change view is when the state change  */
+.state-change-element{
+  visibility: hidden;
+}
+
+/* This type of element should be visible when the 3D model can be placed */
+.place-view-element{
+  visibility: hidden;
+}
+
+.dashboard-element{
+  visibility: hidden;
+}
+
+.btn:active{
+  border: none;
+  outline: none;
+}
+.btn:not(:active){
+  border: none;
+}
+
+.speech-box-button {
+  visibility: hidden;
+  border: none;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  height: 13px;
+  width: 18px;
+}
+
+.speech-box-button-up {
+  background-image: url(../../assets/buttons/down-arrow.png);
+  transform: rotate(180deg);
+}
+
+.speech-box-button-down {
+  background-image: url(../../assets/buttons/down-arrow.png);
+}
+
+#dashboard{
+  bottom: 0;
+
+  background-color: rgba(26, 26, 26, 0.9);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+
+  box-shadow: 0 -4px 5px #faa00142;
+
+  /*background-image: url(/assets/backgrounds/metalbackground-pixel-5.png);*/
+
+  /* this allows the jQuery slideToggle() to work as desired */
+  position: absolute;
+}
+
+#dashboard-button{
+  color: #f1f1f1;
+  border: none;
+
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  z-index: 6000;
+
+  background-image: url("../../assets/buttons/simple-up.png");
+}
+
+#place-button {
+  border: none;
+
+  background-repeat: no-repeat;
+  height: 50px;
+  width: 50px;
+  background-size: 100% 100%;
+
+  background-image: url(../../assets/buttons/blue-arcade-button-cursor3-unpressed.png);
+}
+#place-button:active{
+  background-image: url(../../assets/buttons/blue-arcade-button-cursor3-pressed.png);
+  border: none;
+}
+/* This gets rid of the ring border that shows up after the button is released */
+#place-button:not(:active){
+  border: none;
+}
+
+#next-button {
+  border: none;
+
+  background-repeat: no-repeat;
+  height: 50px;
+  width: 50px;
+  background-size: 100% 100%;
+
+  background-image: url(../../assets/buttons/red-arcade-button-next-unpressed.png);
+}
+#next-button:active{
+  background-image: url(../../assets/buttons/red-arcade-button-next-pressed.png);
+  border: none;
+}
+/* This gets rid of the ring border that shows up after the button is released */
+#next-button:not(:active){
+  border: none;
+}
+
+#menu-button {
+  font-size: 70px;
+  cursor: pointer;
+
+  background-image: url("/assets/icons/List.png");
+  background-repeat: no-repeat;
+  height: 35px;
+  width: 35px;
+  background-size: 100% 100%;
+}
+
+#state-change {
+  border: none;
+
+  background-repeat: no-repeat;
+  height: 50px;
+  width: 50px;
+  background-size: 100% 100%;
+
+  background-image: url(../../assets/buttons/red-arcade-button-play-unpressed.png);
+}
+#state-change:active{
+  background-image: url(../../assets/buttons/red-arcade-button-play-pressed.png);
+  border: none;
+}
+/* This gets rid of the ring border that shows up after the button is released */
+#state-change:not(:active){
+  border: none;
+}
+
+/* Contains fact buttons */
+#fact-button-area{
+  visibility: hidden;
+}
+
+/* Class for shared attributes of fact buttons */
+.fact-button{
+  border: none;
+
+  background-repeat: no-repeat;
+  height: 50px;
+  width: 50px;
+  background-size: 100% 100%;
+
+  background-image: url(../../assets/buttons/white-arcade-button-unpressed.png);
+}
+.fact-button:active{
+  background-image: url(../../assets/buttons/white-arcade-button-pressed.png);
+  border: none;
+}
+/* This gets rid of the ring border that shows up after the button is released */
+.fact-button:not(:active){
+  border: none;
+}
+
+/* Represents the asteroid button */
+#fact-one {  
+  background-image: url("../../assets/buttons/white-arcade-button-psyche-unpressed.png");
+}
+#fact-one:active{
+  background-image: url("../../assets/buttons/white-arcade-button-psyche-pressed.png");
+}
+
+/* Represents the question button */
+#fact-two {
+  background-image: url(../../assets/buttons/white-arcade-button-question-unpressed.png);
+}
+#fact-two:active{
+  background-image: url(../../assets/buttons/white-arcade-button-question-pressed.png);
+}
+
+/* Represents the spacecraft button */
+#fact-three {
+  background-image: url("../../assets/buttons/white-arcade-button-measure-unpressed.png");
+}
+#fact-three:active{
+  background-image: url("../../assets/buttons/white-arcade-button-measure-pressed.png");
+}
+
+#screen-bottom{
+
+}
+

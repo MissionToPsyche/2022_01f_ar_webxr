@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./src/styles/text.css">
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "./build/three.module.js",
+                "three/addons/": "./src/scripts/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module" src="./src/scripts/text-version.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
+    <title>Text Version</title>
+</head>
+<body>
+
+    <!-- Everything goes in the container -->
+    <div class="container-fluid">
+
+        <div class="row">
+
+            <div id="header-column" class="col d-flex p-4">
+
+                <img src="./assets/psyche-logo.png" class="img-fluid" alt="NASA Psyche Logo">
+
+            </div>
+
+        </div>
+
+        <!-- SCREEN TOP -->
+        <div class="row p-4 pt-0">
+
+            <div class="col">
+
+                <!-- HEADING -->
+                <div class="row">
+
+                    <div class="col d-flex justify-content-center">
+
+                        <h2 class="pt-4 pb-3">TEXT MODE</h2>
+
+                    </div>
+
+                    <div class="col d-flex align-items-center justify-content-center">
+
+                        <button id="dark-mode-button" class="btn-dark shadow-sm p-1" onclick="darkMode()">DARK MODE</button> 
+
+                    </div>
+                    
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- STAGE 1 -->
+        <div class="row">
+
+            <div class="col">
+
+                <div class="row">
+
+                    <div class="col d-flex justify-content-center">
+
+                        <h3 class="pt-4 pb-1">Stage 1: Formation of Planetesimal</h3>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col p-4 pt-0 pb-0 d-flex justify-content-center">
+
+                        <!-- This is where the first Psyche model will be viewed -->
+                        <div id="model-1" class="model-view-area"></div>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col p-4">
+
+                        <h5>WHAT MIGHT PSYCHE BE?</h5> 
+                        <p>
+                            Planetesimals are one of the building blocks of planets. The hypothesis that
+                            Psyche could potentially be leftover core material from a planetesimal could lead scientists 
+                            to be abe to investigate questions about Earth's core, including how it was formed.
+                        </p>
+
+                        <h5>QUESTION</h5>
+                        <p>
+                            How might Psyche have formed?
+                        </p>
+
+                        <h5>HOW WILL THE PSYCHE MISSION COLLECT DATA?</h5>
+                        <p>
+                            The spacecraft is equipped with two Multispectral Imagers. These high 
+                            resolution cameras will capture images of the asteroid's surface at different wavelengths of 
+                            light. This, along with pictures of the topography of Psyche, will allow scientists to study 
+                            features that provide clues to Psyche's history. 
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- STATE CHANGE (1 -> 2) -->
+        <div class="row">
+
+            <div class="col">
+
+                <div class="row">
+
+                    <div class="col d-flex justify-content-center">
+
+                        <h3 class="pt-4 pb-1">State Change: Material Accretion</h3>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col p-4 pt-0 pb-0 d-flex justify-content-center">
+
+                        <div id="model-2" class="model-view-area"></div>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col px-5 d-flex justify-content-center">
+
+                        <p>
+                            As small particles of things such as ice and dust combine, they form larger particles. 
+                            Eventually these particles combine through different
+                            processes to form an object large enough to be classified as a planetesimal.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- STAGE 2 -->
+        <div class="row">
+
+            <div class="col">
+
+                <div class="row">
+
+                    <div class="col d-flex justify-content-center">
+
+                        <h3 class="pt-4 pb-1">Stage 2: Planetesimal</h3>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col p-4 pt-0 pb-0 d-flex justify-content-center">
+
+                        <div id="model-3" class="model-view-area"></div>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col p-4">
+
+                        <h5>WHAT MIGHT PSYCHE BE?</h5> 
+                        <p>
+                            Scientists think Psyche may consist largely of metal from the core of a 
+                            planetesimal, one of the building blocks of the rocky planets in our solar system (Mercury, 
+                            Venus, Earth and Mars). Psyche is most likely a survivor of multiple violent hit-and-run 
+                            collisions with other material, common when the solar system was forming. 
+                        </p>
+
+                        <h5>QUESTION</h5>
+                        <p>
+                            How will it be determined if Psyche is core material of a planetesimal?
+                        </p>
+
+                        <h5>HOW WILL THE PSYCHE MISSION COLLECT DATA?</h5>
+                        <p>
+                            All of the instruments on the spacecraft will provide clues but, in 
+                            particular, the magnetometer will look for evidence of an ancient magnetic field: if Psyche 
+                            has a significant magnetic field still recorded in its solid body, it was once a core that 
+                            produced its own dynamo.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- STATE CHANGE (2 -> 3) -->
+        <div class="row">
+
+            <div class="col">
+
+                <div class="row">
+
+                    <div class="col d-flex justify-content-center">
+
+                        <h3 class="pt-4 pb-1">State Change: Asteroid Collisions</h3>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col p-4 pt-0 pb-0 d-flex justify-content-center">
+
+                        <div id="model-4" class="model-view-area"></div>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col px-5 d-flex justify-content-center">
+
+                        <p>
+                            Objects are colliding with the planetesimal. These collisions cause the surface layer of the planetesimal to become worn away. After many
+                            of these collisions, the surface no longer remains intact and the core of the planetesimal is exposed. Though there may possibly be some
+                            remnants of the surface layer and other material remaining, what is left after these collisions is mainly core material of the planetesimal.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- STAGE 3 -->
+        <div class="row">
+
+            <div class="col">
+
+                <div class="row">
+
+                    <div class="col d-flex justify-content-center">
+
+                        <h3 class="pt-4 pb-1">Stage 3: Core (Psyche Now)</h3>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col p-4 pt-0 pb-0 d-flex justify-content-center">
+
+                        <div id="model-5" class="model-view-area"></div>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col p-4">
+
+                        <h5>WHAT MIGHT PSYCHE BE?</h5> 
+                        <p>
+                            After numerous collisions, it is hypothesized that the potential planetesimal would
+                            have its rocky mantle stripped away, and leave behind the core material. This core material could 
+                            potentially be what makes up the current asteroid Psyche.
+                        </p>
+
+                        <h5>QUESTION</h5>
+                        <p>
+                            What is it that planetary cores are made of?
+                        </p>
+
+                        <h5>HOW WILL THE PSYCHE MISSION COLLECT DATA?</h5>
+                        <p>
+                            The satellite spacecraft contains a Gamma Ray and Neutron Spectrometer that will detect, measure, 
+                            and map Psyche's elemental composition. These measurements will be able to give scientists a better idea 
+                            of what exactly it is that potentially makes up the inner cores of planets.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- SCREEN BOTTOM -->
+        <div class="row">
+
+            <div class="col d-flex p-4 justify-content-center">
+
+                <a href="non-AR-index.html">
+
+                    <button class="btn-dark p-1 shadow-sm">Return to Non-AR Mode</button>
+        
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Code for dark-mode-button functionality-->
+    <script>
+
+        function darkMode() {
+
+            document.body.classList.toggle("dark");
+
+            $("#dark-mode-button").text(function(i, text){
+                return text === "DARK MODE" ? "LIGHT MODE" : "DARK MODE";
+            });
+        }
+    </script>
+
+</body>
+</html>

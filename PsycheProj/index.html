@@ -6,7 +6,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
-		<link type="text/css" rel="stylesheet" href="main.css">
+		<link type="text/css" rel="stylesheet" href="src/styles/main.css">
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
@@ -16,23 +16,23 @@
 		<script type="importmap">
 			{
 				"imports": {
-					"three": "../build/three.module.js",
-					"three/addons/": "./jsm/"
+					"three": "./build/three.module.js",
+					"three/addons/": "./src/scripts/jsm/"
 				}
 			}
 		</script>
-		<script type="module" src="/index.js"></script>
-		<script type="module" src="/menu.js"></script>
+		<script type="module" src="src/scripts/index.js"></script>
+		<script type="module" src="src/scripts/menu.js"></script>
 		<script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
 
 	</head>
 	<body id="body">
 
 		<audio autoplay loop id="music" muted>
-			<source src="./assets/ivoryhaus-perseids.mp3" type="audio/mpeg">
+			<source src="./assets/ivoryhaus-psyche.mp3" type="audio/mpeg">
 		</audio>
 
-		<img id="startup-image" src="/assets/psyche-title-screen.png">
+		<img id="startup-image" src="./assets/psyche-title-screen.png">
 
 		<!-- This container is divided into 5 rows and represents the screen elements -->
 		<div id="content" class="container-fluid p-0">
@@ -46,7 +46,7 @@
 
 				<div class="col">
 
-					<div id="text-box" class="row h-100 position-relative speech-bubble">
+					<div id="text-box" class="row h-100 position-relative">
 
 						<!-- NARRATIVE - This is the text that will be displayed to the user -->
 						<div class="col-10 p-4 pe-3 h-100">
@@ -63,7 +63,7 @@
 
 								<div class="col d-flex align-items-center justify-content-center">
 
-									<img id="satellite" class="h-100" src="/assets/psyche-spacecraft-pixel-art.png"></img>
+									<img id="satellite" class="h-100" src="./assets/psyche-spacecraft-pixel-art.png"></img>
 
 								</div>
 								
@@ -76,6 +76,7 @@
 								<div class="col">
 
 									<!-- TEXT UP BUTTON GOES HERE -->
+									<button id="speech-box-button-up" class="speech-box-button speech-box-button-up col"></button>
 
 								</div>
 
@@ -86,7 +87,7 @@
 
 								<div class="col">
 									
-									<button id="speech-box-button" class="speech-box-button col"></button>
+									<button id="speech-box-button" class="speech-box-button speech-box-button-down col"></button>
 
 								</div>
 
@@ -187,7 +188,7 @@
 				<li><h1>Menu</h1></li>
 				<li><a href="text-version.html">Text-Only Mode</a></li>
 				<li><a href="credits.html">Credits/Disclaimer</a></li>
-				<li><a id ="music-settings">Mute/Unmute</a></li>
+				<li><a id ="music-settings">Unmute Music</a></li>
 				<li><a href="https://psyche.asu.edu/">Visit Psyche Website</a></li>
 				<li><a href=".">Restart</a></li>
 			</ul>

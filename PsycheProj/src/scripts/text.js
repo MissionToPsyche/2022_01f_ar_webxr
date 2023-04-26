@@ -37,7 +37,7 @@ const facts = [
         "How might Psyche have formed?",
 
         // Model 1 - Spacecraft Button - String Array indicates it will use multiple speech boxes.
-        ["The spacecraft will is equipped with two Multispectral Imagers. These high resolution cameras will capture images of the asteroid's surface at",
+        ["The spacecraft is equipped with two Multispectral Imagers. These high resolution cameras will capture images of the asteroid's surface at",
         "different wavelengths of light. This, along with pictures of the topography of Psyche, will allow scientists to study features that provide",
         "clues to Psyche's history."]
     ],
